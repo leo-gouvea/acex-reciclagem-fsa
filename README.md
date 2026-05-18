@@ -51,10 +51,15 @@ Aplicação voltada aos estudantes da Fundação Santo André com o objetivo de 
 ## Integrantes
 
 Diego Oller de Oliveira
+
 Ingrid Thaina Lima de Oliveira
+
 João Roberto Negri
+
 Juliana Lima Gimenes
+
 Leonardo José Alves Gouvea
+
 Matheus Adryel Franzoni
 
 ---
