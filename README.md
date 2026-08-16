@@ -40,10 +40,10 @@ Aplicação voltada aos estudantes da Fundação Santo André com o objetivo de 
 
 ## Estrutura do Projeto
 
-/documentos → documentação do projeto  
-/diagramas → diagramas UML e arquitetura  
-/apresentacao → slides e apresentação  
-/imagens → imagens e recursos visuais
+/docs→ documentação do projeto  
+/diagrams → diagramas UML e arquitetura  
+/presentation → slides e apresentação  
+/assets → imagens e recursos visuais
 
 ---
 
