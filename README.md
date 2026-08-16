@@ -49,13 +49,13 @@ Aplicação voltada aos estudantes da Fundação Santo André com o objetivo de 
 
 ## Integrantes
 
+Catherine Marinho Antonioli
+
 Diego Oller de Oliveira
 
 Ingrid Thaina Lima de Oliveira
 
 João Roberto Negri
-
-Catherine
 
 Leonardo José Alves Gouvea
 
