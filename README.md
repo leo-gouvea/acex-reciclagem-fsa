@@ -22,10 +22,10 @@ Aplicação voltada aos estudantes da Fundação Santo André com o objetivo de 
 - HTML
 - CSS
 - JavaScript
-- Bootstrap
 
 ### Backend
 - PHP
+- Python
 
 ### Banco de Dados
 - MySQL
@@ -40,11 +40,10 @@ Aplicação voltada aos estudantes da Fundação Santo André com o objetivo de 
 
 ## Estrutura do Projeto
 
-/docs → documentação do projeto  
-/prototype → protótipos e fluxos  
-/diagrams → diagramas UML e arquitetura  
-/presentation → slides e apresentação  
-/assets → imagens e recursos visuais
+/documentos → documentação do projeto  
+/diagramas → diagramas UML e arquitetura  
+/apresentacao → slides e apresentação  
+/imagens → imagens e recursos visuais
 
 ---
 
@@ -56,7 +55,7 @@ Ingrid Thaina Lima de Oliveira
 
 João Roberto Negri
 
-Juliana Lima Gimenes
+Catherine
 
 Leonardo José Alves Gouvea
 
