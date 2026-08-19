@@ -24,7 +24,6 @@ Aplicação voltada aos estudantes da Fundação Santo André com o objetivo de 
 - JavaScript
 
 ### Backend
-- PHP
 - Python
 
 ### Banco de Dados
