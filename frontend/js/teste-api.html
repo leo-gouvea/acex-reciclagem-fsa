@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste da API EcoHora</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .input-group { margin: 15px 0; padding: 10px; background: #f4f4f4; border-radius: 5px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"] { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+        button:hover { background: #0056b3; }
+        pre { background: #eee; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+
+<body>
+
+    <h1>Teste da API EcoHora</h1>
+
+    <div class="input-group">
+        <label for="api-key-input">Insira sua API Key (X-API-Key):</label>
+        <input type="text" id="api-key-input" placeholder="Cole sua chave aqui..." autocomplete="off">
+    </div>
+
+    <button id="btn-api">Testar API (User 761850)</button>
+
+    <h3>Resultado:</h3>
+    <pre id="resultado">O resultado aparecerá aqui...</pre>
+
+    <script src="api.js"></script>
+
+    <script>
+        const resultado = document.getElementById("resultado");
+        const botao = document.getElementById("btn-api");
+
+        botao.addEventListener("click", async () => {
+            const apiKey = document.getElementById("api-key-input").value.trim();
+            
+            if (!apiKey) {
+                resultado.textContent = "Erro: Por favor, insira a API Key no campo acima.";
+                resultado.style.color = "red";
+                return;
+            }
+
+            // Store the key temporarily for the fetch call
+            // (We will modify api.js to read this from a global variable or pass it)
+            window.TEMP_API_KEY = apiKey;
+
+            resultado.textContent = "Consultando API...";
+            resultado.style.color = "black";
+
+            try {
+                // We need to pass the key to getUser, or modify getUser to use the global variable
+                // Since getUser is in api.js, let's make it use the global window.TEMP_API_KEY
+                const resposta = await getUser("761850");
+                
+                resultado.textContent = JSON.stringify(resposta, null, 2);
+                resultado.style.color = "green";
+
+            } catch (error) {
+                resultado.textContent = `Erro: ${error.message}`;
+                resultado.style.color = "red";
+            }
+        });
+    </script>
+
+</body>
+</html>
