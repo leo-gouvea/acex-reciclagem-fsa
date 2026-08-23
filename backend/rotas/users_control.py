@@ -16,7 +16,7 @@ router = APIRouter(prefix="/user", tags=["Registro"])
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database", "ecohora.db")
 
 # Padrão de senha para PydanticV2
-PATTERN_PASSWORD = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]+$")
+PATTERN_PASSWORD = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_.])[A-Za-z\d@$!%*?&_.]+$")
 
 # Identifica padrão de Request para registro
 class UserRegisterRequest(BaseModel):
