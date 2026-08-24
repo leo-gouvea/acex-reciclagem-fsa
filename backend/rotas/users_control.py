@@ -6,11 +6,17 @@ import re
 # Instalados (check requirements)
 import aiosqlite
 import bcrypt
-from fastapi import APIRouter, HTTPException, status, Path
+from fastapi import APIRouter, HTTPException, status, Path, Depends
 from pydantic import BaseModel, Field, EmailStr
 
+from main import check_access
+
 # Identificar rota de grupo e fora de main
-router = APIRouter(prefix="/user", tags=["Registro"])
+router = APIRouter(
+    prefix="/user",
+    tags=["Registro"],
+    dependencies=[Depends(check_access)]
+    )
 
 # Usando os para navegar entre os arquivos de forma segura entre sistemas operacionais diferentes
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database", "ecohora.db")

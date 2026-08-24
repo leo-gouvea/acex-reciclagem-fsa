@@ -1,10 +1,16 @@
 import os
 
 import aiosqlite
-from fastapi import APIRouter, HTTPException, status, Path
+from fastapi import APIRouter, HTTPException, status, Path, Depends
 from pydantic import BaseModel, Field
 
-router = APIRouter(prefix="/fsa", tags=["Faculdade"])
+from main import check_access
+
+router = APIRouter(
+    prefix="/fsa",
+    tags=["Faculdade"],
+    dependencies=[Depends(check_access)]
+    )
 
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database", "ecohora.db")
 
