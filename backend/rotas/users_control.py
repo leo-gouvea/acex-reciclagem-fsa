@@ -6,16 +6,17 @@ import re
 # Instalados (check requirements)
 import aiosqlite
 import bcrypt
-from fastapi import APIRouter, HTTPException, status, Path, Depends
+from fastapi import APIRouter, HTTPException, status, Path, Depends, Response
 from pydantic import BaseModel, Field, EmailStr
+import jwt
 
+# Importando do main para facilitar
 from main import check_access
 
 # Identificar rota de grupo e fora de main
 router = APIRouter(
     prefix="/user",
-    tags=["Registro"],
-    dependencies=[Depends(check_access)]
+    tags=["Registro"]
     )
 
 # Usando os para navegar entre os arquivos de forma segura entre sistemas operacionais diferentes
@@ -109,16 +110,22 @@ class UserLoginReturn(BaseModel):
     detail: str
 
 @router.post("/login", response_model=UserLoginReturn, response_description="Verifica se o usuário tem permissão para entrar.")
-async def user_login(credentials: UserLoginRequest):
+async def user_login(credentials: UserLoginRequest, response: Response):
     """
     Rota para autenticar (fazer login) o usuário no sistema.
     """
     
     # Abre a conexão com o banco de dados
     async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
         
         # Prepara a pergunta para o banco
-        query_busca = "SELECT ds_password FROM users WHERE ds_email = ?"
+        query_busca = """
+        SELECT users.id, users.nm_student, users.nr_ra, users.ds_password, user_types.nm_type
+        FROM users
+        INNER JOIN user_types ON user_types.id = users.fk_cd_user_type
+        WHERE users.ds_email = ?
+        """
         
         # Executa a busca
         async with db.execute(query_busca, (credentials.email,)) as cur:
@@ -132,7 +139,7 @@ async def user_login(credentials: UserLoginRequest):
                 )
             
             # Se chegou aqui, o e-mail existe, então pega a senha que veio do banco (em texto)
-            hash_salvo_texto = resultado[0]
+            hash_salvo_texto = resultado["ds_password"]
             
             # Transforma o texto do banco de volta para bytes
             hash_salvo_bytes = hash_salvo_texto.encode("utf-8")
@@ -143,6 +150,29 @@ async def user_login(credentials: UserLoginRequest):
             # A hora da verdade onde o bcrypt compara as duas senhas
             if bcrypt.checkpw(senha_tentativa_bytes, hash_salvo_bytes):
                 # Se as senhas baterem, devolve sucesso
+
+                # Prepara os dados apra irem ao Cookie
+                dados_do_usuario = {
+                    "origem": "site",
+                    "id": resultado["id"],
+                    "nome": resultado["nm_student"],
+                    "ra": resultado["nr_ra"],
+                    "cargo": resultado["nm_type"]
+                }
+                
+                # Criamos o Token usando assinatura da KEY que ja temos, por isso busca com os na env
+                chave_secreta = os.getenv("ECO_HORA_API_KEY")
+                token_jwt = jwt.encode(dados_do_usuario, chave_secreta, algorithm="HS256")
+                
+                # Colocamos o Token no Cookie e mandamos para o navegador
+                response.set_cookie(
+                    key="access_token", 
+                    value=token_jwt,
+                    httponly=True,
+                    secure=False, 
+                    samesite="lax"
+                )
+
                 return {
                     "status": 200,
                     "detail": "Login aprovado com sucesso! Bem-vindo."
@@ -174,9 +204,22 @@ class GetUserInfosReturn(BaseModel):
 
 # Rota de recuperação de informação
 @router.get("/get/{user_ra}", response_model=GetUserInfosReturn, response_description="Retorna todas as informações relacionadas a um usuário, removendo o campo de senha.")
-async def user_get(user_ra: int = Path(description="Número de RA do aluno.", examples=["123456"], title="RA do Aluno.")):
-    """Obtém informações relacionadas a um usuário usando um RA"""
+async def user_get(user_ra: int = Path(description="Número de RA do aluno.", examples=["123456"], title="RA do Aluno."), user: dict = Depends(check_access)):
+    """Obtém informações relacionadas a um usuário usando um RA.
+    * Usuários **NÃO** Operadores podem puxar apenas as próprias informações."""
 
+
+    # VALIDAÇÃO EXTRA
+    # Verifica se quem está acessando tem o cargo de Aluno
+    if user["cargo"] == "Aluno":
+        # Transforma ambos em texto (str) para garantir que a comparação não dê erro
+        if str(user["ra"]) != str(user_ra):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, 
+                detail="Acesso Negado! Você só pode visualizar o seu próprio perfil."
+            )
+
+        
     async with aiosqlite.connect(DB_PATH) as db:
         # Para poder manipular como dicionário, ao invés de retornar uma tupla comum ele retorna um objeto aiosqlite.Row
         db.row_factory = aiosqlite.Row
