@@ -1,28 +1,28 @@
 const API_BASE_URL = "https://apei-ecohora.discloud.app";
 
 async function apiRequest(endpoint, options = {}) {
-    const apiKey = window.TEMP_API_KEY;
-
-    if (!apiKey) {
-        throw new Error("API Key não fornecida. Por favor, insira a chave no campo de entrada.");
-    }
-
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
+        credentials: "include",
         headers: {
             "Content-Type": "application/json",
-            "X-API-Key": apiKey,
             ...options.headers
         }
     });
 
-    const data = await response.json();
+    let data;
+
+    try {
+        data = await response.json();
+    } catch {
+        data = null;
+    }
 
     if (!response.ok) {
         const message =
-            data.detail ||
-            data.message ||
-            data.error ||
+            data?.detail ||
+            data?.message ||
+            data?.error ||
             `HTTP ${response.status}`;
 
         throw new Error(message);
@@ -41,12 +41,14 @@ async function registerUser(userData) {
 async function loginUser(email, password) {
     return apiRequest("/user/login", {
         method: "POST",
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({
+            email,
+            password
+        })
     });
 }
 
 async function getUser(userId) {
-    // This will now automatically use the key from window.TEMP_API_KEY
     return apiRequest(`/user/get/${userId}`, {
         method: "GET"
     });

@@ -4,15 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Teste da API EcoHora</title>
+
     <style>
-        body { font-family: sans-serif; padding: 20px; }
-        .input-group { margin: 15px 0; padding: 10px; background: #f4f4f4; border-radius: 5px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"] { width: 100%; padding: 8px; box-sizing: border-box; }
-        button { padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
-        button:hover { background: #0056b3; }
-        pre { background: #eee; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            padding: 10px;
+            background: #f4f4f4;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-right: 8px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        pre {
+            background: #eee;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 
@@ -21,51 +64,143 @@
     <h1>Teste da API EcoHora</h1>
 
     <div class="input-group">
-        <label for="api-key-input">Insira sua API Key (X-API-Key):</label>
-        <input type="text" id="api-key-input" placeholder="Cole sua chave aqui..." autocomplete="off">
+
+        <label for="email">
+            E-mail
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Digite o e-mail"
+            autocomplete="username"
+        >
+
+        <label for="password">
+            Senha
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Digite a senha"
+            autocomplete="current-password"
+        >
+
+        <label for="ra">
+            RA
+        </label>
+
+        <input
+            type="text"
+            id="ra"
+            placeholder="Digite o RA"
+        >
+
     </div>
 
-    <button id="btn-api">Testar API (User 761850)</button>
+    <button id="btn-login">
+        Fazer Login
+    </button>
+
+    <button id="btn-user">
+        Consultar Usuário
+    </button>
 
     <h3>Resultado:</h3>
-    <pre id="resultado">O resultado aparecerá aqui...</pre>
+
+    <pre id="resultado">
+O resultado aparecerá aqui...
+    </pre>
 
     <script src="api.js"></script>
+    <script src="auth.js"></script>
 
     <script>
         const resultado = document.getElementById("resultado");
-        const botao = document.getElementById("btn-api");
+        const botaoLogin = document.getElementById("btn-login");
+        const botaoUsuario = document.getElementById("btn-user");
 
-        botao.addEventListener("click", async () => {
-            const apiKey = document.getElementById("api-key-input").value.trim();
-            
-            if (!apiKey) {
-                resultado.textContent = "Erro: Por favor, insira a API Key no campo acima.";
-                resultado.style.color = "red";
+        function mostrarResultado(data, sucesso = true) {
+            resultado.textContent =
+                typeof data === "string"
+                    ? data
+                    : JSON.stringify(data, null, 2);
+
+            resultado.style.color = sucesso ? "green" : "red";
+        }
+
+        botaoLogin.addEventListener("click", async () => {
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                mostrarResultado(
+                    "Erro: informe o e-mail e a senha.",
+                    false
+                );
+
                 return;
             }
 
-            // Store the key temporarily for the fetch call
-            // (We will modify api.js to read this from a global variable or pass it)
-            window.TEMP_API_KEY = apiKey;
-
-            resultado.textContent = "Consultando API...";
-            resultado.style.color = "black";
+            mostrarResultado("Realizando login...", true);
 
             try {
-                // We need to pass the key to getUser, or modify getUser to use the global variable
-                // Since getUser is in api.js, let's make it use the global window.TEMP_API_KEY
-                const resposta = await getUser("761850");
-                
-                resultado.textContent = JSON.stringify(resposta, null, 2);
-                resultado.style.color = "green";
+
+                const resposta = await login(email, password);
+
+                mostrarResultado({
+                    etapa: "LOGIN",
+                    status: "sucesso",
+                    resposta
+                });
 
             } catch (error) {
-                resultado.textContent = `Erro: ${error.message}`;
-                resultado.style.color = "red";
+
+                mostrarResultado(
+                    `Erro no login: ${error.message}`,
+                    false
+                );
+            }
+        });
+
+        botaoUsuario.addEventListener("click", async () => {
+
+            const ra = document.getElementById("ra").value.trim();
+
+            if (!ra) {
+                mostrarResultado(
+                    "Erro: informe o RA.",
+                    false
+                );
+
+                return;
+            }
+
+            mostrarResultado("Consultando usuário...", true);
+
+            try {
+
+                const resposta =
+                    await getAuthenticatedUser(ra);
+
+                mostrarResultado({
+                    etapa: "GET USER",
+                    status: "sucesso",
+                    resposta
+                });
+
+            } catch (error) {
+
+                mostrarResultado(
+                    `Erro ao consultar usuário: ${error.message}`,
+                    false
+                );
             }
         });
     </script>
 
 </body>
+
 </html>
