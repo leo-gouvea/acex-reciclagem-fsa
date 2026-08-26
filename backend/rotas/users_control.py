@@ -84,7 +84,7 @@ async def user_register(user: UserRegisterRequest):
         
         # Query para inserir o novo usuário
         query_insert = """
-        INSERT INTO users (nm_student, nr_ra, fk_cd_course, fk_cd_class, ds_email, ds_password, fk_cd_user_type) 
+        INSERT INTO users (nm_user, nr_ra, fk_cd_course, fk_cd_class, ds_email, ds_password, fk_cd_user_type) 
         VALUES (?, ?, ?, ?, ?, ?, ?)
         """
         
@@ -120,49 +120,49 @@ async def user_login(credentials: UserLoginRequest, response: Response):
         db.row_factory = aiosqlite.Row
         
         # Prepara a pergunta para o banco
-        query_busca = """
-        SELECT users.id, users.nm_student, users.nr_ra, users.ds_password, user_types.nm_type
+        query_search = """
+        SELECT users.id, users.nm_user, users.nr_ra, users.ds_password, user_types.nm_type
         FROM users
         INNER JOIN user_types ON user_types.id = users.fk_cd_user_type
         WHERE users.ds_email = ?
         """
         
         # Executa a busca
-        async with db.execute(query_busca, (credentials.email,)) as cur:
-            resultado = await cur.fetchone()
+        async with db.execute(query_search, (credentials.email,)) as cur:
+            result = await cur.fetchone()
             
             # Se não encontrou o e-mail no banco, o resultado será vazio (None)
-            if not resultado:
+            if not result:
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED, 
                     detail="E-mail ou senha incorretos."
                 )
             
             # Se chegou aqui, o e-mail existe, então pega a senha que veio do banco (em texto)
-            hash_salvo_texto = resultado["ds_password"]
+            saved_password_hash = result["ds_password"]
             
             # Transforma o texto do banco de volta para bytes
-            hash_salvo_bytes = hash_salvo_texto.encode("utf-8")
+            saved_password_bytes = saved_password_hash.encode("utf-8")
             
             # Transforma a senha que o usuário digitou para bytes para comparar
-            senha_tentativa_bytes = credentials.password.encode("utf-8")
+            tried_password_bytes = credentials.password.encode("utf-8")
             
             # A hora da verdade onde o bcrypt compara as duas senhas
-            if bcrypt.checkpw(senha_tentativa_bytes, hash_salvo_bytes):
+            if bcrypt.checkpw(tried_password_bytes, saved_password_bytes):
                 # Se as senhas baterem, devolve sucesso
 
                 # Prepara os dados apra irem ao Cookie
-                dados_do_usuario = {
-                    "origem": "site",
-                    "id": resultado["id"],
-                    "nome": resultado["nm_student"],
-                    "ra": resultado["nr_ra"],
-                    "cargo": resultado["nm_type"]
+                user_data = {
+                    "origin": "site",
+                    "id": result["id"],
+                    "name": result["nm_user"],
+                    "ra": result["nr_ra"],
+                    "role": result["nm_type"]
                 }
                 
                 # Criamos o Token usando assinatura da KEY que ja temos, por isso busca com os na env
-                chave_secreta = os.getenv("ECO_HORA_API_KEY")
-                token_jwt = jwt.encode(dados_do_usuario, chave_secreta, algorithm="HS256")
+                master_key = os.getenv("ECO_HORA_API_KEY")
+                token_jwt = jwt.encode(user_data, master_key, algorithm="HS256")
                 
                 # Colocamos o Token no Cookie e mandamos para o navegador
                 response.set_cookie(
@@ -193,7 +193,7 @@ class RecyclingHistoryScheme(BaseModel):
 
 class GetUserInfosReturn(BaseModel):
     id: int
-    nm_student: str
+    nm_user: str
     nr_ra: str
     ds_email: str
     dh_created_at: str
@@ -211,7 +211,7 @@ async def user_get(user_ra: int = Path(description="Número de RA do aluno.", ex
 
     # VALIDAÇÃO EXTRA
     # Verifica se quem está acessando tem o cargo de Aluno
-    if user["cargo"] == "Aluno":
+    if user["role"] == "Aluno":
         # Transforma ambos em texto (str) para garantir que a comparação não dê erro
         if str(user["ra"]) != str(user_ra):
             raise HTTPException(
@@ -257,7 +257,7 @@ async def user_get(user_ra: int = Path(description="Número de RA do aluno.", ex
             recycling.nr_weight_kilograms,
             dh_gave
             FROM recycling
-            INNER JOIN users ON users.id = recycling.fk_cd_student
+            INNER JOIN users ON users.id = recycling.fk_cd_user
             INNER JOIN materials ON recycling.fk_cd_material = materials.id
             WHERE users.nr_ra = ?"""
 

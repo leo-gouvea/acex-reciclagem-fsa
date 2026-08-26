@@ -25,7 +25,7 @@ CREATE TABLE "materials" (
 
 CREATE TABLE "users" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "nm_student" TEXT NOT NULL, 
+    "nm_user" TEXT NOT NULL, 
     "nr_ra" TEXT NOT NULL UNIQUE, 
     "fk_cd_course" INTEGER NOT NULL REFERENCES "courses"("id"),
     "fk_cd_class" INTEGER NOT NULL REFERENCES "classes"("id"), 
@@ -40,6 +40,6 @@ CREATE TABLE "recycling" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT, 
     "fk_cd_material" INTEGER NOT NULL REFERENCES "materials"("id"),
     "nr_weight_kilograms" INTEGER NOT NULL,
-    "fk_cd_student" INTEGER NOT NULL REFERENCES "users"("id") ON DELETE SET NULL,
+    "fk_cd_user" INTEGER NOT NULL REFERENCES "users"("id") ON DELETE SET NULL,
     "dh_gave" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );

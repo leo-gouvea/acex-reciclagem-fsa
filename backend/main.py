@@ -30,7 +30,7 @@ def check_access(request: Request, key: str = Security(header_api_key)):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Acesso negado, Chave de API inválida.")
         else:
             # Posto para retornar algo mais conccreto
-            return {"Origin": "System", "name": "Automation", "cargo": "Bot"}
+            return {"Origin": "System", "name": "Automation", "role": "Bot"}
         
     # Se não tem, tenta "comer o cookie" de acesso
     else:
@@ -61,7 +61,11 @@ app = FastAPI(title="API ACEX", description="API construída para o projeto ACEX
 # Adicionado o CORS para que o front se comunique com o Back
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000", "http://localhost:8080"],
+    allow_origins=[
+        "http://127.0.0.1:8000",
+        "http://127.0.0.1:8080",
+        "http://127.0.0.1:5500"
+        ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
