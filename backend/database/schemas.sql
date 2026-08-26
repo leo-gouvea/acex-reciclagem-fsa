@@ -12,7 +12,7 @@ CREATE TABLE "courses" (
 
 CREATE TABLE "classes" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "ds_class" TEXT UNIQUE NOT NULL
+    "ds_class_code" TEXT UNIQUE NOT NULL
 );
 
 

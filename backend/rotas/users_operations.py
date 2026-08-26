@@ -16,7 +16,7 @@ from main import check_access
 # Identificar rota de grupo e fora de main
 router = APIRouter(
     prefix="/user",
-    tags=["Registro"]
+    tags=["Usuários"]
     )
 
 # Usando os para navegar entre os arquivos de forma segura entre sistemas operacionais diferentes
@@ -28,13 +28,13 @@ PATTERN_PASSWORD = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_.])
 # Identifica padrão de Request para registro
 class UserRegisterRequest(BaseModel):
     name: str = Field(..., min_length=3, max_length=60, title="Nome de usuário", description='Seu nome de Identificação.')
-    ra: str = Field(..., min_length=6, max_length=6, title="RA do Aluno", description="Seu Registro de Aluno na Universidade.")
+    ra: str = Field(..., min_length=6, max_length=6, title="RA do Aluno (Não editável)", description="Seu Registro de Aluno na Universidade. Esse número não poderá ser editado depois por meios convencionais.")
     # Adicionada validação de email com Pydantic já
     email: EmailStr = Field(..., max_lenght=150, title="Email institucional da universidade.", description="Adicione seu email para contato.")
     password: str = Field(..., examples=["Senha0_Forte"], min_length=6, pattern=PATTERN_PASSWORD, title="Senha de usuário", description="Adicione a senha do usuário. Deve incluir pelo menos 6 caracteres, uma letra maiúscula, uma letra minúscula e um símbolo especial.")
-    cd_course: int = Field(..., ge=1, le=23, title="Código do curso do estudante.", description="Adicione o código do curso do estudante.")
-    cd_class: int = Field(..., ge=1, le=10, title="Código da turma do aluno.", description="Digite o código da turma do aluno a ser cadastrado.")
-    user_type: int = Field(..., ge=1, le=3, title="Tipo de usuário a ser cadastrado.", description="Adicione o código de tipo de usuário a ser cadastrado.")
+    course: int = Field(..., ge=1, le=23, title="Código do curso do estudante.", description="Adicione o código do curso do estudante.")
+    user_class: int = Field(..., ge=1, le=10, title="Código da turma do aluno.", description="Digite o código da turma do aluno a ser cadastrado.")
+    user_type: int = Field(1, ge=1, le=3, title="Tipo de usuário a ser cadastrado.", description="Adicione o código de tipo de usuário a ser cadastrado.")
 
 # Identifica padrão de Return para registro
 class UserRegisterReturn(BaseModel):
@@ -89,7 +89,7 @@ async def user_register(user: UserRegisterRequest):
         """
         
         # Executa a inserção direto na conexão do banco (db)
-        await db.execute(query_insert, (user.name, user.ra, user.cd_course, user.cd_class, user.email, user_password_hash_text, user.user_type))
+        await db.execute(query_insert, (user.name, user.ra, user.course, user.user_class, user.email, user_password_hash_text, user.user_type))
         await db.commit()
 
     return {
@@ -102,7 +102,7 @@ async def user_register(user: UserRegisterRequest):
 # Identifica o padrão de Request (entrada) para o login
 class UserLoginRequest(BaseModel):
     email: EmailStr = Field(..., max_length=150, title="Email institucional", description="Digite o e-mail cadastrado.")
-    password: str = Field(..., pattern=PATTERN_PASSWORD, title="Senha de usuário", description="Digite a senha para entrar.")
+    password: str = Field(..., examples=["Senha_Fraca1"], pattern=PATTERN_PASSWORD, title="Senha de usuário", description="Digite a senha para entrar.")
 
 # Identifica o padrão de Return (saída) para o login
 class UserLoginReturn(BaseModel):
@@ -187,19 +187,19 @@ async def user_login(credentials: UserLoginRequest, response: Response):
 
 class RecyclingHistoryScheme(BaseModel):
     id: int
-    nm_material: str
-    nr_weight_kilograms: float
-    dh_gave: str
+    material: str
+    weight_kilograms: float
+    gave_at: str
 
 class GetUserInfosReturn(BaseModel):
     id: int
-    nm_user: str
-    nr_ra: str
-    ds_email: str
-    dh_created_at: str
-    ds_class: str
-    nm_course: str
-    nm_type: str
+    name: str
+    ra: str
+    email: str
+    created_at: str
+    user_class: str
+    course: str
+    user_type: str
     recycling: list[RecyclingHistoryScheme]
 
 # Rota de recuperação de informação
@@ -226,7 +226,7 @@ async def user_get(user_ra: int = Path(description="Número de RA do aluno.", ex
 
         query1 = """
         SELECT users.*, 
-        classes.ds_class,
+        classes.ds_class_code,
         courses.nm_course,
         user_types.nm_type
         FROM users 
@@ -265,8 +265,39 @@ async def user_get(user_ra: int = Path(description="Número de RA do aluno.", ex
 
             response2 = await cur.fetchall()
 
-            # Conversão dos objetos para uma lista de dicionarios
-            all_recycles = [dict(row) for row in response2]
-            # Junção da resposta
-            response1["recycling"] = all_recycles
-            return response1
+            #Normalização das chaves do dicionário
+            all_recycles = all_recycles = [{
+                "id": row["id"],
+                "material": row["nm_material"],
+                "weight_kilograms": row["nr_weight_kilograms"],
+                "gave_at": row["dh_gave"]
+            } for row in response2]
+
+            # Junção da resposta e normalização das chaves
+            response = {
+                "id": response1["id"],
+                "name": response1["nm_user"],
+                "ra": response1["nr_ra"],
+                "email": response1["ds_email"],
+                "created_at": response1["dh_created_at"],
+                "user_class": response1["ds_class_code"],
+                "course": response1["nm_course"],
+                "user_type": response1["nm_type"],
+                "recycling": all_recycles
+            }
+
+            return response
+
+
+class UserUpdateRequest(BaseModel):
+    ra: str = Field(..., title="O RA do Usuário.", description="Adicione o RA do usuáro que será editado.", max_length=6, min_length=6)
+    name: str | None = Field(title="Nome (Opcional)", description="Caso o usuário altere o nome.", max_length=150, min_length=6)
+    email: str | None = Field(title="Email (Opcional)", description="Caso o usuário altere o e-mail.")
+    user_class: int | None = Field(title="Código de turma (Opcional)", description="Caso o usuário altere a turma.", ge=1, le=10)
+    course: int | None = Field(title="Código de curso (Opcional)", description="Caso o usuário altere o curso.", ge=1, le=23)
+    password: str | None = Field(title="Nova senha (Opcional)", description="Caso o usuário altere a senha.", examples=["S3nh4*B04"], pattern=PATTERN_PASSWORD)
+
+
+@router.patch("/update")
+async def user_update(data_tu_update: UserUpdateRequest):
+    ...
