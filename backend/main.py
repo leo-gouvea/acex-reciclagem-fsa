@@ -55,7 +55,7 @@ def check_access(request: Request, key: str = Security(header_api_key)):
 
 
 # Instanciamento (Inicia a nossa API)
-app = FastAPI(title="API ACEX", description="API construída para o projeto ACEX 2026", version="0.2.0")
+app = FastAPI(title="API ACEX", description="API construída para o projeto ACEX 2026", version="0.3.2")
 # dependencies=[Depends(check_key)] -> Removido de App para evitar BLoqueio de 100% das rotas
 
 # Adicionado o CORS para que o front se comunique com o Back

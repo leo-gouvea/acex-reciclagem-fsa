@@ -204,7 +204,7 @@ class GetUserInfosReturn(BaseModel):
 
 # Rota de recuperação de informação
 @router.get("/get/{user_ra}", response_model=GetUserInfosReturn, response_description="Retorna todas as informações relacionadas a um usuário, removendo o campo de senha.")
-async def user_get(user_ra: int = Path(description="Número de RA do aluno.", examples=["123456"], title="RA do Aluno."), user: dict = Depends(check_access)):
+async def user_get(user_ra: str = Path(description="Número de RA do aluno.", examples=["123456"], title="RA do Aluno."), user: dict = Depends(check_access)):
     """Obtém informações relacionadas a um usuário usando um RA.
     * Usuários **NÃO** Operadores podem puxar apenas as próprias informações."""
 
@@ -213,7 +213,7 @@ async def user_get(user_ra: int = Path(description="Número de RA do aluno.", ex
     # Verifica se quem está acessando tem o cargo de Aluno
     if user["role"] == "Aluno":
         # Transforma ambos em texto (str) para garantir que a comparação não dê erro
-        if str(user["ra"]) != str(user_ra):
+        if user["ra"] != user_ra:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN, 
                 detail="Acesso Negado! Você só pode visualizar o seu próprio perfil."
@@ -266,7 +266,7 @@ async def user_get(user_ra: int = Path(description="Número de RA do aluno.", ex
             response2 = await cur.fetchall()
 
             #Normalização das chaves do dicionário
-            all_recycles = all_recycles = [{
+            all_recycles = [{
                 "id": row["id"],
                 "material": row["nm_material"],
                 "weight_kilograms": row["nr_weight_kilograms"],
@@ -293,11 +293,111 @@ class UserUpdateRequest(BaseModel):
     ra: str = Field(..., title="O RA do Usuário.", description="Adicione o RA do usuáro que será editado.", max_length=6, min_length=6)
     name: str | None = Field(title="Nome (Opcional)", description="Caso o usuário altere o nome.", max_length=150, min_length=6)
     email: str | None = Field(title="Email (Opcional)", description="Caso o usuário altere o e-mail.")
-    user_class: int | None = Field(title="Código de turma (Opcional)", description="Caso o usuário altere a turma.", ge=1, le=10)
     course: int | None = Field(title="Código de curso (Opcional)", description="Caso o usuário altere o curso.", ge=1, le=23)
-    password: str | None = Field(title="Nova senha (Opcional)", description="Caso o usuário altere a senha.", examples=["S3nh4*B04"], pattern=PATTERN_PASSWORD)
+    user_class: int | None = Field(title="Código de turma (Opcional)", description="Caso o usuário altere a turma.", ge=1, le=10)
+    user_type: int | None = Field(title="Código de tipo de usuário (Opcional)", description="Caso o usuário venha a ter seu cargo alterado.", ge=1, le=3)
+    # password: str | None = Field(title="Nova senha (Opcional)", description="Caso o usuário altere a senha.", examples=["S3nh4*B04"], pattern=PATTERN_PASSWORD)
 
+class UserUpdateReturn(BaseModel):
+    id: int
+    ra: str
+    name: str
+    email: str
+    course: str
+    user_class: str
+    user_type: str
 
-@router.patch("/update")
-async def user_update(data_tu_update: UserUpdateRequest):
-    ...
+@router.patch("/update", response_model=UserUpdateReturn, response_description="Retorna os dados atualizados do usuário.")
+async def user_update(data: UserUpdateRequest, user: dict = Depends(check_access)):
+    """
+    Atualiza o perfil de um usuário, **exceto o RA**.
+    * Alunos **só** podem atualizar seus próprios perfis. 
+    """
+    # Verifica permissão do Aluno
+    if user["role"] == "Aluno":
+        if data.ra != user["ra"]:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Acesso negado, você não pode alterar outros perfis."
+            )
+
+    # Listas para guardar os pedaços do SQL e os valores
+    update_fields = []
+    data_list = []
+
+    # Cria as adições e insere na lista de campos e de valores se existirem
+    if data.name:
+        update_fields.append("nm_user = ?")
+        data_list.append(data.name)
+
+    if data.email:
+        update_fields.append("ds_email = ?")
+        data_list.append(data.email)
+
+    if data.course:
+        update_fields.append("fk_cd_course = ?")
+        data_list.append(data.course)
+
+    if data.user_class:
+        update_fields.append("fk_cd_class = ?")
+        data_list.append(data.user_class)
+
+    if data.user_type:
+        update_fields.append("fk_cd_user_type = ?")
+        data_list.append(data.user_type)
+
+    # Se a lista de campos estiver vazia, significa que nada foi enviado para atualizar
+    if not update_fields:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Nenhum dado foi enviado para atualização."
+        )
+
+    # Junta todos os campos com uma vírgula e espaço de forma segura
+    query = f"UPDATE users SET {', '.join(update_fields)} WHERE nr_ra = ?"
+    data_list.append(data.ra)
+    
+    # Transforma a lista em uma tupla, que é o formato exigido pelo aiosqlite
+    data_tuple = tuple(data_list)
+
+    # Conecta no banco de dados e executa
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        
+        # Executa a atualização
+        await db.execute(query, data_tuple)
+        await db.commit()
+
+        # Busca os dados atualizados
+        query_updated = """
+        SELECT users.*, courses.nm_course, classes.ds_class_code, user_types.nm_type
+        FROM users
+        INNER JOIN courses ON courses.id = users.fk_cd_course
+        INNER JOIN classes ON classes.id = users.fk_cd_class
+        INNER JOIN user_types ON user_types.id = users.fk_cd_user_type
+        WHERE users.nr_ra = ?
+        """
+        
+        # Executa a busca
+        async with db.execute(query_updated, (data.ra,)) as cur:
+            response = await cur.fetchone()
+
+        # Se não encontrar o usuário no banco (RA inválido)
+        if not response:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Usuário não encontrado."
+            )
+
+        # Formata a resposta
+        formated_response = {
+            "id": response["id"],
+            "ra": response["nr_ra"],
+            "name": response["nm_user"],
+            "email": response["ds_email"],
+            "course": response["nm_course"],
+            "user_class": response["ds_class_code"],
+            "user_type": response["nm_type"]
+        }
+
+        return formated_response
