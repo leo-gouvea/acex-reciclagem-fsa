@@ -292,7 +292,7 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
 class UserUpdateRequest(BaseModel):
     ra: str = Field(..., title="O RA do Usuário.", description="Adicione o RA do usuáro que será editado.", max_length=6, min_length=6)
     name: str | None = Field(title="Nome (Opcional)", description="Caso o usuário altere o nome.", max_length=150, min_length=6)
-    email: str | None = Field(title="Email (Opcional)", description="Caso o usuário altere o e-mail.")
+    email: EmailStr | None = Field(title="Email (Opcional)", description="Caso o usuário altere o e-mail.")
     course: int | None = Field(title="Código de curso (Opcional)", description="Caso o usuário altere o curso.", ge=1, le=23)
     user_class: int | None = Field(title="Código de turma (Opcional)", description="Caso o usuário altere a turma.", ge=1, le=10)
     user_type: int | None = Field(title="Código de tipo de usuário (Opcional)", description="Caso o usuário venha a ter seu cargo alterado.", ge=1, le=3)
