@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Teste de Integração EcoHora</title>
+</head>
+
+<body>
+
+    <h1>Teste de Integração API</h1>
+
+    <button id="btn-courses">
+        Testar cursos
+    </button>
+
+    <button id="btn-classes">
+        Testar turmas
+    </button>
+
+    <button id="btn-login">
+        Testar login
+    </button>
+
+    <button id="btn-user">
+        Testar usuário
+    </button>
+
+    <pre id="result"></pre>
+
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
+
+    <script>
+        const result = document.getElementById("result");
+
+        function showResult(test, sucesso, data) {
+            const status = sucesso ? "✅ PASSOU" : "❌ FALHOU";
+
+            result.textContent = `
+# ${status}
+
+Teste: ${test}
+
+Resultado:
+${typeof data === "string"
+                    ? data
+                    : JSON.stringify(data, null, 2)}
+            `.trim();
+        }
+
+        document
+            .getElementById("btn-courses")
+            .addEventListener("click", async () => {
+                try {
+                    const response = await getCourses();
+                    showResult("GET /fsa/get/courses", true, response);
+                } catch (error) {
+                    showResult("GET /fsa/get/courses", false, error.message);
+                }
+            });
+
+        document
+            .getElementById("btn-classes")
+            .addEventListener("click", async () => {
+                try {
+                    const response = await getClasses();
+                    showResult("GET /fsa/get/clases", true, response);
+                } catch (error) {
+                    showResult("GET /fsa/get/clases", false, error.message);
+                }
+            });
+
+        document
+            .getElementById("btn-login")
+            .addEventListener("click", async () => {
+                try {
+                    const response = await login(
+                        "test9@fsa.com.br",
+                        "Test9!"
+                    );
+
+                    showResult("POST /user/login", true, response);
+                } catch (error) {
+                    showResult("POST /user/login", false, error.message);
+                }
+            });
+
+        document
+            .getElementById("btn-user")
+            .addEventListener("click", async () => {
+                try {
+                    const response =
+                        await getAuthenticatedUser("999999");
+
+                    showResult("GET /user/get/999999", true, response);
+                } catch (error) {
+                    showResult("GET /user/get/999999", false, error.message);
+                }
+            });
+    </script>
+
+</body>
+
+</html>
