@@ -169,8 +169,8 @@ async def user_login(credentials: UserLoginRequest, response: Response):
                     key="access_token", 
                     value=token_jwt,
                     httponly=True,
-                    secure=False, 
-                    samesite="lax"
+                    secure=True, 
+                    samesite="none"
                 )
 
                 return {
