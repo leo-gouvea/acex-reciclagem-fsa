@@ -9,3 +9,19 @@ async function login(email, password) {
 async function getAuthenticatedUser(userRa) {
     return getUser(userRa);
 }
+
+async function updateProfile(userData) {
+    return updateUser(userData);
+}
+
+async function loadRegistrationOptions() {
+    const [courses, classes] = await Promise.all([
+        getCourses(),
+        getClasses()
+    ]);
+
+    return {
+        courses,
+        classes
+    };
+}
