@@ -1,0 +1,178 @@
+body{
+    background: #1f1f1f;
+    background-image: url('imagem/lixo.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* layout geral */
+.raid-layout{
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 80px;
+
+    margin-top: 50px;
+}
+
+
+/* grade 2x3 */
+#time-raid{
+    display: grid;
+
+    grid-template-columns:
+    repeat(3, 180px);
+
+    gap: 25px;
+}
+
+
+/* personagens */
+.personagem-img{
+    width: 180px;
+    height: 180px;
+
+    object-fit: cover;
+
+    border-radius: 15px;
+
+    transition: 0.2s;
+
+    cursor: pointer;
+}
+
+.personagem-img:hover{
+    transform: scale(1.05);
+}
+
+
+/* imagem grande direita */
+.imagem-lateral{
+    width: 480px;
+
+    height: 500px;
+
+    object-fit: cover;
+
+    border-radius: 20px;
+}
+
+#boss-area{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.boss-ui{
+    width: 100%;
+    margin-top: 15px;
+}
+
+.barra-hp{
+    width: 100%;
+    height: 25px;
+
+    background: #3a3a3a;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+#boss-hp-fill{
+    width: 100%;
+    height: 100%;
+
+    background: red;
+
+    transition: 0.2s;
+}
+
+#boss-vida{
+    text-align: center;
+    font-size: 22px;
+    margin-top: 10px;
+}
+
+.personagem-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hp-ui{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.barra-hp{
+    width: 100%;
+    height: 18px;
+
+    background: #333;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.hp-fill{
+    width: 100%;
+    height: 100%;
+
+    background: limegreen;
+
+    transition: 0.2s;
+}
+
+.hp-ui p{
+    text-align: center;
+    margin-top: 5px;
+}
+
+
+#fim-combate{
+    position: fixed;
+    inset: 0;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0,0,0,0.75);
+
+    z-index: 9999;
+}
+
+#texto-final{
+    font-size: 100px;
+    font-weight: bold;
+
+    text-shadow:
+    0 0 20px black;
+}
+
+
+/* DERROTA */
+.derrota{
+
+    color: white;
+
+    filter:
+    grayscale(100%);
+}
+
+
+/* VITÓRIA */
+.vitoria{
+
+    color: #2cff2c;
+
+    text-shadow:
+    0 0 15px gold,
+    0 0 30px yellow;
+}

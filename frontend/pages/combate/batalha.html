@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoHora</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu"/>
+    <link rel="stylesheet" href="../../estilos/style.css">
+    <link rel="icon" href="../../assets/Ca105ad9cfc8580c765101d17bbb2323.webp">
+
+    <style>
+        body{
+            margin: 0;
+            background: #1f1f1f;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #292929;
+        }
+
+        .brand{
+            display: flex;
+            align-items: center;
+            /* gap: 10px; */
+        }
+
+        .brand p{
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        /* imagem quadrada */
+        .brand img{
+            width: 30px;
+            object-fit: cover;
+        }
+
+        .back-menu-button{
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .title{
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .classes-container{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 30px;
+        }
+
+        .class-card{
+            width: 250px;
+            background: #333;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .class-card h2{
+            margin-top: 0;
+        }
+
+        .class-card button{
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #classe-escolhida{
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 40px;
+        }
+
+        .classe-img{
+            width: 100%;
+            height: 180px;
+
+            object-fit: cover;
+
+            border-radius: 10px;
+
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>EcoHora</h1>
+            <img src="../../assets/Ca105ad9cfc8580c765101d17bbb2323.jpg" alt="batata" class="leaf-img">
+        </div>
+        <span id="burguer" class="material-symbols-outlined" onclick="clickMenu()">
+         menu
+        </span>
+        <menu id="itens">
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="#">Grupo</a></li>
+                <li><a href="#">Lixão</a></li>
+                <li><a href="#">Loja</a></li>
+                <li><a href="batalha.html">Batalha</a></li>
+                <li><a href="../pontos-de-coleta.html">Postos</a></li>
+            </ul>
+        </menu>
+    </header>
+
+    <h1 class="title">Escolha sua Classe</h1>
+
+    <div class="classes-container" id="classes-container">
+        <!-- Cards serão criados aqui -->
+    </div>
+
+    <div id="classe-escolhida">
+        Nenhuma classe escolhida
+    </div>
+
+    <script>
+
+        // ======================
+        // VOLTAR AO MENU
+        // ======================
+        function mudouTamanho() {
+            if (window.innerWidth >= 768) {
+                itens.style.display = 'flex'
+            } // Removido o Else pois conflitava na função abaixo
+        }
+
+        // Aproveitando a construção, usei esse método para estar constantemente usando a função.
+        setInterval(() => {
+            mudouTamanho();
+        }, 10) // O valor é medido assim: 1000 = 1s
+
+        function clickMenu() {
+            if (itens.style.display == 'flex') {
+                itens.style.display = 'none'
+            } else {
+                itens.style.display = 'flex'
+            }
+        }
+
+        // ======================
+        // SISTEMA DE CLASSES
+        // ======================
+        class ClassePersonagem {
+            constructor(nome, vida, defesa, velocidade, dano, especial, imagem) {
+                this.nome = nome;
+                this.vida = vida;
+                this.defesa = defesa;
+                this.velocidade = velocidade;
+                this.dano = dano;
+                this.especial = especial;
+                this.imagem = imagem;
+
+                // sanguesuga
+                this.sanguesugas = 0;
+            }
+            atacar(alvo){
+
+                let danoFinal =
+                    this.dano - alvo.defesa;
+
+                if(danoFinal < 1){
+                    danoFinal = 1;
+                }
+
+                alvo.vida -= danoFinal;
+
+                console.log(
+                    `${this.nome} causou
+                    ${danoFinal} dano`
+                );
+
+                // habilidade do necromante
+                if(this.nome === "Necromante"){
+
+                    alvo.sanguesugas++;
+
+                    console.log(
+                        `+1 sanguessuga!
+                        Total:
+                        ${alvo.sanguesugas}`
+                    );
+                }
+
+                if(alvo.vida <= 0){
+                    alvo.vida = 0;
+                }
+            }
+
+            aplicarStatus(){
+
+                // dano das sanguessugas
+                if(this.sanguesugas > 0){
+
+                    this.vida -=
+                    this.sanguesugas;
+
+                    console.log(
+                        `${this.nome}
+                        sofreu
+                        ${this.sanguesugas}
+                        dano das
+                        sanguessugas`
+                    );
+
+                    if(this.vida < 0){
+                        this.vida = 0;
+                    }
+                }
+            }
+        }
+        
+
+        // ======================
+        // CLASSES DO JOGO
+        // ======================
+        const classes = [
+            // DEFENSORES
+            new ClassePersonagem(
+                "Guerreiro",
+                8,
+                7,
+                5,
+                5,
+                "Berserk", // ganha dano com base na vida perdida
+                "imagem/guerreiro.jpg"
+            ),
+
+            new ClassePersonagem(
+                "Escudeiro",
+                10,
+                9,
+                2,
+                3,
+                "Muralha", // aumenta a defesa dos aliados
+                "imagem/escudeiro.png"
+            ),
+
+            new ClassePersonagem(
+                "Necromante",
+                6,
+                3,
+                5,
+                1,
+                "Dos Mortos",  // coloca sanguesugas no alvo, causando dano e se curando
+                "imagem/necromante.png"
+            ),
+
+            // SUPORTES
+            new ClassePersonagem(
+                "Clérigo",
+                7,
+                5,
+                8,
+                4,
+                "Purificação",  // Cura uma grande quantidade de vida de um aliado aleatório
+                "imagem/clerigo.png"
+            ),
+
+            new ClassePersonagem(
+                "Druída",
+                7,
+                4,
+                10,
+                2,
+                "Florescer",  // aumenta a velocidade de aliados aleatórios
+                "imagem/druida.jpg"
+            ),
+
+            new ClassePersonagem(
+                "Bardo",
+                6,
+                4,
+                12,
+                2,
+                "Animar a Festa",  //  Aumenta o dano de aliados aleatórios
+                "imagem/bardo.png"
+            ),
+
+            // ATACANTES
+            new ClassePersonagem(
+                "Arqueiro",
+                6,
+                5,
+                14,
+                6,
+                "Sniper",  //  Dispara uma flecha pesada que causa x5 o dano normal, mas com 75% de chance de erro
+                "imagem/arqueiro.png"
+            ),
+
+            new ClassePersonagem(
+                "Ladino",
+                5,
+                4,
+                20,
+                8,
+                "Apunhalada",  //  20% de chance de deixar o alvo sangrando (perde 2% da vida por segundo, dura 5s)
+                "imagem/ladino.jpg"
+            ),
+
+            new ClassePersonagem(
+                "Mago",
+                5,
+                5,
+                10,
+                10,
+                "Magia Proíbida",  // Deixa o alvo queimando (toma 5 de dano por segundo, dura 5s)
+                "imagem/mago.png"
+            )
+        ];
+
+        localStorage.setItem(
+            "todasClasses",
+            JSON.stringify(classes)
+        );
+
+        // ======================
+        // CLASSE ESCOLHIDA
+        // ======================
+        let classeSelecionada = null;
+
+        // ======================
+        // CRIAR CARDS
+        // ======================
+        const container = document.getElementById("classes-container");
+
+        classes.forEach(classe => {
+
+            const card = document.createElement("div");
+
+            card.classList.add("class-card");
+
+            card.innerHTML = `
+                <h2>${classe.nome}</h2>
+
+                <p>❤️ Vida: ${classe.vida}</p>
+
+                <p>🛡 Defesa: ${classe.defesa}</p>
+
+                <p>⚡ Velocidade: ${classe.velocidade}</p>
+
+                <p>✨ Especial: ${classe.especial}</p>
+
+                <img
+                    src="${classe.imagem}"
+                    alt="${classe.nome}"
+                    class="classe-img"
+                >
+
+                <button onclick="selecionarClasse('${classe.nome}')">
+                    Escolher
+                </button>
+            `;
+
+            container.appendChild(card);
+        });
+
+        // ======================
+        // ESCOLHER CLASSE
+        // ======================
+        function selecionarClasse(nomeClasse){
+
+            const classeSelecionada =
+            classes.find(
+                classe => classe.nome === nomeClasse
+            );
+
+            // salva a ficha inteira
+            localStorage.setItem(
+                "classeJogador",
+                JSON.stringify(classeSelecionada)
+            );
+
+            // vai para raid.html
+            window.location.href =
+            "raid.html";
+        }
+
+    </script>
+
+</body>
+</html>

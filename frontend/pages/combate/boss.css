@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+img#boss {
+    position: absolute;
+
+    right: 0;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 300px;
+}

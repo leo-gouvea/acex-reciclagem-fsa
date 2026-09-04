@@ -25,3 +25,11 @@ async function loadRegistrationOptions() {
         classes
     };
 }
+
+async function getSession() {
+    return checkSession();
+}
+
+async function logout() {
+    return logoutUser();
+}
