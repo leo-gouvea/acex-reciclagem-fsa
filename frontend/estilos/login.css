@@ -1,0 +1,658 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+
+    --bg: #071f1c;
+
+    --card: #103832;
+
+    --green: #29c777;
+
+    --green-light: #7be3a8;
+
+    --text: #f4fff9;
+
+    --muted: #a9c4bb;
+
+    --line: rgba(255, 255, 255, 0.1);
+
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: var(--bg);
+
+    color: var(--text);
+
+}
+
+
+/* =========================================================
+   CONTAINER PRINCIPAL
+========================================================= */
+
+.login-container {
+
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+}
+
+
+/* =========================================================
+   LADO ESQUERDO
+========================================================= */
+
+.login-info {
+
+    position: relative;
+
+    padding: 50px 10%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(123, 227, 168, 0.15),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #123f34,
+            #071f1c
+        );
+
+    overflow: hidden;
+
+}
+
+
+.login-info::after {
+
+    content: "♻";
+
+    position: absolute;
+
+    right: -40px;
+
+    bottom: -100px;
+
+    font-size: 350px;
+
+    opacity: 0.04;
+
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+.logo-icon {
+
+    width: 45px;
+
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--green);
+
+    color: #062016;
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+}
+
+
+.logo h1 {
+
+    font-size: 28px;
+
+}
+
+
+.logo span {
+
+    color: var(--green-light);
+
+}
+
+
+/* =========================================================
+   CONTEÚDO ESQUERDO
+========================================================= */
+
+.info-content {
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    max-width: 600px;
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+.tag {
+
+    width: fit-content;
+
+    padding: 8px 13px;
+
+    margin-bottom: 20px;
+
+    border-radius: 30px;
+
+    background: rgba(41, 199, 119, 0.1);
+
+    border: 1px solid rgba(41, 199, 119, 0.2);
+
+    color: var(--green-light);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+}
+
+
+.info-content h2 {
+
+    font-size: clamp(40px, 5vw, 65px);
+
+    line-height: 1.05;
+
+    margin-bottom: 20px;
+
+}
+
+
+.info-content p {
+
+    max-width: 550px;
+
+    color: var(--muted);
+
+    line-height: 1.6;
+
+    font-size: 17px;
+
+}
+
+
+/* =========================================================
+   BENEFÍCIOS
+========================================================= */
+
+.benefits {
+
+    margin-top: 40px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+}
+
+
+.benefit {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 15px 18px;
+
+    max-width: 380px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    border: 1px solid var(--line);
+
+    border-radius: 13px;
+
+}
+
+
+/* =========================================================
+   ÁREA DO LOGIN
+========================================================= */
+
+.login-area {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
+
+    background: #0a2923;
+
+}
+
+
+.form-box {
+
+    width: 100%;
+
+    max-width: 480px;
+
+    background: var(--card);
+
+    border: 1px solid var(--line);
+
+    border-radius: 22px;
+
+    padding: 45px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.25);
+
+}
+
+
+/* =========================================================
+   FORMULÁRIOS
+========================================================= */
+
+.form-container {
+
+    display: none;
+
+}
+
+
+.form-container.active {
+
+    display: block;
+
+    animation: aparecer 0.35s ease;
+
+}
+
+
+@keyframes aparecer {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateX(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateX(0);
+
+    }
+
+}
+
+
+.form-container h2 {
+
+    font-size: 30px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.form-description {
+
+    color: var(--muted);
+
+    margin-bottom: 30px;
+
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.input-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.input-group label {
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    color: var(--green-light);
+
+}
+
+
+.input-group input {
+
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--line);
+
+    outline: none;
+
+    background: #09251f;
+
+    color: white;
+
+    font-size: 15px;
+
+    transition: 0.2s;
+
+}
+
+.input-group select {
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--line);
+
+    outline: none;
+
+    background: #09251f;
+
+    color: white;
+
+    font-size: 15px;
+
+    transition: 0.2s;
+}
+
+
+.input-group input::placeholder {
+
+    color: #6d9185;
+
+}
+
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(41, 199, 119, 0.1);
+}
+
+.input-group select option {
+    background: #09251f;
+    color: white;
+}
+
+
+/* =========================================================
+   BOTÃO PRINCIPAL
+========================================================= */
+
+.main-button {
+
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: var(--green);
+
+    color: #062016;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.main-button:hover {
+
+    background: var(--green-light);
+
+    transform: translateY(-2px);
+
+}
+
+.main-button:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+}
+
+
+/* =========================================================
+   TROCAR LOGIN / CADASTRO
+========================================================= */
+
+.switch-text {
+
+    margin-top: 25px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+}
+
+
+.switch-text button {
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--green-light);
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================================
+   MENSAGEM
+========================================================= */
+
+.message {
+
+    position: fixed;
+
+    right: 25px;
+
+    bottom: 25px;
+
+    padding: 15px 20px;
+
+    background: #17483a;
+
+    border: 1px solid var(--green);
+
+    border-radius: 12px;
+
+    transform: translateY(120px);
+
+    opacity: 0;
+
+    transition: 0.3s;
+
+}
+
+
+.message.show {
+
+    transform: translateY(0);
+
+    opacity: 1;
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .login-container {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .login-info {
+
+        min-height: 35vh;
+
+        padding: 35px;
+
+    }
+
+
+    .info-content {
+
+        padding-top: 50px;
+
+    }
+
+
+    .info-content h2 {
+
+        font-size: 40px;
+
+    }
+
+
+    .benefits {
+
+        display: none;
+
+    }
+
+
+    .login-area {
+
+        min-height: 65vh;
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .login-info {
+
+        padding: 25px;
+
+    }
+
+
+    .login-area {
+
+        padding: 15px;
+
+    }
+
+
+    .form-box {
+
+        padding: 30px 22px;
+
+    }
+
+
+    .info-content h2 {
+
+        font-size: 34px;
+
+    }
+
+}

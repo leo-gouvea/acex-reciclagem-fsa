@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoHora — Plataforma Gamificada</title>
+<link rel="stylesheet" href="estilos/slide.css">
+<link rel="icon" href="assets/Ca105ad9cfc8580c765101d17bbb2323.webp">
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <h1>Eco<span>Hora</span></h1>
+    <img src="assets/Ca105ad9cfc8580c765101d17bbb2323.jpg" class="leaf-img" alt="EcoHora">
+  </div>
+
+  <nav>
+    <ul>
+      <li><button class="active" data-page="0">🏠 <span class="nav-text">Home</span></button></li>
+      <li><button data-page="1">👥 <span class="nav-text">Grupo</span></button></li>
+      <li><button data-page="2">♻️ <span class="nav-text">Lixão</span></button></li>
+      <li><button data-page="3">🛒 <span class="nav-text">Loja</span></button></li>
+      <li><button data-page="4">⚔️ <span class="nav-text">Batalha</span></button></li>
+      <li><button data-page="5">📍 <span class="nav-text">Postos</span></button></li>
+    </ul>
+  </nav>
+
+  <div class="header-points">⭐ <span id="points">0</span> pts</div>
+
+  <button id="logoutButton" type="button">Sair</button>
+</header>
+
+
+<main class="viewport">
+<div class="pages" id="pages">
+
+<section class="page"><div class="container">
+  <div class="hero">
+    <div class="hero-main">
+      <span class="eyebrow">ECOHORA • FUNDAÇÃO SANTO ANDRÉ</span>
+      <h2>Recicle e Conquiste suas horas.</h2>
+
+      <p>👥 GRUPO - A turma que você está, mostra quem fez mais pontos reciclando e a quantidade de alunos.</p>
+      <p>♻️ LIXÃO - Aba que registra o lixo que será reciclado.</p>
+      <p>🛒 LOJA - Lugar onde você pode gastar seus pontos decorando seu perfil ou resgatando horas complementares.</p>
+      <p>⚔️ BATALHA - Dispute contra outras turmas para ver quem consegue reciclar mais e ganhe recompensas.</p>
+      <p>📍 POSTOS - Mapa com os pontos de entrega do lixo reciclável.</p>
+
+      <button class="btn" onclick="goToPage(2)">♻️ Registrar reciclagem</button>
+    </div>
+
+    <div class="card level-card">
+      <span class="eyebrow">SEU PROGRESSO</span>
+      <h2>Nível 1</h2>
+      <p>Continue reciclando para desbloquear novas recompensas.</p>
+
+      <div class="level-row">
+        <span>XP</span>
+        <b>72 / 100</b>
+      </div>
+
+      <div class="progress">
+        <div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid stats">
+    <div class="card stat">
+      <div class="icon">⭐</div>
+      <small>PONTOS</small>
+      <strong id="pointsHome">0</strong>
+    </div>
+
+    <div class="card stat">
+      <div class="icon">🎓</div>
+      <small>HORAS COMPLEMENTARES</small>
+      <strong>0h</strong>
+    </div>
+
+    <div class="card stat">
+      <div class="icon">♻️</div>
+      <small>ENTREGAS</small>
+      <strong id="deliveries">0</strong>
+    </div>
+
+    <div class="card stat">
+      <div class="icon">🔥</div>
+      <small>SEQUÊNCIA</small>
+      <strong>1 dia</strong>
+    </div>
+  </div>
+
+  <h2 style="margin-top:28px">🎯 Missões</h2>
+
+  <div class="grid missions">
+    <div class="card mission" onclick="goToPage(2)">
+      <h3>♻️ Primeira entrega</h3>
+      <p>Registre seu primeiro material reciclável.</p>
+      <div class="points">+50 XP</div>
+    </div>
+
+    <div class="card mission" onclick="goToPage(5)">
+      <h3>📍 Explorador verde</h3>
+      <p>Encontre um ponto de coleta na faculdade.</p>
+      <div class="points">+30 XP</div>
+    </div>
+
+    <div class="card mission" onclick="goToPage(4)">
+      <h3>⚔️ Entre na batalha</h3>
+      <p>Veja a disputa entre os grupos.</p>
+      <div class="points">+20 XP</div>
+    </div>
+  </div>
+</div></section>
+
+
+<section class="page"><div class="container">
+  <h2 class="title">Sua Turma 👥</h2>
+  <p class="subtitle">A pontuação coletiva incentiva a participação de todos.</p>
+
+  <div class="group-head">
+    <div>
+      <span class="eyebrow">GRUPO ATUAL</span>
+      <div class="group-name">Guardiões da Terra</div>
+      <p class="subtitle" style="margin:6px 0 0">12 integrantes</p>
+    </div>
+
+    <div class="group-score">
+      <strong>0</strong> pontos
+    </div>
+  </div>
+
+  <h2 style="margin-bottom:15px">🏆 Ranking</h2>
+
+  <div class="ranking">
+    <div class="rank">
+      <div class="pos">1</div>
+      <div class="name">Você</div>
+      <div class="score" id="rankPoints">0 pts</div>
+    </div>
+
+    <div class="rank">
+      <div class="pos">2</div>
+      <div class="name">Ana</div>
+      <div class="score">0 pts</div>
+    </div>
+
+    <div class="rank">
+      <div class="pos">3</div>
+      <div class="name">Pedro</div>
+      <div class="score">0 pts</div>
+    </div>
+
+    <div class="rank">
+      <div class="pos">4</div>
+      <div class="name">Lucas</div>
+      <div class="score">0 pts</div>
+    </div>
+  </div>
+</div></section>
+
+
+<section class="page"><div class="container">
+  <h2 class="title">Lixão ♻️</h2>
+  <p class="subtitle">Registre a entrega do material reciclável para receber pontos.</p>
+
+  <div class="warning">
+    Demonstração: os dados e pontuações abaixo são fictícios.
+  </div>
+
+  <div class="grid recycle-grid">
+
+    <div class="card recycle" onclick="recycle('Plástico',50)">
+      <div class="big">🧴</div>
+      <h3>Plástico</h3>
+      <p>Garrafas, embalagens e outros recicláveis.</p>
+      <div class="points">+50 pontos</div>
+    </div>
+
+    <div class="card recycle" onclick="recycle('Papel',40)">
+      <div class="big">📄</div>
+      <h3>Papel</h3>
+      <p>Folhas, caixas e materiais de papel.</p>
+      <div class="points">+40 pontos</div>
+    </div>
+
+    <div class="card recycle" onclick="recycle('Vidro',70)">
+      <div class="big">🍾</div>
+      <h3>Vidro</h3>
+      <p>Garrafas e recipientes de vidro.</p>
+      <div class="points">+70 pontos</div>
+    </div>
+
+    <div class="card recycle" onclick="recycle('Metal',80)">
+      <div class="big">🥫</div>
+      <h3>Metal</h3>
+      <p>Latas e outros metais recicláveis.</p>
+      <div class="points">+80 pontos</div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>Como funciona?</h3>
+    <p>
+      Escolha o tipo de material entregue. Em uma versão real,
+      esta ação deverá ser validada por um posto de coleta antes
+      da conversão em pontos e horas complementares.
+    </p>
+  </div>
+</div></section>
+
+
+<section class="page"><div class="container">
+  <h2 class="title">Loja 🛒</h2>
+  <p class="subtitle">Use os pontos conquistados para desbloquear recompensas.</p>
+
+  <div class="grid shop-grid">
+
+    <div class="card shop">
+      <div class="shop-image">☕</div>
+      <h3>Horas Complementares</h3>
+      <div class="price">1.000 pts</div>
+      <button class="btn" onclick="buy('Copo EcoHora')">Resgatar</button>
+    </div>
+
+    <div class="card shop">
+      <div class="shop-image">👕</div>
+      <h3>Roupas</h3>
+      <div class="price">500 pts</div>
+      <button class="btn" onclick="buy('Camiseta')">Resgatar</button>
+    </div>
+
+    <div class="card shop">
+      <div class="shop-image">🖼️</div>
+      <h3>Moldura</h3>
+      <div class="price">750 pts</div>
+      <button class="btn" onclick="buy('Voucher')">Resgatar</button>
+    </div>
+
+    <div class="card shop">
+      <div class="shop-image">🏆</div>
+      <h3>Badge especial</h3>
+      <div class="price">10.000 pts</div>
+      <button class="btn" onclick="buy('Badge especial')">Resgatar</button>
+    </div>
+
+  </div>
+</div></section>
+
+
+<section class="page"><div class="container">
+  <h2 class="title">Batalha ⚔️</h2>
+  <p class="subtitle">Desafios entre turmas para conquistar recompensas.</p>
+
+  <div class="battle">
+
+    <div class="team">
+      <div class="big">🌱</div>
+      <h2>Guardiões da Terra</h2>
+      <div class="team-score" id="teamScore">0</div>
+      <small>pontos</small>
+
+      <div class="battlebar">
+        <div></div>
+      </div>
+    </div>
+
+    <div class="vs">VS</div>
+
+    <div class="team">
+      <div class="big">🌊</div>
+      <h2>Eco Warriors</h2>
+      <div class="team-score">0</div>
+      <small>pontos</small>
+
+      <div class="battlebar">
+        <div style="width:52%"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">DESAFIO DA SEMANA</span>
+    <h2>Quem recicla mais?</h2>
+    <p>Registre suas entregas e ajude a sua turma a conquistar a próxima vitória.</p>
+
+    <button
+      class="btn"
+      style="margin-top:16px"
+      onclick="showToast('🔥 Você entrou no desafio!')">
+      Participar
+    </button>
+  </div>
+</div></section>
+
+
+<section class="page"><div class="container">
+  <h2 class="title">Postos 📍</h2>
+  <p class="subtitle">Locais para coleta de recicláveis.</p>
+
+  <div class="warning">
+    ESSES DADOS SÃO FICCIONAIS, AINDA NÃO REFLETEM A REALIDADE FIEL DO AMBIENTE.
+  </div>
+
+  <div class="stations">
+
+    <div class="map">
+      <img
+        src="assets/mapa-fsa_atualizado-931x1024.jpg"
+        alt="Mapa da Fundação Santo André"
+        onerror="this.style.display='none'">
+
+      <div class="map-placeholder">
+        🗺️ Mapa dos pontos de coleta
+      </div>
+    </div>
+
+    <div class="station-list">
+
+      <div class="station">
+        <h3>📍 Fafil</h3>
+        <p>Ao lado esquerdo da saída, sentido FAECO.</p>
+        <div class="distance">Ponto de coleta</div>
+      </div>
+
+      <div class="station">
+        <h3>📍 Fafil — 1ºA</h3>
+        <p>Ao lado dos banheiros no 1ºA, lado Leste.</p>
+        <div class="distance">Ponto de coleta</div>
+      </div>
+
+      <div class="station">
+        <h3>📍 Fafil — Térreo</h3>
+        <p>Perto da entrada sentido Faengs.</p>
+        <div class="distance">Ponto de coleta</div>
+      </div>
+
+      <div class="station">
+        <h3>📍 Prédio Central</h3>
+        <p>Ao lado de fora da cantina, em frente à praça.</p>
+        <div class="distance">Ponto de coleta</div>
+      </div>
+
+      <div class="station">
+        <h3>📍 Prédio Central</h3>
+        <p>Perto da secretaria, ao lado da mesa de ping pong.</p>
+        <div class="distance">Ponto de coleta</div>
+      </div>
+
+    </div>
+  </div>
+</div></section>
+
+</div>
+</main>
+
+
+<div class="toast" id="toast"></div>
+
+
+<!-- API E AUTENTICAÇÃO -->
+<script src="api.js"></script>
+<script src="auth.js"></script>
+
+
+<!-- FUNCIONALIDADES DA PÁGINA -->
+<script>
+const pages = document.getElementById('pages');
+const buttons = [...document.querySelectorAll('nav button')];
+
+let current = 0;
+let points = 0;
+let deliveries = 0;
+let startX = 0;
+
+
+function goToPage(n) {
+  n = Math.max(0, Math.min(5, n));
+  current = n;
+
+  pages.style.transform = `translateX(-${n * 100}vw)`;
+
+  buttons.forEach((b, i) => {
+    b.classList.toggle('active', i === n);
+  });
+}
+
+
+buttons.forEach(b => {
+  b.addEventListener('click', () => goToPage(+b.dataset.page));
+});
+
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') {
+    goToPage(current + 1);
+  }
+
+  if (e.key === 'ArrowLeft') {
+    goToPage(current - 1);
+  }
+});
+
+
+pages.addEventListener('pointerdown', e => {
+  startX = e.clientX;
+});
+
+
+pages.addEventListener('pointerup', e => {
+  const d = startX - e.clientX;
+
+  if (Math.abs(d) > 55) {
+    goToPage(current + (d > 0 ? 1 : -1));
+  }
+});
+
+
+function update() {
+  document.getElementById('points').textContent =
+    points.toLocaleString('pt-BR');
+
+  document.getElementById('pointsHome').textContent =
+    points.toLocaleString('pt-BR');
+
+  document.getElementById('deliveries').textContent =
+    deliveries;
+
+  document.getElementById('rankPoints').textContent =
+    points.toLocaleString('pt-BR') + ' pts';
+
+  document.getElementById('teamScore').textContent =
+    points.toLocaleString('pt-BR');
+}
+
+
+function recycle(material, value) {
+  points += value;
+  deliveries++;
+
+  update();
+
+  showToast(`♻️ ${material} registrado! +${value} pontos`);
+}
+
+
+function buy(item) {
+  showToast(`🛒 ${item}: resgate demonstrativo.`);
+}
+
+
+let timer;
+
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+
+  t.textContent = msg;
+  t.classList.add('show');
+
+  clearTimeout(timer);
+
+  timer = setTimeout(() => {
+    t.classList.remove('show');
+  }, 2800);
+}
+
+
+update();
+</script>
+
+
+<!-- CONTROLE DE SESSÃO -->
+<script>
+
+async function protectPage() {
+  try {
+    await getSession();
+
+    console.log('Sessão válida.');
+  } catch (error) {
+    console.warn('Sessão inválida:', error.message);
+
+    window.location.replace('login.html');
+  }
+}
+
+
+const logoutButton = document.getElementById('logoutButton');
+
+
+logoutButton.addEventListener('click', async function () {
+  try {
+    logoutButton.disabled = true;
+    logoutButton.textContent = 'Saindo...';
+
+    await logout();
+
+    localStorage.removeItem('usuarioEmail');
+
+    window.location.replace('login.html');
+
+  } catch (error) {
+    console.error('Erro ao realizar logout:', error);
+
+    // Mesmo se a API estiver indisponível,
+    // não deixamos o usuário permanecer na tela protegida.
+    localStorage.removeItem('usuarioEmail');
+
+    window.location.replace('login.html');
+  }
+});
+
+
+protectPage();
+
+
+window.addEventListener('pageshow', async function (event) {
+  if (event.persisted) {
+    await protectPage();
+  }
+});
+
+</script>
+
+</body>
+</html>

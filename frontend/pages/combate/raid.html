@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mininu</title>
+    <link rel="stylesheet" href="perso.css">
+</head>
+<body>
+    <!--  Divisão dos personagens e do boss  -->
+<div class="raid-layout">
+
+    <div id="time-raid"></div>
+
+    <div id="boss-area">
+
+        <img
+            id="boss-img"
+            class="imagem-lateral"
+        >
+
+        <div class="boss-ui">
+
+            <div class="barra-hp">
+                <div id="boss-hp-fill"></div>
+            </div>
+
+            <p id="boss-vida">
+                200 / 200
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div id="fim-combate">
+
+        <h1 id="texto-final">
+            VITÓRIA
+        </h1>
+
+</div>
+
+<script>
+    // 1. Classe
+    class ClassePersonagem {
+
+        constructor(
+            nome,
+            vida,
+            defesa,
+            velocidade,
+            dano,
+            especial,
+            imagem
+        ){
+
+            this.id = crypto.randomUUID();
+
+            this.nome = nome;
+
+            this.vida = vida;
+            this.vidaMax = vida;
+
+            this.defesa = defesa;
+            this.velocidade = velocidade;
+            this.dano = dano;
+
+            this.especial = especial;
+            this.imagem = imagem;
+
+
+            this.sanguesugas = 0;
+
+            this.sangramento = 0;
+            this.tempoSangramento = 0;
+
+            this.queimadura = 0;
+            this.tempoQueimadura = 0;
+        }
+
+        atacar(alvo){
+
+            // calcula dano
+            let danoBase =
+            this.dano;
+
+            if(this.nome === "Guerreiro"){
+
+                const vidaPerdida =
+
+                this.vidaMax -
+                this.vida;
+
+                danoBase +=
+
+                Math.floor(
+                    vidaPerdida / 5
+                );
+            }
+
+            let danoFinal = danoBase - alvo.defesa;
+
+            if(danoFinal < 1){
+                danoFinal = 1;
+            }
+
+            // tira vida
+            alvo.vida -= danoFinal;
+
+            if(alvo === boss){
+                atualizarBossUI();
+            }
+            atualizarAliadosUI();
+
+            console.log(
+                `${this.nome}
+                causou
+                ${danoFinal}
+                de dano em
+                ${alvo.nome}`
+            );
+
+            // habilidade do necromante
+            if(this.nome === "Necromante"){
+
+                alvo.sanguesugas++;
+
+                console.log(
+                    `${alvo.nome}
+                    recebeu uma
+                    sanguessuga!
+                    Total:
+                    ${alvo.sanguesugas}`
+                );
+            }
+
+            // habilidade do guerreiro
+            if(
+                this.nome ===
+                "Guerreiro"
+            ){
+
+                // metade da vida
+                if(
+                    this.vida <=
+                    this.vidaMax / 2
+                ){
+
+                    danoBase += 3;
+                }
+            }
+
+            // impedir vida negativa
+
+            this.usarHabilidade(alvo);
+
+            if(alvo.vida <= 0){
+
+                alvo.vida = 0;
+
+                console.log(
+                    `${alvo.nome}
+                    morreu`
+                );
+            }
+        }
+
+
+        usarHabilidade(alvo){
+
+            switch(this.nome){
+
+                // TANKS
+
+                case "Escudeiro": {
+
+                const aliadosVivos =
+                aliados.filter(
+                    p => p.vida > 0
+                );
+
+                if(
+                    aliadosVivos.length > 0
+                ){
+
+                    const aliadoAleatorio =
+
+                    aliadosVivos[
+                        Math.floor(
+                            Math.random()
+                            * aliadosVivos.length
+                        )
+                    ];
+
+                    aliadoAleatorio.defesa += 1;
+
+                    console.log(
+                        `${aliadoAleatorio.nome}
+                        ganhou defesa`
+                    );
+                }
+
+                    break;
+                }
+
+
+
+                case "Necromante": {
+
+                    // vida recuperada
+                    const curaNecro = alvo.sanguesugas;
+                    this.vida += curaNecro;
+
+
+                    // não ultrapassar vida máxima
+                    if(this.vida > this.vidaMax){
+                        this.vida =
+                        this.vidaMax;
+                    }
+
+                    console.log(
+                        `${this.nome}
+                        recuperou
+                        ${curaNecro}
+                        HP`
+                    );
+
+                    break;
+                }
+
+
+                // SUPORTES
+                case "Clérigo": {
+
+                    const aliadosVivos =
+                    aliados.filter(
+                        p =>
+                        p.vida > 0 &&
+                        p.vida < p.vidaMax
+                    );
+
+                    if(
+                        aliadosVivos.length > 0
+                    ){
+
+                        const aliadoAleatorio =
+
+                        aliadosVivos[
+                            Math.floor(
+                                Math.random()
+                                * aliadosVivos.length
+                            )
+                        ];
+
+                        const curaClerigo = 2;
+
+                        aliadoAleatorio.vida += curaClerigo;
+
+                        if(
+                            aliadoAleatorio.vida >
+                            aliadoAleatorio.vidaMax
+                        ){
+                            aliadoAleatorio.vida =
+                            aliadoAleatorio.vidaMax;
+                        }
+
+                        console.log(
+                            `${this.nome}
+                            curou
+                            ${aliadoAleatorio.nome}`
+                        );
+                    }
+
+                    break;
+                }
+
+                case "Bardo": {
+
+                const aliadosVivos =
+                aliados.filter(
+                    p => p.vida > 0
+                );
+
+                if(
+                    aliadosVivos.length > 0
+                ){
+
+                    const aliadoAleatorio =
+
+                    aliadosVivos[
+                        Math.floor(
+                            Math.random()
+                            * aliadosVivos.length
+                        )
+                    ];
+
+                    aliadoAleatorio.dano += 1;
+
+                    console.log(
+                        `${aliadoAleatorio.nome}
+                        ganhou dano`
+                    );
+                }
+                    break
+                }
+
+
+                // ATACANTES
+                case "Arqueiro": {
+
+                    // 10% de crítico x3
+                    if(Math.random() <= 0.10){
+
+                        console.log(
+                            "CRÍTICO!"
+                        );
+
+                        alvo.vida -=
+                        this.dano * 3;
+                    }
+
+                    break;
+                }
+
+
+                case "Ladino": {
+
+                    // 20% de chance
+                    if(Math.random() <= 0.20){
+
+                        alvo.sangramento = 5;
+                        alvo.tempoSangramento = 3;
+
+                        console.log(
+                            `${alvo.nome}
+                            começou a sangrar!`
+                        );
+                    }
+
+                    break;
+                }
+
+                case "Mago": {
+
+                    // 10% de chance
+                    if(Math.random() <= 0.15){
+
+                        alvo.queimadura = 10;
+                        alvo.tempoQueimadura = 5;
+
+                        console.log(
+                            `${alvo.nome}
+                            pegou fogo!`
+                        );
+                    }
+
+                    break;
+                }
+
+            }
+        }
+
+
+        aplicarStatus(){
+
+            if(this.sanguesugas > 0){
+
+                const dano =
+                this.sanguesugas;
+
+                this.vida -= dano;
+
+                // impedir vida negativa
+                if(this.vida < 0){
+                    this.vida = 0;
+                }
+
+                // Necromante cura
+                const necromantes =
+                aliados.filter(
+                    p =>
+                    p.nome ===
+                    "Necromante"
+                );
+
+                necromantes.forEach(n => {
+
+                    if(n.vida <= 0){
+                        return;
+                    }
+
+                    n.vida += dano;
+
+                    if(
+                        n.vida >
+                        n.vidaMax
+                    ){
+                        n.vida =
+                        n.vidaMax;
+                    }
+                });
+
+            // SANGRAMENTO
+                if(
+                    this.tempoSangramento > 0
+                ){
+
+                    const danoSangramento =
+
+                    Math.floor(
+                        this.vidaMax * 0.05
+                    );
+
+                    this.vida -=
+                    danoSangramento;
+
+                    this.tempoSangramento--;
+
+                    console.log(
+                        `${this.nome}
+                        sofreu
+                        ${danoSangramento}
+                        de sangramento`
+                    );
+                }
+
+                // QUEIMADURA
+                if(
+                    this.tempoQueimadura > 0
+                ){
+
+                    this.vida -=
+                    this.queimadura;
+
+                    this.tempoQueimadura--;
+
+                    console.log(
+                        `${this.nome}
+                        sofreu
+                        ${this.queimadura}
+                        de queimadura`
+                    );
+                }
+                // IMPEDE A VIDA DE FICAR NEGATIVA
+                if(this.vida < 0){
+                    this.vida = 0;
+                }
+
+                atualizarAliadosUI();
+
+                if(this === boss){
+                    atualizarBossUI();
+                }
+            }
+        }
+    }
+
+
+    // 2. Jogador salvo
+        const jogadorSalvo =
+        JSON.parse(
+            localStorage.getItem(
+                "classeJogador"
+            )
+        );
+
+        if(!jogadorSalvo){
+
+            alert(
+                "Nenhuma classe escolhida!"
+            );
+
+            window.location.href =
+            "batalha.html";
+        }
+
+
+    // 3. Recriar jogador
+    const jogador =
+    new ClassePersonagem(
+        jogadorSalvo.nome,
+        jogadorSalvo.vida,
+        jogadorSalvo.defesa,
+        jogadorSalvo.velocidade,
+        jogadorSalvo.dano,
+        jogadorSalvo.especial,
+        jogadorSalvo.imagem
+    );
+
+    const classesSalvas =
+    JSON.parse(
+        localStorage.getItem(
+            "todasClasses"
+        )
+    ) || [];
+
+    function pegarClassesUnicas(qtd){
+
+        const copia =
+        [...classesSalvas];
+
+        const resultado = [];
+
+        for(
+            let i = 0;
+            i < qtd;
+            i++
+        ){
+
+            const index =
+            Math.floor(
+                Math.random()
+                * copia.length
+            );
+
+            if(copia.length <= 0){
+                break;
+            }
+
+            const classe =
+            copia.splice(index, 1)[0];
+
+            resultado.push(
+
+                new ClassePersonagem(
+                    classe.nome,
+                    classe.vida,
+                    classe.defesa,
+                    classe.velocidade,
+                    classe.dano,
+                    classe.especial,
+                    classe.imagem
+                )
+            );
+        }
+
+        return resultado;
+    }
+
+    // 4. Time
+    const aliados = [
+
+        jogador,
+
+        ...pegarClassesUnicas(5)
+    ];
+
+
+    // 5. Boss
+    const boss =
+    new ClassePersonagem(
+        "Mininu",
+        4000,
+        8,
+        10,
+        4,
+        "uuhh que medo",
+        "imagem/mininu.png"
+    );
+
+
+    function iniciarCombate(){
+    // aliados atacam
+        aliados.forEach(personagem => {
+
+            setInterval(() => {
+
+                // parar se morreu
+                if(
+                    personagem.vida <= 0 ||
+                    boss.vida <= 0
+                ){
+                    return;
+                }
+
+                personagem.atacar(
+                    boss
+                );
+
+                console.log(
+                    `Boss HP:
+                    ${boss.vida}`
+                );
+
+            },
+            3000 /
+            personagem.velocidade
+            );
+        });
+
+
+        // boss ataca
+        setInterval(() => {
+
+        if(boss.vida <= 0){
+
+            console.log(
+                "Vitória!"
+            );
+
+            finalizarCombate(
+                "vitoria"
+            );
+
+            return;
+        }
+
+            // pegar aliado vivo aleatório
+            const vivos =
+            aliados.filter(
+                p => p.vida > 0
+            );
+
+            if(vivos.length <= 0){
+
+                console.log(
+                    "Derrota!"
+                );
+
+                finalizarCombate(
+                    "derrota"
+                );
+
+                return;
+            }
+
+            const alvo =
+            vivos[
+                Math.floor(
+                    Math.random()
+                    * vivos.length
+                )
+            ];
+
+            boss.atacar(
+                alvo
+            );
+
+        },
+        3000 /
+        boss.velocidade
+        );
+    }
+
+
+    // 6. Mostrar aliados
+    const raid =
+    document.getElementById(
+        "time-raid"
+    );
+
+
+
+    aliados.forEach(personagem => {
+
+        const card =
+        document.createElement(
+            "div"
+        );
+
+        card.classList.add(
+            "personagem-card"
+        );
+
+        card.innerHTML = `
+
+            <img
+                src="${personagem.imagem}"
+                class="personagem-img"
+            >
+
+            <div class="hp-ui">
+
+                <div class="barra-hp">
+                    <div
+                        class="hp-fill"
+                        id="hp-${personagem.id}"
+                    ></div>
+                </div>
+
+                <p id="texto-${personagem.id}">
+                    ${personagem.vida}
+                    /
+                    ${personagem.vidaMax}
+                </p>
+
+            </div>
+        `;
+
+        raid.appendChild(card);
+    });
+
+
+function atualizarAliadosUI(){
+
+    aliados.forEach(personagem => {
+
+        const porcentagem =
+
+        (personagem.vida /
+        personagem.vidaMax)
+
+        * 100;
+
+
+        document.getElementById(
+            `hp-${personagem.id}`
+        ).style.width =
+
+        `${porcentagem}%`;
+
+
+        document.getElementById(
+            `texto-${personagem.id}`
+        ).textContent =
+
+        `${personagem.vida}
+        /
+        ${personagem.vidaMax}`;
+    });
+}
+
+
+    // 7. Mostrar boss
+    document.getElementById(
+        "boss-img"
+    ).src =
+    boss.imagem;
+    atualizarBossUI();
+
+
+    function atualizarBossUI(){
+
+    // texto
+    document.getElementById(
+        "boss-vida"
+    ).textContent =
+
+    `${boss.vida}
+    /
+    ${boss.vidaMax}`;
+
+
+    // porcentagem da barra
+    const porcentagem =
+
+    (boss.vida /
+    boss.vidaMax)
+
+    * 100;
+
+    document.getElementById(
+        "boss-hp-fill"
+    ).style.width =
+
+    `${porcentagem}%`;
+}
+
+
+    // 8. Loop dos status
+    setInterval(() => {
+
+        aliados.forEach(personagem => {
+            personagem.aplicarStatus();
+        });
+
+        boss.aplicarStatus();
+
+    }, 1000);
+
+    function finalizarCombate(resultado){
+
+        const tela =
+        document.getElementById(
+            "fim-combate"
+        );
+
+        const texto =
+        document.getElementById(
+            "texto-final"
+        );
+
+        tela.style.display =
+        "flex";
+
+        if(
+            resultado ===
+            "vitoria"
+        ){
+
+            texto.textContent =
+            "VITÓRIA";
+
+            texto.className =
+            "vitoria";
+        }
+
+        else{
+
+            texto.textContent =
+            "DERROTA";
+
+            texto.className =
+            "derrota";
+        }
+        setTimeout(() => {
+
+            window.location.href =
+            "batalha.html";
+
+        }, 3000);      
+    }
+
+    iniciarCombate();
+</script>
+</body>
+</html>
