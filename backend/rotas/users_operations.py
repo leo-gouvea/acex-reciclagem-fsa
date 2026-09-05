@@ -401,3 +401,56 @@ async def user_update(data: UserUpdateRequest, user: dict = Depends(check_access
         }
 
         return formated_response
+
+
+# AUTENTICAÇÃO DE SESSÃO
+# ----------------------
+@router.get("/user/session")
+async def check_session(
+    response: Response,
+    user: dict = Depends(check_access)
+):
+    """
+    Verifica se existe uma sessão autenticada.
+
+    O endpoint utiliza o mesmo mecanismo de autenticação
+    das demais rotas protegidas, através do cookie
+    'access_token' ou da chave X-API-Key.
+
+    Retorna os dados do usuário caso a autenticação seja válida.
+    Caso contrário, check_access() retorna HTTP 401.
+    """
+
+    # Impede que navegador ou proxy reutilize uma resposta antiga.
+    response.headers["Cache-Control"] = "no-store"
+
+    return {
+        "authenticated": True,
+        "user": user
+    }
+
+
+@router.post("/user/logout")
+async def logout(response: Response):
+    """
+    Encerra a sessão removendo o cookie 'access_token'.
+
+    A rota não exige autenticação para permitir que o logout
+    funcione mesmo quando o token estiver inválido ou expirado.
+    """
+
+    response.delete_cookie(
+        key="access_token",
+        path="/",
+        secure=True,
+        httponly=True,
+        samesite="none"
+    )
+
+    # Impede o armazenamento da resposta em cache.
+    response.headers["Cache-Control"] = "no-store"
+
+    return {
+        "status": 200,
+        "detail": "Logout realizado com sucesso."
+    }

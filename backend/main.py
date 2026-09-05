@@ -85,58 +85,6 @@ async def root():
 
     return response
 
-# AUTENTICAÇÃO DE SESSÃO
-# ----------------------
-@app.get("/user/session")
-async def check_session(
-    response: Response,
-    user: dict = Depends(check_access)
-):
-    """
-    Verifica se existe uma sessão autenticada.
-
-    O endpoint utiliza o mesmo mecanismo de autenticação
-    das demais rotas protegidas, através do cookie
-    'access_token' ou da chave X-API-Key.
-
-    Retorna os dados do usuário caso a autenticação seja válida.
-    Caso contrário, check_access() retorna HTTP 401.
-    """
-
-    # Impede que navegador ou proxy reutilize uma resposta antiga.
-    response.headers["Cache-Control"] = "no-store"
-
-    return {
-        "authenticated": True,
-        "user": user
-    }
-
-
-@app.post("/user/logout")
-async def logout(response: Response):
-    """
-    Encerra a sessão removendo o cookie 'access_token'.
-
-    A rota não exige autenticação para permitir que o logout
-    funcione mesmo quando o token estiver inválido ou expirado.
-    """
-
-    response.delete_cookie(
-        key="access_token",
-        path="/",
-        secure=True,
-        httponly=True,
-        samesite="none"
-    )
-
-    # Impede o armazenamento da resposta em cache.
-    response.headers["Cache-Control"] = "no-store"
-
-    return {
-        "status": 200,
-        "detail": "Logout realizado com sucesso."
-    }
-
 # Para importação das rotas extras de foma dinamica
 PASTA_DE_ROTAS = os.path.join(os.path.dirname(__file__), "rotas")
 for modules in os.listdir(PASTA_DE_ROTAS):
