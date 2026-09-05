@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoHora</title>
+    <link rel="icon" href="assets/Ca105ad9cfc8580c765101d17bbb2323.webp">
+    <!-- Relação de estilo adicionada in-line para fácil compreensão inicial do estilo aplicado ao redesign e adição da HomePage -->
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            text-decoration: none;
+        }
+
+        body {
+            background-color: #071f1c;
+        }
+        
+        /* Mobile First */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* background-color: rgb(36, 36, 36); */
+            padding: 0.7rem 1.7rem;
+        }
+
+        #header-brand {
+            display: flex; align-items: center;
+        }
+
+        #brand-text {
+            font-size: 1.5rem; font-weight: bold;
+        }
+
+        #brand-image {
+            width: 2rem;
+        }
+
+        /* Botão do menu */
+        .hamburguer-menu {
+            margin-right: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;     
+            gap: 0.3rem;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+            position: relative;
+        }
+
+        /* Estado base das barras */
+        .hamburguer-menu-bar {
+            background-color: white;
+            height: 0.2rem;
+            width: 1.7rem;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        /* Coloca tudo no centro */
+        .hamburguer-menu.active .hamburguer-menu-bar {
+            position: absolute; 
+            margin: 0;
+        }
+
+        /* Gira a barra de cima */
+        .hamburguer-menu.active #hmb1 {
+            background-color: rgb(168, 62, 62);
+            rotate: 45deg;
+        }
+
+        /* Some coma barra do meio, opacity pra sair de fininho */
+        .hamburguer-menu.active #hmb2 {
+            opacity: 0;
+        }
+        
+        /* Gira a barra de baixo */
+        .hamburguer-menu.active #hmb3 {
+            background-color: rgb(168, 62, 62);
+            rotate: -45deg;
+        }
+
+        #access-site-button {
+            background-color: transparent;
+            border: solid 1px #7be3a8;
+            border-radius: 2rem;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        #access-site-button:hover{
+            background-color: #0b3f39;
+        }
+
+        /* Funcionamento para as coisas a partir de 415px -> DESKTOP */
+        @media (min-width: 415px) {
+            #brand-text {
+                font-size: 2rem;
+            }
+
+            #brand-image {
+                width: 2.5rem;
+            }
+
+            .hamburguer-menu {
+                display: none;
+            }
+
+            #access-site-button{
+                display: inline-block;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <a href="#">
+            <div id="header-brand">
+                <p id="brand-text"><span style="color: #29c777;">Eco</span><span style="color: #7be3a8;">Hora</span></p>
+                <img id="brand-image" src="assets/Ca105ad9cfc8580c765101d17bbb2323.webp" alt="Logo EcoHora">
+            </div>
+        </a>
+
+        <button id="access-site-button" onclick="">
+            <p>Entrar no site</p>
+        </button>
+        
+        <!-- Menu de hamburguer deve sumir quando for em desktop -->
+        <button class="hamburguer-menu" onclick="activateHamburguerMenu()">
+            <span class="hamburguer-menu-bar" id="hmb1"></span>
+            <span class="hamburguer-menu-bar" id="hmb2"></span>
+            <span class="hamburguer-menu-bar" id="hmb3"></span>
+        </button>
+    </header>
+
+    <!-- Corpo principal -->
+    <main>
+
+    </main>
+
+    <script>
+        function activateHamburguerMenu() {
+                const hamburgerMenu = document.querySelector(".hamburguer-menu");
+                hamburgerMenu.classList.toggle("active");
+        }
+    </script>
+</body>
+
+</html>
