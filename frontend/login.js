@@ -213,7 +213,7 @@ entrarForm.addEventListener("submit", async function (event) {
 
     // Redireciona para a página principal
     setTimeout(() => {
-      window.location.href = "index.html";
+      window.location.href = "menu.html";
     }, 800);
   } catch (erro) {
     console.error("Erro ao fazer login:", erro);

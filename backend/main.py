@@ -6,6 +6,8 @@ import importlib # Para efetivamente importar bibliotecas dinamicamente
 from fastapi import FastAPI, Security, HTTPException, status, Depends, Request, Response
 from fastapi.security import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
+# Para repelir robos de busca automática de consumir da API sem necessidade (Não protege contra ataques)
+from fastapi.responses import PlainTextResponse
 import jwt # Importado para trabalhar com logins e credenciais de Usuários (Tokens temporários)
 # Uvicorn que usamos para rodar como servidor local
 import uvicorn
@@ -84,6 +86,12 @@ async def root():
     }
 
     return response
+
+# Rota efetiva dos robôs
+@app.get("/robots.txt", response_class=PlainTextResponse)
+def robots():
+    return "User-agent: *\nDisallow: /"
+
 
 # Para importação das rotas extras de foma dinamica
 PASTA_DE_ROTAS = os.path.join(os.path.dirname(__file__), "rotas")
