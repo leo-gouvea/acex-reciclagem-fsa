@@ -405,7 +405,7 @@ async def user_update(data: UserUpdateRequest, user: dict = Depends(check_access
 
 # AUTENTICAÇÃO DE SESSÃO
 # ----------------------
-@router.get("/user/session")
+@router.get("/session")
 async def check_session(
     response: Response,
     user: dict = Depends(check_access)
@@ -430,7 +430,7 @@ async def check_session(
     }
 
 
-@router.post("/user/logout")
+@router.post("/logout")
 async def logout(response: Response):
     """
     Encerra a sessão removendo o cookie 'access_token'.
