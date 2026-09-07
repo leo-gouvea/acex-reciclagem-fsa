@@ -1,26 +1,34 @@
 {
   "name": "EcoHora",
   "short_name": "EcoHora",
-  "start_url": "./home.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#071f1c",
-  "theme_color": "#071f1c",
-  "description": "Recicle na Fundação Santo André e converta a entrega em horas complementares.",
+  "description": "Um App de reciclagem.",
   "id": "/EcoHora",
   "shortcuts": [
     {
-      "name": "Entrar no EcoHora",
-      "short_name": "Entrar",
-      "description": "Ir direto para a tela de login e cadastro.",
-      "url": "./login.html",
-      "icons": [
+        "name": "Menu de Reciclagem",
+        "short_name": "Menu",
+        "description": "Comece a recilcar!",
+        "url": "login.html",
+        "icons": [
         {
-          "src": "./assets/icon512_rounded.png",
-          "sizes": "512x512"
-        }
-      ]
+            "src": "./assets/icon512_rounded.png",
+            "sizes": "512x512"
+            }
+        ]
     }
-  ],
+    ],
+  "screenshots": [
+    {
+        "src": "./assets/icon512_rounded.png",
+        "sizes": "512x512",
+        "type": "image/webp",
+        "platform": "ios",
+        "label": "Dashboard view displaying key metrics"
+    }
+    ],
   "icons": [
     {
       "purpose": "any",
@@ -40,5 +48,16 @@
       "src": "./assets/icon512_rounded.png",
       "type": "image/png"
     }
+<<<<<<< HEAD
   ]
 }
+=======
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile"
+    }
+  ]
+}
+>>>>>>> 2ef28fe (feat: Adicionadas configurações de PWA)
