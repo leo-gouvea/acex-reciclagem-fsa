@@ -187,7 +187,8 @@
     <main>
         <div id="invitation-banner">
             <h1>SÓ AQUI</h1>
-            <p>Seu caderno vale horas complementares</p>
+            <p><span id="banner-dinamic-text">Seu caderno</span></p>
+            <p>vale horas complementares</p>
         </div>
     </main>
 
@@ -198,8 +199,22 @@
         }
 
         function redirectToLogin(){
-            window.location.href = "login.html"
+            window.location.href = "login.html";
         }
+
+        // Texto dinamico para a parte de itens valiosos
+        let wordSelected = 0;
+        const dinamicWordsList = ["Seu caderno", "Sua embalagem", "Sua latinha", "Sua garrafa"];
+        setInterval(() => {
+            let word = dinamicWordsList[wordSelected];
+            console.log(word);
+            const dinamicWordsArea = document.querySelector("#banner-dinamic-text");
+            dinamicWordsArea.innerHTML = word;
+            wordSelected++;
+            if (wordSelected > dinamicWordsList.length - 1){
+                wordSelected = 0;
+            }
+        }, 2000)
     </script>
 </body>
 
