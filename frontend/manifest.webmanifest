@@ -1,0 +1,58 @@
+{
+  "name": "EcoHora",
+  "short_name": "EcoHora",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#071f1c",
+  "description": "Um App de reciclagem.",
+  "id": "/EcoHora",
+  "shortcuts": [
+    {
+        "name": "Menu de Reciclagem",
+        "short_name": "Menu",
+        "description": "Comece a recilcar!",
+        "url": "login.html",
+        "icons": [
+        {
+            "src": "./assets/icon512_rounded.png",
+            "sizes": "512x512"
+            }
+        ]
+    }
+    ],
+  "screenshots": [
+    {
+        "src": "./assets/icon512_rounded.png",
+        "sizes": "512x512",
+        "type": "image/webp",
+        "platform": "ios",
+        "label": "Dashboard view displaying key metrics"
+    }
+    ],
+  "icons": [
+    {
+      "purpose": "any",
+      "sizes": "192x192",
+      "src": "./assets/icon192_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "./assets/icon512_maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "./assets/icon512_rounded.png",
+      "type": "image/png"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile"
+    }
+  ]
+}

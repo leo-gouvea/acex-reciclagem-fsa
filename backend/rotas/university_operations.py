@@ -42,7 +42,7 @@ class ClassesScheme(BaseModel):
     id: int
     class_code: str
 
-@router.get("/get/clases", response_model=list[ClassesScheme], response_description="Retorna as salas cadastradas.")
+@router.get("/get/classes", response_model=list[ClassesScheme], response_description="Retorna as salas cadastradas.")
 async def get_classes():
     """Retorna todas as turmas e suas IDs cadastradas no sistema."""
 
