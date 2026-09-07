@@ -131,6 +131,7 @@
             background-position: center;
             background-size: cover;
             background-color: #0b3f39;
+            height: calc(100vh - 3.9rem);
         }
 
         /* Funcionamento para as coisas a partir de 415px -> DESKTOP */
@@ -205,16 +206,58 @@
         // Texto dinamico para a parte de itens valiosos
         let wordSelected = 0;
         const dinamicWordsList = ["Seu caderno", "Sua embalagem", "Sua latinha", "Sua garrafa"];
-        setInterval(() => {
-            let word = dinamicWordsList[wordSelected];
-            console.log(word);
-            const dinamicWordsArea = document.querySelector("#banner-dinamic-text");
-            dinamicWordsArea.innerHTML = word;
-            wordSelected++;
-            if (wordSelected > dinamicWordsList.length - 1){
-                wordSelected = 0;
+        const dinamicWordsArea = document.querySelector("#banner-dinamic-text");
+
+        // Configurações do efeito
+        const typingSpeed = 130;   // Velocidade ao digitar (ms por letra)
+        const erasingSpeed = 50;   // Velocidade ao apagar (ms por letra)
+        const delayBetweenWords = 2500; // Tempo que a palavra fica exposta antes de apagar
+
+        function typeEffect() {
+            // Garante que a palavra default seja apagada para aplicar o efeito
+            dinamicWordsArea.innerHTML = ""
+            let currentWord = dinamicWordsList[wordSelected];
+            // Index da letra específica (Area)[0] = A
+            let currentCharIndex = 0;
+
+            // Função interna para digitar letra por letra
+            function type() {
+                if (currentCharIndex < currentWord.length) {
+                    // Da pra usar o operador de soma hehehe
+                    dinamicWordsArea.innerHTML += currentWord.charAt(currentCharIndex);
+                    currentCharIndex++;
+                    // Usando as configurações mencionadas acima
+                    setTimeout(type, typingSpeed);
+                } else {
+                    // Palavra terminou de ser digitada. Aguarda e depois apaga.
+                    setTimeout(erase, delayBetweenWords);
+                }
             }
-        }, 2000)
+
+            // Função interna para apagar letra por letra
+            function erase() {
+                if (currentCharIndex > 0) {
+                    dinamicWordsArea.innerHTML = currentWord.substring(0, currentCharIndex - 1);
+                    currentCharIndex--;
+                    setTimeout(erase, erasingSpeed);
+                } else {
+                    // Palavra foi toda apagada. Avança para a próxima na lista.
+                    wordSelected++;
+                    if (wordSelected >= dinamicWordsList.length) {
+                        wordSelected = 0; // Reinicia a lista
+                    }
+                    // Começa a digitar a nova palavra
+                    setTimeout(typeEffect, 300);
+                }
+            }
+
+            // Inicia o ciclo digitando
+            type();
+        }
+
+        // Inicia o efeito assim que o script roda
+        typeEffect();
+
     </script>
 </body>
 
