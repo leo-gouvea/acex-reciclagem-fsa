@@ -13,6 +13,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
         /* Reset */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: Arial, Helvetica, sans-serif;
@@ -29,7 +30,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: #071f1c;
+            background-color: rgb(7, 31, 28);
             padding: 0.7rem 1.7rem;
         }
 
@@ -126,12 +127,12 @@
         }
 
         #invitation-banner {
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('assets/faeng22.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 80%, rgb(7, 31, 28) 100%), url('assets/faeng22.jpg');
+            background-repeat: no-repeat, no-repeat;
+            background-position: top, 40%; 
             background-size: cover;
-            background-color: #0b3f39;
-            height: calc(100dvh - 3.9rem);
+            background-color: rgb(7, 31, 28);
+            height: calc(100dvh - 3.4rem);
         }
 
         /* Funcionamento para as coisas a partir de 415px -> DESKTOP */
@@ -150,6 +151,11 @@
 
             #header-buttons{
                 display: inherit;
+            }
+
+            #invitation-banner {
+                background-position: top, left 90%; 
+                height: calc(100dvh - 3.9rem);
             }
 
         }
@@ -171,7 +177,7 @@
             <button id="access-site-button" onclick="redirectToLogin()">
                 <p>Entrar no site</p>
             </button>
-            <button id="meet-the-project">
+            <button id="meet-the-project" onclick="redirectToExplanation()">
                 <p>Conhecer o projeto</p>
             </button>
         </div>
@@ -191,6 +197,10 @@
             <p><span id="banner-dinamic-text">Seu caderno</span></p>
             <p>vale horas complementares</p>
         </div>
+
+        <div id="deminonstrations">
+            akljsda
+        </div>
     </main>
 
     <script>
@@ -201,6 +211,10 @@
 
         function redirectToLogin(){
             window.location.href = "login.html";
+        }
+        
+        function redirectToExplanation(){
+            window.location.href = "#deminonstrations";
         }
 
         // Texto dinamico para a parte de itens valiosos
