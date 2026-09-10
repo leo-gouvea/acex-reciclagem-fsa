@@ -390,10 +390,12 @@
                 buttonsMobile.classList.toggle("active");
         }
 
+
         function redirectToLogin(){
             window.location.href = "login.html";
         }
         
+
         function redirectToExplanation(){
             const projetPresentation = document.getElementById("project-presentation");
             
@@ -404,7 +406,7 @@
                     block: "start"
                 });
                 
-                // Só fecha o menu se o botão hambúrguer estiver visível (evita bug no PC)
+                // Só fecha o menu se o botão hambúrguer estiver visível (evita um bug no PC)
                 const hamburgerBtn = document.querySelector('.hamburguer-menu');
                 if (hamburgerBtn && window.getComputedStyle(hamburgerBtn).display !== 'none') {
                     activateHamburguerMenu();
@@ -412,14 +414,17 @@
             }
         }
 
+
         const backToTopButton = document.querySelector("#back-to-top-button");
         window.addEventListener("scroll", () => {
-            if (window.scrollY > 100) {
+            if (window.scrollY > 300) {
                 backToTopButton.classList.add("active");
             } else {
                 backToTopButton.classList.remove("active");
             }
         })
+
+
         function redirectToTop(){
             const pageTop = document.querySelector("#top");
 
@@ -437,8 +442,8 @@
         const dinamicWordsArea = document.querySelector("#banner-dinamic-text");
 
         // Configurações do efeito
-        const typingSpeed = 130;   // Velocidade ao digitar (ms por letra)
-        const erasingSpeed = 50;   // Velocidade ao apagar (ms por letra)
+        const typingSpeed = 130; // Velocidade ao digitar (ms por letra)
+        const erasingSpeed = 50; // Velocidade ao apagar (ms por letra)
         const delayBetweenWords = 2500; // Tempo que a palavra fica exposta antes de apagar
 
         function typeEffect() {
