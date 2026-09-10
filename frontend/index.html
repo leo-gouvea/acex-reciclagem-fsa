@@ -272,6 +272,21 @@
 
         }
 
+        
+        /* Animações */
+        .simple-float {
+            animation: floatUp 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-20px);
+            }
+        }
+
     </style>
 </head>
 
@@ -321,7 +336,7 @@
                     <p><span id="banner-dinamic-text" style="color: rgb(255, 153, 0); font-weight: bold;">Seu caderno</span>‎</p>
                     <p>vale <span style="color: rgb(0, 255, 157); font-weight: bold;">horas complementares</span></p>
                 </div>
-                <img src="assets/icons8-relógio-920.png" alt="Relógio Banner" id="banner-clock">
+                <img src="assets/icons8-relógio-920.png" alt="Relógio Banner" id="banner-clock" class="simple-float">
             </div>
 
             <button id="start-to-earn-button" onclick="redirectToLogin()"> Comece a ganhar</button>
