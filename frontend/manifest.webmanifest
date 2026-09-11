@@ -4,7 +4,7 @@
   "start_url": ".",
   "display": "standalone",
   "background_color": "#071f1c",
-  ​"theme_color": "#071f1c",
+  "theme_color": "#071f1c",
   "description": "Um App de reciclagem.",
   "id": "/EcoHora",
   "shortcuts": [
