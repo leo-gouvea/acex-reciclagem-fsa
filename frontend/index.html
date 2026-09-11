@@ -37,6 +37,10 @@
             pointer-events: none; 
         }
 
+        .material-symbols-outlined{
+            display: block;
+        }
+
         /* Mobile First */
         header {
             display: flex;
@@ -194,7 +198,7 @@
             width: fit-content;
             margin-bottom: 3rem;
             background-image: linear-gradient(to right, rgb(0, 30, 114), rgb(0, 20, 77));
-            border: solid 1px rgb(125, 197, 255);
+            border: solid 1px rgb(255, 255, 255, 0.5);
             padding: 1rem;
             border-radius: 1rem;
         }
@@ -206,15 +210,56 @@
 
         #project-presentation{
             padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        #project-presentation h2{
-            font-size: 2rem;
-            margin-bottom: 2rem;
+        /* Esse card é o details em sí */
+        .project-presentation-card{
+            border: 1px solid rgb(255, 255, 255, 0.5);
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
         }
-        
-        #project-presentation p {
+
+        .project-presentation-card-summary-construction{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .project-presentation-card-summary-construction .material-symbols-outlined{
+            transition: all 0.3s ease;
+        }
+
+        .project-presentation-card[open] .project-presentation-card-summary-construction .material-symbols-outlined{
+            transform: rotate(180deg);
+        }
+
+        .project-presentation-card summary{
+            font-weight: bolder;
             font-size: 1.2rem;
+            list-style: none;
+            transition: all 0.3s ease;
+        }
+
+        .project-presentation-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .project-presentation-card ul {
+            margin-top: 1rem;
+        }
+
+        .project-presentation-card li {
+            margin-left: 1.3rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .project-presentation-card[open] summary{
+            margin-bottom: 1rem;
         }
 
         #back-to-top-button {
@@ -225,17 +270,17 @@
             right: 0px;
             opacity: 0;
 
-            background-color: transparent;
-            border: yellow solid 1px;
+            background-image: linear-gradient(to right, rgb(0, 30, 114), rgb(0, 20, 77));
+            border: rgba(255, 255, 255, 0.5) solid 1px;
             border-radius: 1rem;
-            font-size: 1rem;
+            /* font-size: 1rem; */
             padding: 1rem;
             transition: all 0.3s ease;
         }
 
         #back-to-top-button:hover {
             cursor :pointer;
-            background-color: rgb(0, 0, 0, 0.1);
+            background-image: linear-gradient(to right, rgb(0, 20, 77), rgb(0, 30, 114));
         }
 
         #back-to-top-button.active {
@@ -376,8 +421,30 @@
         </div>
 
         <div id="project-presentation">
-            <h2>O que é o projeto?</h2>
-            <p>Pode dizer qualquer coisa</p>
+            <details class="project-presentation-card">
+                <summary><span class="project-presentation-card-summary-construction">♻️ Conheça o Projeto <span class="material-symbols-outlined">keyboard_arrow_down</span></span></summary>
+                <p>Reciclagem por Horas Complementares: Transforme seu lixo reciclável em horas para a sua faculdade!</p>
+                <p>O projeto une sustentabilidade, impacto social e incentivo acadêmico em uma única ação dentro do campus.</p>
+            </details>
+            <details class="project-presentation-card">
+                <summary><span class="project-presentation-card-summary-construction">💡 Como Funciona?<span class="material-symbols-outlined">keyboard_arrow_down</span></span></summary>
+                <p>O processo é simples, rápido e totalmente prático para a sua rotina universitária:</p>
+                <ul>
+                    <li>Separe: Junte materiais recicláveis como papel, plástico, metal e vidro.</li>
+                    <li>Entregue: Vá até um dos nossos pontos de coleta seletiva na universidade.</li>
+                    <li>Pontue: Registre sua entrega através do nosso sistema ou formulário.</li>
+                    <li>Ganhe: Converta a quantidade de material reciclado diretamente em horas complementares.</li>
+                </ul>
+            </details>
+            <details class="project-presentation-card">
+                <summary><span class="project-presentation-card-summary-construction">🌍 Por que Participar?<span class="material-symbols-outlined">keyboard_arrow_down</span></span></summary>
+                <p>Ao fazer parte dessa iniciativa, você ajuda a transformar a realidade do planeta e da comunidade:</p>
+                <ul>
+                    <li>Benefício Ambiental: Reduz o acúmulo de lixo e preserva os recursos naturais.</li>
+                    <li>Impacto Social: Todo o material coletado é destinado a cooperativas de catadores, gerando renda local.</li>
+                    <li>Vantagem Econômica: Estimula a economia circular e diminui os custos de gestão de resíduos da instituição.</li>
+                </ul>
+            </details>
         </div>
 
         <button id="back-to-top-button" onclick="redirectToTop()">
@@ -448,9 +515,9 @@
         const dinamicWordsArea = document.querySelector("#banner-dinamic-text");
 
         // Configurações do efeito
-        const typingSpeed = 130; // Velocidade ao digitar (ms por letra)
-        const erasingSpeed = 50; // Velocidade ao apagar (ms por letra)
-        const delayBetweenWords = 2500; // Tempo que a palavra fica exposta antes de apagar
+        const typingSpeed = 70; // Velocidade ao digitar (ms por letra)
+        const erasingSpeed = 30; // Velocidade ao apagar (ms por letra)
+        const delayBetweenWords = 3000; // Tempo que a palavra fica exposta antes de apagar
 
         function typeEffect() {
             // Garante que a palavra default seja apagada para aplicar o efeito
