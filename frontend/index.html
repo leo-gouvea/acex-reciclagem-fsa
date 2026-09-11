@@ -39,6 +39,7 @@
 
         .material-symbols-outlined{
             display: block;
+            user-select: none;
         }
 
         /* Mobile First */
@@ -163,7 +164,7 @@
             background-position: top, 40%; 
             background-size: cover;
             background-color: rgb(7, 31, 28);
-            height: calc(100dvh - 3.4rem);
+            height: calc(100svh - 3.4rem);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -176,7 +177,7 @@
             text-align: center;
             align-items: center;
             justify-content: center;
-            margin-top: 10dvh;
+            margin-top: 10vh;
         }
 
         #invitation-banner h1{
@@ -189,7 +190,7 @@
         }
 
         #banner-clock{
-            width: 30dvh;
+            width: 30vw;
             margin-top: 0.2rem;
             rotate: -90deg;
         }
@@ -228,6 +229,10 @@
         .project-presentation-card-summary-construction{
             display: flex;
             justify-content: space-between;
+        }
+
+        .project-presentation-card-summary-construction:hover{
+            cursor: pointer;
         }
 
         .project-presentation-card-summary-construction .material-symbols-outlined{
@@ -314,7 +319,7 @@
 
             #invitation-banner {
                 background-position: top, left 90%; 
-                height: calc(100dvh - 3.9rem);
+                height: calc(100vh - 3.9rem);
             }
             
             #invitation-banner #stack1 {
@@ -322,20 +327,20 @@
                 text-align: left;
                 align-items: center;
                 justify-content: center;
-                margin-top: 15dvh;
+                margin-top: 15vh;
             }
 
             #invitation-banner h1{
-                font-size: 12dvh;
+                font-size: 12vh;
                 margin-bottom: 1rem;
             }
 
             #invitation-banner p{
-                font-size: 7dvh;
+                font-size: 7vh;
             }
 
             #banner-clock{
-                width: 50dvh;
+                width: 50vh;
                 margin: 0;
                 margin-left: 10rem;
             }
