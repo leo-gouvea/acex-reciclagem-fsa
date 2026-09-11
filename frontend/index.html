@@ -31,6 +31,19 @@
             background-color: #071f1c;
         }
         
+<<<<<<< HEAD
+=======
+        img {
+            user-select: none;
+            pointer-events: none; 
+        }
+
+        .material-symbols-outlined{
+            display: block;
+            user-select: none;
+        }
+
+>>>>>>> 7acb364 (fix: Corrigido erros de imagens e itens pulando na tela)
         /* Mobile First */
         header {
             display: flex;
@@ -153,7 +166,7 @@
             background-position: top, 40%; 
             background-size: cover;
             background-color: rgb(7, 31, 28);
-            height: calc(100dvh - 3.4rem);
+            height: calc(100vh - 3.4rem);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -166,7 +179,7 @@
             text-align: center;
             align-items: center;
             justify-content: center;
-            margin-top: 10dvh;
+            margin-top: 10vh;
         }
 
         #invitation-banner h1{
@@ -179,8 +192,8 @@
         }
 
         #banner-clock{
-            width: 30dvh;
-            margin-top: 2rem;
+            width: 30vh;
+            margin-top: 0.2rem;
             rotate: -90deg;
         }
 
@@ -206,8 +219,26 @@
             font-size: 2rem;
             margin-bottom: 2rem;
         }
-        
-        #project-presentation p {
+
+        .project-presentation-card-summary-construction{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .project-presentation-card-summary-construction:hover{
+            cursor: pointer;
+        }
+
+        .project-presentation-card-summary-construction .material-symbols-outlined{
+            transition: all 0.3s ease;
+        }
+
+        .project-presentation-card[open] .project-presentation-card-summary-construction .material-symbols-outlined{
+            transform: rotate(180deg);
+        }
+
+        .project-presentation-card summary{
+            font-weight: bolder;
             font-size: 1.2rem;
         }
 
@@ -236,7 +267,7 @@
 
             #invitation-banner {
                 background-position: top, left 90%; 
-                height: calc(100dvh - 3.9rem);
+                height: calc(100vh - 3.9rem);
             }
             
             #invitation-banner #stack1 {
@@ -244,20 +275,20 @@
                 text-align: left;
                 align-items: center;
                 justify-content: center;
-                margin-top: 15dvh;
+                margin-top: 15vh;
             }
 
             #invitation-banner h1{
-                font-size: 12dvh;
-                margin-bottom: 2rem;
+                font-size: 12vh;
+                margin-bottom: 1rem;
             }
 
             #invitation-banner p{
-                font-size: 7dvh;
+                font-size: 7vh;
             }
 
             #banner-clock{
-                width: 50dvh;
+                width: 50vh;
                 margin: 0;
                 margin-left: 10rem;
             }
