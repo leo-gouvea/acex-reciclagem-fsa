@@ -58,15 +58,13 @@ def check_access(request: Request, key: str = Security(header_api_key)):
 
 # Instanciamento (Inicia a nossa API)
 app = FastAPI(title="API ACEX", description="API construída para o projeto ACEX 2026", version="0.3.2")
-# dependencies=[Depends(check_key)] -> Removido de App para evitar BLoqueio de 100% das rotas
 
 # Adicionado o CORS para que o front se comunique com o Back
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://acex-reciclagem-fsa.vercel.app/"
         # URL's de Teste devem sair da versão final
-        "http://127.0.0.1:8000",
-        "http://127.0.0.1:8080",
         "http://127.0.0.1:5500"
         ],
     allow_credentials=True,
@@ -90,6 +88,11 @@ async def root():
 # Rota efetiva dos robôs
 @app.get("/robots.txt", response_class=PlainTextResponse)
 def robots():
+    """
+    For reliable bots to know that they are not allowed to crawl the API.
+    Check the robots.txt file for more information.
+    Google: https://developers.google.com/search/docs/crawling-indexing/robots/intro
+    """
     return "User-agent: *\nDisallow: /"
 
 
