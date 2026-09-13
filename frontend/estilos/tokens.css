@@ -447,8 +447,6 @@ a {
   padding: 16px 24px 20px;
   border-top: 1px solid var(--line);
   background: var(--bg-alt);
-  position: absolute;
-  width: 100%;
 }
 
 .mobile-menu.open {

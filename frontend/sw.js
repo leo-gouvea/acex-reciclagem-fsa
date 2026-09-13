@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 self.addEventListener('install', function (event) {
   console.log('Service Worker do EcoHora foi instalado!');
 });
@@ -14,8 +13,3 @@ self.addEventListener('activate', function (event) {
 self.addEventListener('fetch', function (event) {
   event.respondWith(fetch(event.request));
 });
-=======
-self.addEventListener('install', function(event) {
-    console.log('Service Worker do EcoHora foi instalado!');
-});
->>>>>>> 2ef28fe (feat: Adicionadas configurações de PWA)
