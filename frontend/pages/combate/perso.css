@@ -1,178 +1,159 @@
-body{
-    background: #1f1f1f;
-    background-image: url('imagem/lixo.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
+/* =========================================================
+   EcoHora — Batalha (raid)
+   Depende de estilos/tokens.css. Antes essa tela vivia sozinha
+   com cores fixas (#1f1f1f, limegreen, texto com glow amarelo);
+   agora usa a mesma paleta do resto do site.
+========================================================= */
+
+body {
+  background:
+    linear-gradient(180deg, rgba(7, 31, 28, 0.94) 0%, rgba(7, 31, 28, 0.75) 40%, rgba(7, 31, 28, 0.94) 100%),
+    url('imagem/lixo.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+
+.raid-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-h);
+  padding: 0 24px;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+}
+
+.raid-header .brand-name {
+  font-size: 1.1rem;
 }
 
 /* layout geral */
-.raid-layout{
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 80px;
-
-    margin-top: 50px;
+.raid-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+  padding: 50px 24px;
 }
-
 
 /* grade 2x3 */
-#time-raid{
-    display: grid;
-
-    grid-template-columns:
-    repeat(3, 180px);
-
-    gap: 25px;
+#time-raid {
+  display: grid;
+  grid-template-columns: repeat(3, 160px);
+  gap: 20px;
 }
-
 
 /* personagens */
-.personagem-img{
-    width: 180px;
-    height: 180px;
-
-    object-fit: cover;
-
-    border-radius: 15px;
-
-    transition: 0.2s;
-
-    cursor: pointer;
+.personagem-img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
 }
 
-.personagem-img:hover{
-    transform: scale(1.05);
+.personagem-img:hover {
+  transform: translateY(-3px);
+  border-color: var(--green);
 }
-
 
 /* imagem grande direita */
-.imagem-lateral{
-    width: 480px;
-
-    height: 500px;
-
-    object-fit: cover;
-
-    border-radius: 20px;
+.imagem-lateral {
+  width: 380px;
+  height: 420px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
 }
 
-#boss-area{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+#boss-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.boss-ui{
-    width: 100%;
-    margin-top: 15px;
+.boss-ui {
+  width: 100%;
+  max-width: 380px;
+  margin-top: 16px;
 }
 
-.barra-hp{
-    width: 100%;
-    height: 25px;
-
-    background: #3a3a3a;
-
-    border-radius: 20px;
-
-    overflow: hidden;
+.barra-hp {
+  width: 100%;
+  height: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
 }
 
-#boss-hp-fill{
-    width: 100%;
-    height: 100%;
-
-    background: red;
-
-    transition: 0.2s;
+#boss-hp-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--danger);
+  transition: width 0.2s ease;
 }
 
-#boss-vida{
-    text-align: center;
-    font-size: 22px;
-    margin-top: 10px;
+#boss-vida {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 10px;
+  color: var(--muted);
 }
 
-.personagem-card{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.personagem-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.hp-ui{
-    width: 100%;
-    margin-top: 10px;
+.hp-ui {
+  width: 100%;
+  margin-top: 8px;
 }
 
-.barra-hp{
-    width: 100%;
-    height: 18px;
-
-    background: #333;
-
-    border-radius: 20px;
-
-    overflow: hidden;
+.hp-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--green);
+  transition: width 0.2s ease;
 }
 
-.hp-fill{
-    width: 100%;
-    height: 100%;
-
-    background: limegreen;
-
-    transition: 0.2s;
+.hp-ui p {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
 }
 
-.hp-ui p{
-    text-align: center;
-    margin-top: 5px;
+#fim-combate {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(4, 15, 12, 0.88);
+  z-index: 9999;
 }
 
-
-#fim-combate{
-    position: fixed;
-    inset: 0;
-
-    display: none;
-
-    justify-content: center;
-    align-items: center;
-
-    background: rgba(0,0,0,0.75);
-
-    z-index: 9999;
+#texto-final {
+  font-size: 4.5rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
-
-#texto-final{
-    font-size: 100px;
-    font-weight: bold;
-
-    text-shadow:
-    0 0 20px black;
-}
-
 
 /* DERROTA */
-.derrota{
-
-    color: white;
-
-    filter:
-    grayscale(100%);
+.derrota {
+  color: var(--muted);
 }
 
-
 /* VITÓRIA */
-.vitoria{
-
-    color: #2cff2c;
-
-    text-shadow:
-    0 0 15px gold,
-    0 0 30px yellow;
+.vitoria {
+  color: var(--green-light);
 }
