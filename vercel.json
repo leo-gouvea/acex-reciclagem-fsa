@@ -1,5 +1,4 @@
 {
-  "buildCommand": "cd frontend && echo 'Frontend ready'",
   "outputDirectory": "frontend",
   "rewrites": [
     {
