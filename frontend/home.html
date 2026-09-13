@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoHora — Recicle e conquiste horas complementares</title>
+<meta name="description" content="EcoHora é o projeto da Fundação Santo André que transforma a reciclagem de embalagens em horas complementares reais.">
+<meta name="theme-color" content="#071f1c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon512_rounded.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="estilos/tokens.css">
+<link rel="stylesheet" href="estilos/home.css">
+</head>
+<body>
+
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="site-header">
+  <div class="header-inner">
+
+    <a class="brand" href="home.html" aria-label="EcoHora, página inicial">
+      <img class="brand-mark" src="assets/Ca105ad9cfc8580c765101d17bbb2323.webp" width="28" height="28" alt="">
+      <span class="brand-name">Eco<span>Hora</span></span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Navegação principal">
+      <a class="btn btn-nav" href="login.html">Entrar no site</a>
+      <a class="btn btn-nav-outline" href="#sobre">Conhecer o projeto</a>
+    </nav>
+
+    <button
+      class="menu-toggle"
+      id="menuToggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobileMenu"
+      aria-label="Abrir menu">
+      <span class="menu-toggle-box">
+        <span class="menu-toggle-bar"></span>
+        <span class="menu-toggle-bar"></span>
+        <span class="menu-toggle-bar"></span>
+      </span>
+    </button>
+
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <a class="btn btn-ghost btn-block" href="login.html">Entrar no site</a>
+    <a class="btn btn-outline btn-block" href="#sobre">Conhecer o projeto</a>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-media" role="img" aria-label="Área verde da Fundação Santo André, com trilhas entre as árvores do campus"></div>
+    <div class="hero-scrim"></div>
+    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="hero-fade" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <h1 id="hero-title" class="hero-title">SÓ AQUI</h1>
+
+      <p class="hero-subtitle">
+        <span class="accent-warm" id="heroDynamicWord">Sua embalagem</span><br>
+        vale <span class="accent-gold">horas complementares</span>
+      </p>
+
+      <a class="btn btn-cta-glow hero-cta" href="login.html">Comece a ganhar</a>
+    </div>
+
+    <div class="hero-clock" id="heroClock">
+      <img class="leaf-clock-img" src="assets/leaf-clock.png" alt="Ícone de folha com relógio, símbolo do EcoHora">
+      <svg class="leaf-clock-hand-overlay" viewBox="0 0 956 1199" aria-hidden="true">
+        <line id="clockHand" x1="454" y1="612" x2="454" y2="507" stroke="white" stroke-width="15" stroke-linecap="round"/>
+        <circle cx="454" cy="612" r="7" fill="white"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="intro" id="sobre" aria-labelledby="intro-title">
+    <div class="intro-inner">
+      <span class="section-rule is-green"></span>
+      <h2 id="intro-title">Reciclagem por horas complementares</h2>
+      <img class="doodle-underline is-short" src="assets/doodles/doodle-underline-short.png" alt="" aria-hidden="true">
+      <p class="text-hand">
+        Transforme o lixo reciclável que você já separa em horas para a
+        faculdade. O EcoHora une sustentabilidade, impacto social e
+        incentivo acadêmico numa única ação dentro do campus.
+      </p>
+    </div>
+  </section>
+
+  <section class="how" id="como-funciona" aria-labelledby="how-title">
+    <div class="how-inner">
+      <span class="section-rule is-green"></span>
+      <h2 id="how-title">Como funciona, em quatro passos</h2>
+      <img class="doodle-underline" src="assets/doodles/doodle-underline-long.png" alt="" aria-hidden="true">
+
+      <ol class="how-timeline">
+        <li class="how-step">
+          <img class="how-step-num" src="assets/doodles/doodle-num-1.png" alt="Passo 1" width="44" height="44">
+          <div class="how-step-body">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path d="M6 8h20l-6 10v8l-8 3v-11L6 8Z" stroke="var(--green)" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <h3>Separe o material</h3>
+            <p class="text-hand">Junte papel, plástico, metal e vidro na sua rotina normal, sem processo extra.</p>
+          </div>
+        </li>
+
+        <li class="how-step">
+          <img class="how-step-num" src="assets/doodles/doodle-num-2.png" alt="Passo 2" width="44" height="44">
+          <div class="how-step-body">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <rect x="5" y="10" width="22" height="16" rx="3" stroke="var(--warm)" stroke-width="2"/>
+              <path d="M5 14h22" stroke="var(--warm)" stroke-width="2"/>
+              <path d="M12 10V7a4 4 0 0 1 8 0v3" stroke="var(--warm)" stroke-width="2" fill="none"/>
+            </svg>
+            <h3>Entregue no ponto de coleta</h3>
+            <p class="text-hand">Leve até um dos pontos espalhados pelo campus, sem sair da sua rota do dia.</p>
+          </div>
+        </li>
+
+        <li class="how-step">
+          <img class="how-step-num" src="assets/doodles/doodle-num-3.png" alt="Passo 3" width="44" height="44">
+          <div class="how-step-body">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path d="M16 4 19 12 27 13 21 19 22 27 16 23 10 27 11 19 5 13 13 12 16 4Z" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <h3>Registre no EcoHora</h3>
+            <p class="text-hand">Escaneie o ponto de coleta no aplicativo e o material entregue vira pontos na sua conta.</p>
+          </div>
+        </li>
+
+        <li class="how-step">
+          <img class="how-step-num" src="assets/doodles/doodle-num-4.png" alt="Passo 4" width="44" height="44">
+          <div class="how-step-body">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <circle cx="16" cy="16" r="11" stroke="var(--green-light)" stroke-width="2"/>
+              <path d="M16 10v6l4 3" stroke="var(--green-light)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <h3>Converta em horas</h3>
+            <p class="text-hand">Troque os pontos acumulados por horas complementares reconhecidas pela faculdade.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="campus" aria-labelledby="campus-title">
+    <div class="campus-inner">
+      <div class="campus-text doodle-note">
+        <span class="section-rule is-warm"></span>
+        <h2 id="campus-title">Pensado para o dia a dia da FSA</h2>
+        <img class="doodle-arrow campus-doodle-arrow" src="assets/doodles/doodle-arrow-swoop.png" alt="" aria-hidden="true">
+        <span class="doodle-label campus-doodle-label">Fácil de apoiar!</span>
+        <p class="text-hand">
+          Os pontos de coleta ficam nos prédios que você já circula todos os dias,
+          entre uma aula e outra. O EcoHora não pede uma rotina nova, só aproveita
+          o trajeto que você já faz.
+        </p>
+      </div>
+      <div class="campus-media" role="img" aria-label="Área externa da Fundação Santo André com árvores e caminho de acesso aos prédios"></div>
+    </div>
+  </section>
+
+  <section class="benefits" aria-labelledby="benefits-title">
+    <div class="benefits-inner doodle-note">
+      <span class="section-rule is-gold"></span>
+      <h2 id="benefits-title">Por que participar</h2>
+      <img class="doodle-underline is-short" src="assets/doodles/doodle-underline-short.png" alt="" aria-hidden="true">
+
+      <div class="benefits-grid">
+        <article class="benefit-item">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M6 27C6 15 15 6 27 6c0 12-9 21-21 21Z" stroke="var(--green)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M8 25 22 11" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3>Menos lixo, mais natureza</h3>
+          <p class="text-hand">Cada entrega tira material do lixo comum e ajuda a preservar os recursos naturais do entorno da faculdade.</p>
+        </article>
+
+        <article class="benefit-item">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" stroke="var(--warm)" stroke-width="2"/>
+            <circle cx="22" cy="12" r="4" stroke="var(--warm)" stroke-width="2"/>
+            <path d="M4 28c0-5.5 3.6-9 8-9s8 3.5 8 9" stroke="var(--warm)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M19 19.3c4 .4 7 3.7 7 8.7" stroke="var(--warm)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3>Renda para cooperativas</h3>
+          <p class="text-hand">O material reciclável coletado vai direto para cooperativas de catadores da região, gerando renda local.</p>
+        </article>
+
+        <article class="benefit-item">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M7 13a10 10 0 0 1 17-6.5" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M22 3.5l3.2 3-4.2 1.8" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M25 19a10 10 0 0 1-17 6.5" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 28.5l-3.2-3 4.2-1.8" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Menos custo pra FSA</h3>
+          <p class="text-hand">Menos resíduo saindo do campus também significa menor custo de gestão de lixo para a instituição.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-cta" aria-labelledby="closing-cta-title">
+    <div class="closing-cta-inner">
+      <h2 id="closing-cta-title">Sua próxima entrega já pode virar hora complementar</h2>
+      <p class="text-hand">Leva menos tempo que ir até a lixeira do outro lado do prédio.</p>
+      <a class="btn btn-cta-glow" href="login.html">Quero participar</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Projeto ACEX FSA</p>
+</footer>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Voltar ao topo">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path d="M8 13V3M8 3 3 8M8 3l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  Topo
+</button>
+
+<script src="home.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.warn('Não foi possível registrar o service worker:', err);
+      });
+    });
+  }
+</script>
+</body>
+</html>

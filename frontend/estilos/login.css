@@ -1,658 +1,323 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-
-    --bg: #071f1c;
-
-    --card: #103832;
-
-    --green: #29c777;
-
-    --green-light: #7be3a8;
-
-    --text: #f4fff9;
-
-    --muted: #a9c4bb;
-
-    --line: rgba(255, 255, 255, 0.1);
-
-}
-
-
-body {
-
-    min-height: 100vh;
-
-    font-family: Arial, Helvetica, sans-serif;
-
-    background: var(--bg);
-
-    color: var(--text);
-
-}
-
-
 /* =========================================================
-   CONTAINER PRINCIPAL
+   EcoHora — login / cadastro
+   Depende de estilos/tokens.css (variáveis, botões, campos,
+   cartão). Aqui só o que é específico desta página: o
+   layout de duas colunas e o painel da esquerda.
 ========================================================= */
 
-.login-container {
-
-    min-height: 100vh;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
+.login-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  font-size: 1.75rem;
 }
 
-
 /* =========================================================
-   LADO ESQUERDO
+   PAINEL ESQUERDO
+   Mesma foto e vinheta do hero da home, pra manter a
+   identidade visual em vez de reinventar um painel com
+   gradiente decorativo.
 ========================================================= */
 
 .login-info {
-
-    position: relative;
-
-    padding: 50px 10%;
-
-    display: flex;
-
-    flex-direction: column;
-
-    background:
-        radial-gradient(
-            circle at 80% 20%,
-            rgba(123, 227, 168, 0.15),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #123f34,
-            #071f1c
-        );
-
-    overflow: hidden;
-
+  position: relative;
+  overflow: hidden;
+  padding: 44px 56px;
+  display: flex;
+  align-items: flex-end;
+  background-color: #0B2B23;
 }
 
-
-.login-info::after {
-
-    content: "♻";
-
-    position: absolute;
-
-    right: -40px;
-
-    bottom: -100px;
-
-    font-size: 350px;
-
-    opacity: 0.04;
-
+.login-info-media {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #0B2B23;
+  background-image:
+    radial-gradient(ellipse 78% 62% at 30% 48%, rgba(11, 43, 35, 0) 18%, rgba(11, 43, 35, 0.28) 40%, rgba(11, 43, 35, 0.86) 100%),
+    linear-gradient(90deg, rgba(11, 43, 35, 0.12) 0%, rgba(11, 43, 35, 0.38) 42%, rgba(11, 43, 35, 0.8) 100%),
+    url('../assets/campus-login.jpg');
+  background-size: cover, cover, cover;
+  background-position: center, center, 60% 40%;
 }
 
-
-/* =========================================================
-   LOGO
-========================================================= */
-
-.logo {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    position: relative;
-
-    z-index: 2;
-
+/* Além do foco central, funde as bordas do painel no verde
+   escuro do fundo — topo, base e a borda direita, que é a
+   que encosta no formulário e por isso é a que mais precisa
+   de uma transição suave (por isso o fade dela é o mais largo
+   dos três). A borda esquerda fica sem fade de propósito: ali
+   é o limite da própria tela, não uma costura entre painéis. */
+.login-info-edges {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image:
+    linear-gradient(to bottom, #0B2B23 0%, rgba(11, 43, 35, 0.16) 18%, transparent 42%),
+    linear-gradient(to top, #0B2B23 0%, rgba(11, 43, 35, 0.16) 22%, transparent 48%),
+    linear-gradient(to left, #0B2B23 0%, rgba(11, 43, 35, 0.52) 28%, transparent 52%);
 }
 
-
-.logo-icon {
-
-    width: 45px;
-
-    height: 45px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 12px;
-
-    background: var(--green);
-
-    color: #062016;
-
-    font-size: 24px;
-
-    font-weight: bold;
-
+.login-info-scrim {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    10deg,
+    rgba(4, 15, 12, 0.88) 0%,
+    rgba(4, 15, 12, 0.5) 45%,
+    rgba(4, 15, 12, 0.15) 80%
+  );
 }
 
-
-.logo h1 {
-
-    font-size: 28px;
-
+.login-info-grain {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-
-.logo span {
-
-    color: var(--green-light);
-
+.login-info-content {
+  position: relative;
+  max-width: 460px;
 }
 
-
-/* =========================================================
-   CONTEÚDO ESQUERDO
-========================================================= */
-
-.info-content {
-
-    flex: 1;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    max-width: 600px;
-
-    position: relative;
-
-    z-index: 2;
-
+.login-info .brand {
+  margin-bottom: 40px;
 }
 
-
-.tag {
-
-    width: fit-content;
-
-    padding: 8px 13px;
-
-    margin-bottom: 20px;
-
-    border-radius: 30px;
-
-    background: rgba(41, 199, 119, 0.1);
-
-    border: 1px solid rgba(41, 199, 119, 0.2);
-
-    color: var(--green-light);
-
-    font-size: 11px;
-
-    font-weight: bold;
-
+.login-info-title {
+  font-size: clamp(2.85rem, 4.5vw, 3.9rem);
+  line-height: 1.15;
+  margin-bottom: 14px;
 }
 
-
-.info-content h2 {
-
-    font-size: clamp(40px, 5vw, 65px);
-
-    line-height: 1.05;
-
-    margin-bottom: 20px;
-
+.login-info-text {
+  color: var(--text);
+  font-size: 1.4rem;
+  line-height: 1.5;
+  margin-bottom: 32px;
+  max-width: 40ch;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
 
-
-.info-content p {
-
-    max-width: 550px;
-
-    color: var(--muted);
-
-    line-height: 1.6;
-
-    font-size: 17px;
-
+.benefit-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-
-
-/* =========================================================
-   BENEFÍCIOS
-========================================================= */
-
-.benefits {
-
-    margin-top: 40px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 15px;
-
-}
-
 
 .benefit {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 13px;
-
-    padding: 15px 18px;
-
-    max-width: 380px;
-
-    background: rgba(255, 255, 255, 0.04);
-
-    border: 1px solid var(--line);
-
-    border-radius: 13px;
-
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: 1.28rem;
+  font-weight: 500;
 }
-
 
 /* =========================================================
-   ÁREA DO LOGIN
+   PAINEL DIREITO
 ========================================================= */
 
-.login-area {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 30px;
-
-    background: #0a2923;
-
+.login-form-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: #0B2B23;
 }
-
 
 .form-box {
-
-    width: 100%;
-
-    max-width: 480px;
-
-    background: var(--card);
-
-    border: 1px solid var(--line);
-
-    border-radius: 22px;
-
-    padding: 45px;
-
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.25);
-
+  width: 100%;
+  max-width: 460px;
+  padding: 44px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
 }
-
-
-/* =========================================================
-   FORMULÁRIOS
-========================================================= */
 
 .form-container {
-
-    display: none;
-
+  display: none;
 }
-
 
 .form-container.active {
-
-    display: block;
-
-    animation: aparecer 0.35s ease;
-
+  display: block;
+  animation: form-in 0.3s ease;
 }
 
-
-@keyframes aparecer {
-
-    from {
-
-        opacity: 0;
-
-        transform: translateX(20px);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateX(0);
-
-    }
-
+@keyframes form-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 
 .form-container h2 {
-
-    font-size: 30px;
-
-    margin-bottom: 10px;
-
+  font-size: clamp(2.8rem, 3.5vw, 3.4rem);
+  margin-bottom: 8px;
 }
-
 
 .form-description {
-
-    color: var(--muted);
-
-    margin-bottom: 30px;
-
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin-bottom: 28px;
 }
-
-
-/* =========================================================
-   INPUTS
-========================================================= */
-
-.input-group {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 8px;
-
-    margin-bottom: 20px;
-
-}
-
-
-.input-group label {
-
-    font-size: 13px;
-
-    font-weight: bold;
-
-    color: var(--green-light);
-
-}
-
-
-.input-group input {
-
-    width: 100%;
-
-    padding: 15px;
-
-    border-radius: 10px;
-
-    border: 1px solid var(--line);
-
-    outline: none;
-
-    background: #09251f;
-
-    color: white;
-
-    font-size: 15px;
-
-    transition: 0.2s;
-
-}
-
-.input-group select {
-    width: 100%;
-
-    padding: 15px;
-
-    border-radius: 10px;
-
-    border: 1px solid var(--line);
-
-    outline: none;
-
-    background: #09251f;
-
-    color: white;
-
-    font-size: 15px;
-
-    transition: 0.2s;
-}
-
-
-.input-group input::placeholder {
-
-    color: #6d9185;
-
-}
-
-
-.input-group input:focus,
-.input-group select:focus {
-    border-color: var(--green);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(41, 199, 119, 0.1);
-}
-
-.input-group select option {
-    background: #09251f;
-    color: white;
-}
-
-
-/* =========================================================
-   BOTÃO PRINCIPAL
-========================================================= */
-
-.main-button {
-
-    width: 100%;
-
-    padding: 15px;
-
-    border: none;
-
-    border-radius: 11px;
-
-    background: var(--green);
-
-    color: #062016;
-
-    font-size: 15px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-
-}
-
-
-.main-button:hover {
-
-    background: var(--green-light);
-
-    transform: translateY(-2px);
-
-}
-
-.main-button:disabled {
-
-    opacity: 0.6;
-
-    cursor: not-allowed;
-
-    transform: none;
-
-}
-
-
-/* =========================================================
-   TROCAR LOGIN / CADASTRO
-========================================================= */
 
 .switch-text {
-
-    margin-top: 25px;
-
-    text-align: center;
-
-    color: var(--muted);
-
-    font-size: 14px;
-
+  margin-top: 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 1.05rem;
 }
-
 
 .switch-text button {
-
-    border: none;
-
-    background: transparent;
-
-    color: var(--green-light);
-
-    font-weight: bold;
-
-    cursor: pointer;
-
+  border: none;
+  background: transparent;
+  color: var(--green-light);
+  font-weight: 700;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
 }
 
-
 /* =========================================================
-   MENSAGEM
+   MENSAGEM DE FEEDBACK
 ========================================================= */
 
 .message {
-
-    position: fixed;
-
-    right: 25px;
-
-    bottom: 25px;
-
-    padding: 15px 20px;
-
-    background: #17483a;
-
-    border: 1px solid var(--green);
-
-    border-radius: 12px;
-
-    transform: translateY(120px);
-
-    opacity: 0;
-
-    transition: 0.3s;
-
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  padding: 14px 20px;
+  background: var(--surface);
+  border: 1px solid var(--green);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  transform: translateY(120px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
-
 
 .message.show {
-
-    transform: translateY(0);
-
-    opacity: 1;
-
+  transform: translateY(0);
+  opacity: 1;
 }
-
 
 /* =========================================================
    RESPONSIVIDADE
 ========================================================= */
 
 @media (max-width: 900px) {
+  .login-shell {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    font-size: 1.08rem;
+  }
 
-    .login-container {
+  .login-info {
+    min-height: 28vh;
+    padding: 28px 24px 20px;
+    align-items: flex-start;
+  }
 
-        grid-template-columns: 1fr;
+  .login-info-content {
+    max-width: 100%;
+    width: 100%;
+  }
 
-    }
+  .login-info .brand {
+    margin-bottom: 20px;
+  }
 
+  .login-info-title {
+    font-size: clamp(2.1rem, 7vw, 2.8rem);
+    margin-bottom: 10px;
+  }
 
-    .login-info {
+  .login-info-text {
+    font-size: 1.02rem;
+    margin-bottom: 0;
+    max-width: 100%;
+  }
 
-        min-height: 35vh;
+  .benefit-list {
+    display: none;
+  }
 
-        padding: 35px;
+  .login-form-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 18px 28px;
+    flex: 1;
+  }
 
-    }
+  .form-box {
+    width: min(100%, 440px);
+    padding: 28px 22px;
+    margin: 0 auto;
+  }
 
+  .form-container h2 {
+    font-size: clamp(2rem, 6vw, 2.6rem);
+  }
 
-    .info-content {
-
-        padding-top: 50px;
-
-    }
-
-
-    .info-content h2 {
-
-        font-size: 40px;
-
-    }
-
-
-    .benefits {
-
-        display: none;
-
-    }
-
-
-    .login-area {
-
-        min-height: 65vh;
-
-    }
-
+  .form-description,
+  .switch-text {
+    font-size: 0.96rem;
+  }
 }
 
-
 @media (max-width: 500px) {
+  .login-shell {
+    min-height: 100vh;
+    padding: 0;
+    font-size: 1rem;
+  }
 
-    .login-info {
+  .login-info {
+    padding: 20px 18px 16px;
+    min-height: 24vh;
+  }
 
-        padding: 25px;
+  .login-info-title {
+    font-size: 1.8rem;
+  }
 
-    }
+  .login-info-text {
+    font-size: 0.96rem;
+  }
 
+  .form-box {
+    width: 100%;
+    max-width: 100%;
+    padding: 22px 18px;
+  }
 
-    .login-area {
+  .form-container h2 {
+    font-size: 1.8rem;
+  }
 
-        padding: 15px;
-
-    }
-
-
-    .form-box {
-
-        padding: 30px 22px;
-
-    }
-
-
-    .info-content h2 {
-
-        font-size: 34px;
-
-    }
-
+  .form-description,
+  .switch-text {
+    font-size: 0.9rem;
+  }
 }
