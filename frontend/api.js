@@ -131,7 +131,7 @@ async function getCourses() {
 
 
 async function getClasses() {
-    return apiRequest("/fsa/get/clases", {
+    return apiRequest("/fsa/get/classes", {
         method: "GET"
     });
 }
