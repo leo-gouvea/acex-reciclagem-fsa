@@ -3,581 +3,235 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EcoHora - Painel</title>
-<link rel="icon" href="assets/icon512_rounded.png">
+<title>EcoHora — Recicle e conquiste horas complementares</title>
+<meta name="description" content="EcoHora é o projeto da Fundação Santo André que transforma a reciclagem de embalagens em horas complementares reais.">
 <meta name="theme-color" content="#071f1c">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon512_rounded.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="estilos/tokens.css">
-<link rel="stylesheet" href="estilos/dashboard.css">
+<link rel="stylesheet" href="estilos/home.css">
 </head>
-
 <body>
 
-<header class="app-header">
-  <a class="brand" href="index.html" aria-label="EcoHora, início">
-    <img class="brand-mark" src="assets/Ca105ad9cfc8580c765101d17bbb2323.webp" width="26" height="26" alt="">
-    <span class="brand-name">Eco<span>Hora</span></span>
-  </a>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-  <nav class="app-nav" aria-label="Navegação do painel">
-    <ul>
-      <li>
-        <button class="active" data-page="0" aria-current="page">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8.5V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="nav-text">Home</span>
-        </button>
-      </li>
-      <li>
-        <button data-page="1">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="14.5" cy="8" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 17c0-3 2-4.8 4.5-4.8s4.5 1.8 4.5 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12.5 12.6c2.1.2 3.5 1.9 3.5 4.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          <span class="nav-text">Grupo</span>
-        </button>
-      </li>
-      <li>
-        <button data-page="2">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 3 10 3 10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 3c3.5 0.6 6 3.6 6 7a6 6 0 0 1-2 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M13 17 10 17 10 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 17c-3.5-.6-6-3.6-6-7a6 6 0 0 1 2-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          <span class="nav-text">Lixão</span>
-        </button>
-      </li>
-      <li>
-        <button data-page="3">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 6h10l-1 10.5a1 1 0 0 1-1 .9H7a1 1 0 0 1-1-.9L5 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 6V5a2.5 2.5 0 0 1 5 0v1" stroke="currentColor" stroke-width="1.6"/></svg>
-          <span class="nav-text">Loja</span>
-        </button>
-      </li>
-      <li>
-        <button data-page="4">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 17 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M18 3 11 10l1.5 1.5L19 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 3l4.5 1.5L8 9 5 10 2 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14.5" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
-          <span class="nav-text">Batalha</span>
-        </button>
-      </li>
-      <li>
-        <button data-page="5">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 18s6-5.2 6-9.8A6 6 0 0 0 4 8.2C4 12.8 10 18 10 18Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="8.2" r="2.1" stroke="currentColor" stroke-width="1.6"/></svg>
-          <span class="nav-text">Postos</span>
-        </button>
-      </li>
-    </ul>
-  </nav>
+<header class="site-header">
+  <div class="header-inner">
 
-  <div class="header-points">
-    <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2 12.2 7.4 18 8 13.6 11.8 15 17.5 10 14.3 5 17.5 6.4 11.8 2 8 7.8 7.4 10 2Z" fill="var(--gold)"/></svg>
-    <span id="points">0</span> pts
-  </div>
+    <a class="brand" href="home.html" aria-label="EcoHora, página inicial">
+      <img class="brand-mark" src="assets/Ca105ad9cfc8580c765101d17bbb2323.webp" width="28" height="28" alt="">
+      <span class="brand-name">Eco<span>Hora</span></span>
+    </a>
 
-  <button id="logoutButton" class="btn btn-danger-outline" type="button">Sair</button>
-</header>
-
-
-<main class="viewport">
-<div class="pages" id="pages">
-
-<section class="page"><div class="container">
-  <div class="hero">
-    <div class="hero-main">
-      <span class="badge">EcoHora · Fundação Santo André</span>
-      <h2>Recicle e conquiste suas horas</h2>
-
-      <ul class="hero-list">
-        <li><strong>Grupo:</strong> veja quem mais pontuou na sua turma e quantos alunos participam.</li>
-        <li><strong>Lixão:</strong> registre o material que você entregou pra reciclagem.</li>
-        <li><strong>Loja:</strong> troque pontos por decoração de perfil ou horas complementares.</li>
-        <li><strong>Batalha:</strong> dispute com outras turmas pra ver quem recicla mais.</li>
-        <li><strong>Postos:</strong> mapa com os pontos de coleta espalhados pelo campus.</li>
-      </ul>
-
-      <button class="btn btn-primary" onclick="goToPage(2)">Registrar reciclagem</button>
-    </div>
-
-    <div class="card level-card">
-      <p class="level-label">Seu progresso</p>
-      <h2>Nível 1</h2>
-      <p class="muted-text">Continue reciclando pra desbloquear novas recompensas.</p>
-
-      <div class="level-row">
-        <span>XP</span>
-        <b>72 / 100</b>
-      </div>
-
-      <div class="progress">
-        <div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="grid stats">
-    <div class="card stat">
-      <svg class="icon" width="26" height="26" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2 12.2 7.4 18 8 13.6 11.8 15 17.5 10 14.3 5 17.5 6.4 11.8 2 8 7.8 7.4 10 2Z" stroke="var(--gold)" stroke-width="1.4" stroke-linejoin="round"/></svg>
-      <small>Pontos</small>
-      <strong id="pointsHome">0</strong>
-    </div>
-
-    <div class="card stat">
-      <svg class="icon" width="26" height="26" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3 2 6.5 10 10 18 6.5 10 3Z" stroke="var(--green-light)" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 8.3V12c0 1.4 2 2.5 4.5 2.5s4.5-1.1 4.5-2.5V8.3" stroke="var(--green-light)" stroke-width="1.4" fill="none"/></svg>
-      <small>Horas complementares</small>
-      <strong>0h</strong>
-    </div>
-
-    <div class="card stat">
-      <svg class="icon" width="26" height="26" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 3 10 3 10 6" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 3c3.5 0.6 6 3.6 6 7a6 6 0 0 1-2 4.5" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/><path d="M13 17 10 17 10 14" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 17c-3.5-.6-6-3.6-6-7a6 6 0 0 1 2-4.5" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"/></svg>
-      <small>Entregas</small>
-      <strong id="deliveries">0</strong>
-    </div>
-
-    <div class="card stat">
-      <svg class="icon" width="26" height="26" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2c1 3-2.5 4-2.5 7a2.5 2.5 0 0 0 5 0c1.5 1 1.5 3 .5 4.5A5 5 0 0 1 5 10c0-3 2-4 2-6.5 1 1 1.5 2 1.5 2S8.5 4 10 2Z" stroke="var(--warm)" stroke-width="1.4" stroke-linejoin="round"/></svg>
-      <small>Sequência</small>
-      <strong>1 dia</strong>
-    </div>
-  </div>
-
-  <h2 class="section-title">Missões</h2>
-
-  <div class="grid missions">
-    <div class="card mission" onclick="goToPage(2)">
-      <h3>Primeira entrega</h3>
-      <p>Registre seu primeiro material reciclável.</p>
-      <div class="points">+50 XP</div>
-    </div>
-
-    <div class="card mission" onclick="goToPage(5)">
-      <h3>Explorador verde</h3>
-      <p>Encontre um ponto de coleta na faculdade.</p>
-      <div class="points">+30 XP</div>
-    </div>
-
-    <div class="card mission" onclick="goToPage(4)">
-      <h3>Entre na batalha</h3>
-      <p>Veja a disputa entre os grupos.</p>
-      <div class="points">+20 XP</div>
-    </div>
-  </div>
-</div></section>
-
-
-<section class="page"><div class="container">
-  <h2 class="title">Sua turma</h2>
-  <p class="subtitle">A pontuação coletiva incentiva a participação de todos.</p>
-
-  <div class="group-head">
-    <div>
-      <span class="badge">Grupo atual</span>
-      <div class="group-name">Guardiões da Terra</div>
-      <p class="subtitle" style="margin:6px 0 0">12 integrantes</p>
-    </div>
-
-    <div class="group-score">
-      <strong>0</strong> pontos
-    </div>
-  </div>
-
-  <h2 class="section-title">Ranking</h2>
-
-  <div class="ranking">
-    <div class="rank">
-      <div class="pos">1</div>
-      <div class="name">Você</div>
-      <div class="score" id="rankPoints">0 pts</div>
-    </div>
-
-    <div class="rank">
-      <div class="pos">2</div>
-      <div class="name">Ana</div>
-      <div class="score">0 pts</div>
-    </div>
-
-    <div class="rank">
-      <div class="pos">3</div>
-      <div class="name">Pedro</div>
-      <div class="score">0 pts</div>
-    </div>
-
-    <div class="rank">
-      <div class="pos">4</div>
-      <div class="name">Lucas</div>
-      <div class="score">0 pts</div>
-    </div>
-  </div>
-</div></section>
-
-
-<section class="page"><div class="container">
-  <h2 class="title">Lixão</h2>
-  <p class="subtitle">Registre a entrega do material reciclável para receber pontos.</p>
-
-  <div class="callout">
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.3" stroke="var(--gold)" stroke-width="1.5"/><path d="M10 6.5v4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="13.3" r="0.9" fill="var(--gold)"/></svg>
-    Demonstração: os dados e pontuações abaixo são fictícios.
-  </div>
-
-  <div class="grid recycle-grid">
-
-    <div class="card recycle" onclick="recycle('Plástico',50)">
-      <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 3h6v2.5l1.5 2V19a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2V7.5L9 5.5V3Z" stroke="var(--green-light)" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 12h7" stroke="var(--green-light)" stroke-width="1.5"/></svg>
-      <h3>Plástico</h3>
-      <p>Garrafas, embalagens e outros recicláveis.</p>
-      <div class="points">+50 pontos</div>
-    </div>
-
-    <div class="card recycle" onclick="recycle('Papel',40)">
-      <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3h9l3 3v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="var(--green-light)" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12h6M9 15.5h6M9 8.5h3" stroke="var(--green-light)" stroke-width="1.4" stroke-linecap="round"/></svg>
-      <h3>Papel</h3>
-      <p>Folhas, caixas e materiais de papel.</p>
-      <div class="points">+40 pontos</div>
-    </div>
-
-    <div class="card recycle" onclick="recycle('Vidro',70)">
-      <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 2h4v3.2l2 2.3V20a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V7.5l2-2.3V2Z" stroke="var(--green-light)" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 13h8" stroke="var(--green-light)" stroke-width="1.5"/></svg>
-      <h3>Vidro</h3>
-      <p>Garrafas e recipientes de vidro.</p>
-      <div class="points">+70 pontos</div>
-    </div>
-
-    <div class="card recycle" onclick="recycle('Metal',80)">
-      <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8 6.5 20a1.5 1.5 0 0 0 1.5 1.6h8a1.5 1.5 0 0 0 1.5-1.6L17 8" stroke="var(--green-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="12" cy="8" rx="5" ry="2" stroke="var(--green-light)" stroke-width="1.5"/></svg>
-      <h3>Metal</h3>
-      <p>Latas e outros metais recicláveis.</p>
-      <div class="points">+80 pontos</div>
-    </div>
-
-  </div>
-
-  <div class="card info-card">
-    <h3>Como funciona?</h3>
-    <p>
-      Escolha o tipo de material entregue. Em uma versão real,
-      esta ação deverá ser validada por um posto de coleta antes
-      da conversão em pontos e horas complementares.
-    </p>
-  </div>
-</div></section>
-
-
-<section class="page"><div class="container">
-  <h2 class="title">Loja</h2>
-  <p class="subtitle">Use os pontos conquistados para desbloquear recompensas.</p>
-
-  <div class="grid shop-grid">
-
-    <div class="card shop">
-      <div class="shop-image">
-        <svg width="34" height="34" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3 2 6.5 10 10 18 6.5 10 3Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/><path d="M5.5 8.3V12c0 1.4 2 2.5 4.5 2.5s4.5-1.1 4.5-2.5V8.3" stroke="var(--gold)" stroke-width="1.5" fill="none"/></svg>
-      </div>
-      <h3>Horas complementares</h3>
-      <div class="price">1.000 pts</div>
-      <button class="btn btn-solid-green" onclick="buy('Horas complementares')">Resgatar</button>
-    </div>
-
-    <div class="card shop">
-      <div class="shop-image">
-        <svg width="34" height="34" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 4 3 6l2 2.5 1.5-1V17a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V7.5l1.5 1L17 6l-3-2-2.5 1.5h-3L6 4Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/></svg>
-      </div>
-      <h3>Roupas</h3>
-      <div class="price">500 pts</div>
-      <button class="btn btn-solid-green" onclick="buy('Camiseta')">Resgatar</button>
-    </div>
-
-    <div class="card shop">
-      <div class="shop-image">
-        <svg width="34" height="34" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="13" height="13" rx="1.5" stroke="var(--gold)" stroke-width="1.5"/><circle cx="7.5" cy="8" r="1.4" stroke="var(--gold)" stroke-width="1.3"/><path d="M4.5 14.5 8.5 11l2.5 2.3L14 10l2 2.5" stroke="var(--gold)" stroke-width="1.4" stroke-linejoin="round"/></svg>
-      </div>
-      <h3>Moldura</h3>
-      <div class="price">750 pts</div>
-      <button class="btn btn-solid-green" onclick="buy('Moldura de perfil')">Resgatar</button>
-    </div>
-
-    <div class="card shop">
-      <div class="shop-image">
-        <svg width="34" height="34" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 3h8v4a4 4 0 0 1-8 0V3Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/><path d="M4.5 4h1.5v2a2 2 0 0 1-2-2Zm11 0h-1.5v2a2 2 0 0 0 2-2Z" stroke="var(--gold)" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 11v3.5M7.5 16.5h5" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
-      <h3>Badge especial</h3>
-      <div class="price">10.000 pts</div>
-      <button class="btn btn-solid-green" onclick="buy('Badge especial')">Resgatar</button>
-    </div>
-
-  </div>
-</div></section>
-
-
-<section class="page"><div class="container">
-  <h2 class="title">Batalha</h2>
-  <p class="subtitle">Desafios entre turmas para conquistar recompensas.</p>
-
-  <div class="battle">
-
-    <div class="team">
-      <svg width="40" height="40" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 3C8 3 4 8 4 14c0 6.5 5 10.5 10 11 5-0.5 10-4.5 10-11 0-6-4-11-10-11Z" fill="var(--green-light)"/><path d="M9 18c3-6 6-9 11-11" stroke="var(--bg-alt)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
-      <h2>Guardiões da Terra</h2>
-      <div class="team-score" id="teamScore">0</div>
-      <small>pontos</small>
-
-      <div class="battlebar">
-        <div></div>
-      </div>
-    </div>
-
-    <div class="vs">VS</div>
-
-    <div class="team">
-      <svg width="40" height="40" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 12c2-1.5 3.5-1.5 5.5 0s3.5 1.5 5.5 0 3.5-1.5 5-0" stroke="var(--green-light)" stroke-width="1.6" stroke-linecap="round"/><path d="M2 16c2-1.5 3.5-1.5 5.5 0s3.5 1.5 5.5 0 3.5-1.5 5-0" stroke="var(--green-light)" stroke-width="1.6" stroke-linecap="round"/><path d="M10 3c1.5 2-1 3 0 5" stroke="var(--green-light)" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <h2>Eco Warriors</h2>
-      <div class="team-score">0</div>
-      <small>pontos</small>
-
-      <div class="battlebar">
-        <div style="width:52%"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="card">
-    <span class="badge">Desafio da semana</span>
-    <h2>Quem recicla mais?</h2>
-    <p>Registre suas entregas e ajude a sua turma a conquistar a próxima vitória.</p>
+    <nav class="primary-nav" aria-label="Navegação principal">
+      <a class="btn btn-nav" href="login.html">Entrar no site</a>
+      <a class="btn btn-nav-outline" href="#sobre">Conhecer o projeto</a>
+    </nav>
 
     <button
-      class="btn btn-primary"
-      style="margin-top:16px"
-      onclick="showToast('Você entrou no desafio!')">
-      Participar
+      class="menu-toggle"
+      id="menuToggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobileMenu"
+      aria-label="Abrir menu">
+      <span class="menu-toggle-box">
+        <span class="menu-toggle-bar"></span>
+        <span class="menu-toggle-bar"></span>
+        <span class="menu-toggle-bar"></span>
+      </span>
     </button>
-  </div>
-</div></section>
 
-
-<section class="page"><div class="container">
-  <h2 class="title">Postos</h2>
-  <p class="subtitle">Locais para coleta de recicláveis.</p>
-
-  <div class="callout callout-warm">
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2 18.5 17H1.5L10 2Z" stroke="var(--warm)" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 8v4" stroke="var(--warm)" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="14.5" r="0.9" fill="var(--warm)"/></svg>
-    Esses dados são fictícios, ainda não refletem a realidade fiel do ambiente.
   </div>
 
-  <div class="stations">
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <a class="btn btn-ghost btn-block" href="login.html">Entrar no site</a>
+    <a class="btn btn-outline btn-block" href="#sobre">Conhecer o projeto</a>
+  </div>
+</header>
 
-    <div class="map">
-      <img
-        src="assets/mapa-fsa_atualizado-931x1024.jpg"
-        alt="Mapa da Fundação Santo André"
-        onerror="this.style.display='none'">
+<main id="conteudo">
 
-      <div class="map-placeholder">Mapa dos pontos de coleta</div>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-media" role="img" aria-label="Área verde da Fundação Santo André, com trilhas entre as árvores do campus"></div>
+    <div class="hero-scrim"></div>
+    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="hero-fade" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <h1 id="hero-title" class="hero-title">SÓ AQUI</h1>
+
+      <p class="hero-subtitle">
+        <span class="accent-warm" id="heroDynamicWord">Sua embalagem</span><br>
+        vale <span class="accent-gold">horas complementares</span>
+      </p>
+
+      <a class="btn btn-cta-glow hero-cta" href="login.html">Comece a ganhar</a>
     </div>
 
-    <div class="station-list">
-
-      <div class="station">
-        <h3>Fafil</h3>
-        <p>Ao lado esquerdo da saída, sentido Faeco.</p>
-        <div class="distance">Ponto de coleta</div>
-      </div>
-
-      <div class="station">
-        <h3>Fafil — 1ºA</h3>
-        <p>Ao lado dos banheiros no 1ºA, lado leste.</p>
-        <div class="distance">Ponto de coleta</div>
-      </div>
-
-      <div class="station">
-        <h3>Fafil — Térreo</h3>
-        <p>Perto da entrada sentido Faengs.</p>
-        <div class="distance">Ponto de coleta</div>
-      </div>
-
-      <div class="station">
-        <h3>Prédio Central</h3>
-        <p>Ao lado de fora da cantina, em frente à praça.</p>
-        <div class="distance">Ponto de coleta</div>
-      </div>
-
-      <div class="station">
-        <h3>Prédio Central</h3>
-        <p>Perto da secretaria, ao lado da mesa de ping pong.</p>
-        <div class="distance">Ponto de coleta</div>
-      </div>
-
+    <div class="hero-clock" id="heroClock">
+      <img class="leaf-clock-img" src="assets/leaf-clock.png" alt="Ícone de folha com relógio, símbolo do EcoHora">
+      <svg class="leaf-clock-hand-overlay" viewBox="0 0 956 1199" aria-hidden="true">
+        <line id="clockHand" x1="454" y1="612" x2="454" y2="507" stroke="white" stroke-width="15" stroke-linecap="round"/>
+        <circle cx="454" cy="612" r="7" fill="white"/>
+      </svg>
     </div>
-  </div>
-</div></section>
+  </section>
 
-</div>
+  <section class="intro" id="sobre" aria-labelledby="intro-title">
+    <div class="intro-inner">
+      <span class="section-rule is-green"></span>
+      <h2 id="intro-title">Reciclagem por horas complementares</h2>
+      <img class="doodle-underline is-short" src="assets/doodles/doodle-underline-short.png" alt="" aria-hidden="true">
+      <p class="text-hand">
+        Transforme o lixo reciclável que você já separa em horas para a
+        faculdade. O EcoHora une sustentabilidade, impacto social e
+        incentivo acadêmico numa única ação dentro do campus.
+      </p>
+    </div>
+  </section>
+
+  <section class="how" id="como-funciona" aria-labelledby="how-title">
+    <div class="how-inner">
+      <span class="section-rule is-green"></span>
+      <h2 id="how-title">Como funciona, em quatro passos</h2>
+      <img class="doodle-underline" src="assets/doodles/doodle-underline-long.png" alt="" aria-hidden="true">
+
+      <ol class="how-timeline">
+        <li class="how-step">
+          <img class="how-step-num" src="assets/doodles/doodle-num-1.png" alt="Passo 1" width="44" height="44">
+          <div class="how-step-body">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path d="M6 8h20l-6 10v8l-8 3v-11L6 8Z" stroke="var(--green)" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <h3>Separe o material</h3>
+            <p class="text-hand">Junte papel, plástico, metal e vidro na sua rotina normal, sem processo extra.</p>
+          </div>
+        </li>
+
+        <li class="how-step">
+          <img class="how-step-num" src="assets/doodles/doodle-num-2.png" alt="Passo 2" width="44" height="44">
+          <div class="how-step-body">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <rect x="5" y="10" width="22" height="16" rx="3" stroke="var(--warm)" stroke-width="2"/>
+              <path d="M5 14h22" stroke="var(--warm)" stroke-width="2"/>
+              <path d="M12 10V7a4 4 0 0 1 8 0v3" stroke="var(--warm)" stroke-width="2" fill="none"/>
+            </svg>
+            <h3>Entregue no ponto de coleta</h3>
+            <p class="text-hand">Leve até um dos pontos espalhados pelo campus, sem sair da sua rota do dia.</p>
+          </div>
+        </li>
+
+        <li class="how-step">
+          <img class="how-step-num" src="assets/doodles/doodle-num-3.png" alt="Passo 3" width="44" height="44">
+          <div class="how-step-body">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path d="M16 4 19 12 27 13 21 19 22 27 16 23 10 27 11 19 5 13 13 12 16 4Z" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <h3>Registre no EcoHora</h3>
+            <p class="text-hand">Escaneie o ponto de coleta no aplicativo e o material entregue vira pontos na sua conta.</p>
+          </div>
+        </li>
+
+        <li class="how-step">
+          <img class="how-step-num" src="assets/doodles/doodle-num-4.png" alt="Passo 4" width="44" height="44">
+          <div class="how-step-body">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <circle cx="16" cy="16" r="11" stroke="var(--green-light)" stroke-width="2"/>
+              <path d="M16 10v6l4 3" stroke="var(--green-light)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <h3>Converta em horas</h3>
+            <p class="text-hand">Troque os pontos acumulados por horas complementares reconhecidas pela faculdade.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="campus" aria-labelledby="campus-title">
+    <div class="campus-inner">
+      <div class="campus-text doodle-note">
+        <span class="section-rule is-warm"></span>
+        <h2 id="campus-title">Pensado para o dia a dia da FSA</h2>
+        <img class="doodle-arrow campus-doodle-arrow" src="assets/doodles/doodle-arrow-swoop.png" alt="" aria-hidden="true">
+        <span class="doodle-label campus-doodle-label">Fácil de apoiar!</span>
+        <p class="text-hand">
+          Os pontos de coleta ficam nos prédios que você já circula todos os dias,
+          entre uma aula e outra. O EcoHora não pede uma rotina nova, só aproveita
+          o trajeto que você já faz.
+        </p>
+      </div>
+      <div class="campus-media" role="img" aria-label="Área externa da Fundação Santo André com árvores e caminho de acesso aos prédios"></div>
+    </div>
+  </section>
+
+  <section class="benefits" aria-labelledby="benefits-title">
+    <div class="benefits-inner doodle-note">
+      <span class="section-rule is-gold"></span>
+      <h2 id="benefits-title">Por que participar</h2>
+      <img class="doodle-underline is-short" src="assets/doodles/doodle-underline-short.png" alt="" aria-hidden="true">
+
+      <div class="benefits-grid">
+        <article class="benefit-item">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M6 27C6 15 15 6 27 6c0 12-9 21-21 21Z" stroke="var(--green)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M8 25 22 11" stroke="var(--green)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3>Menos lixo, mais natureza</h3>
+          <p class="text-hand">Cada entrega tira material do lixo comum e ajuda a preservar os recursos naturais do entorno da faculdade.</p>
+        </article>
+
+        <article class="benefit-item">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" stroke="var(--warm)" stroke-width="2"/>
+            <circle cx="22" cy="12" r="4" stroke="var(--warm)" stroke-width="2"/>
+            <path d="M4 28c0-5.5 3.6-9 8-9s8 3.5 8 9" stroke="var(--warm)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M19 19.3c4 .4 7 3.7 7 8.7" stroke="var(--warm)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3>Renda para cooperativas</h3>
+          <p class="text-hand">O material reciclável coletado vai direto para cooperativas de catadores da região, gerando renda local.</p>
+        </article>
+
+        <article class="benefit-item">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M7 13a10 10 0 0 1 17-6.5" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M22 3.5l3.2 3-4.2 1.8" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M25 19a10 10 0 0 1-17 6.5" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 28.5l-3.2-3 4.2-1.8" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Menos custo pra FSA</h3>
+          <p class="text-hand">Menos resíduo saindo do campus também significa menor custo de gestão de lixo para a instituição.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-cta" aria-labelledby="closing-cta-title">
+    <div class="closing-cta-inner">
+      <h2 id="closing-cta-title">Sua próxima entrega já pode virar hora complementar</h2>
+      <p class="text-hand">Leva menos tempo que ir até a lixeira do outro lado do prédio.</p>
+      <a class="btn btn-cta-glow" href="login.html">Quero participar</a>
+    </div>
+  </section>
 </main>
 
+<footer class="site-footer">
+  <p>Projeto ACEX FSA</p>
+</footer>
 
-<div class="toast" id="toast"></div>
+<button class="back-to-top" id="backToTop" type="button" aria-label="Voltar ao topo">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path d="M8 13V3M8 3 3 8M8 3l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  Topo
+</button>
 
-
-<!-- API E AUTENTICAÇÃO -->
-<script src="api.js"></script>
-<script src="auth.js"></script>
-
-
-<!-- FUNCIONALIDADES DA PÁGINA -->
-<script>
-const pages = document.getElementById('pages');
-const buttons = [...document.querySelectorAll('.app-nav button')];
-
-let current = 0;
-let points = 0;
-let deliveries = 0;
-let startX = 0;
-
-
-function goToPage(n) {
-  n = Math.max(0, Math.min(5, n));
-  current = n;
-
-  pages.style.transform = `translateX(-${n * 100}vw)`;
-
-  buttons.forEach((b, i) => {
-    b.classList.toggle('active', i === n);
-    b.toggleAttribute('aria-current', i === n);
-  });
-}
-
-
-buttons.forEach(b => {
-  b.addEventListener('click', () => goToPage(+b.dataset.page));
-});
-
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') {
-    goToPage(current + 1);
-  }
-
-  if (e.key === 'ArrowLeft') {
-    goToPage(current - 1);
-  }
-});
-
-
-pages.addEventListener('pointerdown', e => {
-  startX = e.clientX;
-});
-
-
-pages.addEventListener('pointerup', e => {
-  const d = startX - e.clientX;
-
-  if (Math.abs(d) > 55) {
-    goToPage(current + (d > 0 ? 1 : -1));
-  }
-});
-
-
-function update() {
-  document.getElementById('points').textContent =
-    points.toLocaleString('pt-BR');
-
-  document.getElementById('pointsHome').textContent =
-    points.toLocaleString('pt-BR');
-
-  document.getElementById('deliveries').textContent =
-    deliveries;
-
-  document.getElementById('rankPoints').textContent =
-    points.toLocaleString('pt-BR') + ' pts';
-
-  document.getElementById('teamScore').textContent =
-    points.toLocaleString('pt-BR');
-}
-
-
-function recycle(material, value) {
-  points += value;
-  deliveries++;
-
-  update();
-
-  showToast(`${material} registrado! +${value} pontos`);
-}
-
-
-function buy(item) {
-  showToast(`${item}: resgate demonstrativo.`);
-}
-
-
-let timer;
-
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-
-  t.textContent = msg;
-  t.classList.add('show');
-
-  clearTimeout(timer);
-
-  timer = setTimeout(() => {
-    t.classList.remove('show');
-  }, 2800);
-}
-
-
-update();
-</script>
-
-
-<!-- CONTROLE DE SESSÃO -->
-<script>
-
-  try {
-    await getSession();
-
-    console.log('Sessão válida.');
-  } catch (error) {
-    console.warn('Sessão inválida:', error.message);
-
-    window.location.replace('login.html');
-  }
-
-
-const logoutButton = document.getElementById('logoutButton');
-
-
-logoutButton.addEventListener('click', async function () {
-  try {
-    logoutButton.disabled = true;
-    logoutButton.textContent = 'Saindo...';
-
-    await logout();
-
-    localStorage.removeItem('usuarioEmail');
-
-    window.location.replace('login.html');
-
-  } catch (error) {
-    console.error('Erro ao realizar logout:', error);
-
-    // Mesmo se a API estiver indisponível,
-    // não deixamos o usuário permanecer na tela protegida.
-    localStorage.removeItem('usuarioEmail');
-
-    window.location.replace('login.html');
-  }
-});
-
-
-protectPage();
-
-
-window.addEventListener('pageshow', async function (event) {
-  if (event.persisted) {
-    await protectPage();
-  }
-});
-
-</script>
-
+<script src="home.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -587,6 +241,5 @@ window.addEventListener('pageshow', async function (event) {
     });
   }
 </script>
-
 </body>
 </html>
