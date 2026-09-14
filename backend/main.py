@@ -63,7 +63,7 @@ app = FastAPI(title="API ACEX", description="API construída para o projeto ACEX
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://acex-reciclagem-fsa.vercel.app/"
+        "https://acex-reciclagem-fsa.vercel.app",
         # URL's de Teste devem sair da versão final
         "http://127.0.0.1:5500"
         ],
