@@ -6,6 +6,8 @@ import importlib # Para efetivamente importar bibliotecas dinamicamente
 from fastapi import FastAPI, Security, HTTPException, status, Depends, Request, Response
 from fastapi.security import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
+# Para repelir robos de busca automática de consumir da API sem necessidade (Não protege contra ataques)
+from fastapi.responses import PlainTextResponse
 import jwt # Importado para trabalhar com logins e credenciais de Usuários (Tokens temporários)
 # Uvicorn que usamos para rodar como servidor local
 import uvicorn
@@ -56,15 +58,13 @@ def check_access(request: Request, key: str = Security(header_api_key)):
 
 # Instanciamento (Inicia a nossa API)
 app = FastAPI(title="API ACEX", description="API construída para o projeto ACEX 2026", version="0.3.2")
-# dependencies=[Depends(check_key)] -> Removido de App para evitar BLoqueio de 100% das rotas
 
 # Adicionado o CORS para que o front se comunique com o Back
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://acex-reciclagem-fsa.vercel.app",
         # URL's de Teste devem sair da versão final
-        "http://127.0.0.1:8000",
-        "http://127.0.0.1:8080",
         "http://127.0.0.1:5500"
         ],
     allow_credentials=True,
@@ -85,57 +85,16 @@ async def root():
 
     return response
 
-# AUTENTICAÇÃO DE SESSÃO
-# ----------------------
-@app.get("/user/session")
-async def check_session(
-    response: Response,
-    user: dict = Depends(check_access)
-):
+# Rota efetiva dos robôs
+@app.get("/robots.txt", response_class=PlainTextResponse)
+def robots():
     """
-    Verifica se existe uma sessão autenticada.
-
-    O endpoint utiliza o mesmo mecanismo de autenticação
-    das demais rotas protegidas, através do cookie
-    'access_token' ou da chave X-API-Key.
-
-    Retorna os dados do usuário caso a autenticação seja válida.
-    Caso contrário, check_access() retorna HTTP 401.
+    For reliable bots to know that they are not allowed to crawl the API.
+    Check the robots.txt file for more information.
+    Google: https://developers.google.com/search/docs/crawling-indexing/robots/intro
     """
+    return "User-agent: *\nDisallow: /"
 
-    # Impede que navegador ou proxy reutilize uma resposta antiga.
-    response.headers["Cache-Control"] = "no-store"
-
-    return {
-        "authenticated": True,
-        "user": user
-    }
-
-
-@app.post("/user/logout")
-async def logout(response: Response):
-    """
-    Encerra a sessão removendo o cookie 'access_token'.
-
-    A rota não exige autenticação para permitir que o logout
-    funcione mesmo quando o token estiver inválido ou expirado.
-    """
-
-    response.delete_cookie(
-        key="access_token",
-        path="/",
-        secure=True,
-        httponly=True,
-        samesite="none"
-    )
-
-    # Impede o armazenamento da resposta em cache.
-    response.headers["Cache-Control"] = "no-store"
-
-    return {
-        "status": 200,
-        "detail": "Logout realizado com sucesso."
-    }
 
 # Para importação das rotas extras de foma dinamica
 PASTA_DE_ROTAS = os.path.join(os.path.dirname(__file__), "rotas")
