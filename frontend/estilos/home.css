@@ -516,7 +516,7 @@
 .back-to-top:hover {
   border-color: var(--blue);
   color: var(--blue);
-  background: rgba(101, 185, 255, 0.12);
+  background: rgb(0, 44, 51);
 }
 
 /* =========================================================
