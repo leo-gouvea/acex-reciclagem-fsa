@@ -764,7 +764,7 @@ body {
   .app-nav.mobile button.active {
     color: var(--green);
     border-bottom: 2px solid var(--green);
-    background: rgba(41, 199, 119, 0.15);
+    background: var(--green-deep);
   }
   
   /* Esconde o texto para ficar apenas ícones, prevenção */
