@@ -1,10 +1,13 @@
 {
   "outputDirectory": "frontend",
-  "rewrites": [
+  "redirects": [
     {
       "source": "/",
-      "destination": "/home.html"
-    },
+      "destination": "/home.html",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
     {
       "source": "/login",
       "destination": "/login.html"
