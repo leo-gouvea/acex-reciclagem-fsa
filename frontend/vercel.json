@@ -1,5 +1,4 @@
 {
-  "outputDirectory": "frontend",
   "redirects": [
     {
       "source": "/",
@@ -14,10 +13,6 @@
     },
     {
       "source": "/dashboard",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
