@@ -65,7 +65,7 @@ app.add_middleware(
     allow_origins=[
         "https://acex-reciclagem-fsa.vercel.app",
         # URL's de Teste devem sair da versão final
-        "http://127.0.0.1:5500"
+        "http://127.0.0.1:5500", # live Server
         ],
     allow_credentials=True,
     allow_methods=["*"],
