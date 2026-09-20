@@ -1,7 +1,8 @@
 {
   "name": "EcoHora",
   "short_name": "EcoHora",
-  "start_url": ".",
+  "start_url": "./home.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#071f1c",
   "theme_color": "#071f1c",
