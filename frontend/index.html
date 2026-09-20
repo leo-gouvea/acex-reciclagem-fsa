@@ -73,6 +73,55 @@
   <button id="logoutButton" class="btn btn-danger-outline" type="button">Sair</button>
 </header>
 
+<!-- NAVEGAÇÃO MOBILE (gaveta inferior) -->
+  <nav class="app-nav mobile" aria-label="Navegação do painel">
+    <div class="nav-center" id="navDrawer">
+      
+      <!-- O puxador (handle) da gaveta -->
+      <div class="drag-handle" onclick="toggleDrawer()">
+        <div class="handle-bar"></div>
+      </div>
+
+      <!-- Grid com todos os ícones -->
+      <ul class="nav-grid">
+        <!-- 4 Ícones Principais (Primeira linha) -->
+        <li>
+          <button class="active" data-page="0" aria-current="page">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8.5V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </li>
+        <li>
+          <button data-page="2">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 3 10 3 10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 3c3.5 0.6 6 3.6 6 7a6 6 0 0 1-2 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M13 17 10 17 10 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 17c-3.5-.6-6-3.6-6-7a6 6 0 0 1 2-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </button>
+        </li>
+        <li>
+          <button data-page="5">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 18s6-5.2 6-9.8A6 6 0 0 0 4 8.2C4 12.8 10 18 10 18Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="8.2" r="2.1" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+        </li>
+        <li>
+          <button data-page="1">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="14.5" cy="8" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 17c0-3 2-4.8 4.5-4.8s4.5 1.8 4.5 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12.5 12.6c2.1.2 3.5 1.9 3.5 4.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </button>
+        </li>
+
+        <!-- Ícones Secundários (Segunda linha, escondida inicialmente) -->
+        <li>
+          <button data-page="3">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 6h10l-1 10.5a1 1 0 0 1-1 .9H7a1 1 0 0 1-1-.9L5 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 6V5a2.5 2.5 0 0 1 5 0v1" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+        </li>
+        <li>
+          <button data-page="4">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 17 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M18 3 11 10l1.5 1.5L19 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 3l4.5 1.5L8 9 5 10 2 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14.5" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+        </li>
+        
+      </ul>
+    </div>
+  </nav>
+
 
 <main class="viewport">
 <div class="pages" id="pages">
@@ -436,9 +485,40 @@ function goToPage(n) {
 
   pages.style.transform = `translateX(-${n * 100}vw)`;
 
-  buttons.forEach((b, i) => {
-    b.classList.toggle('active', i === n);
-    b.toggleAttribute('aria-current', i === n);
+  buttons.forEach(b => {
+    const isActive = parseInt(b.dataset.page) === n;
+
+    b.classList.toggle('active', isActive);
+
+    if (isActive) {
+      b.setAttribute('aria-current', 'page');
+    } else {
+      b.removeAttribute('aria-current');
+    }
+  });
+
+  // Fecha a gaveta mobile ao trocar de página
+  if (drawer) drawer.classList.remove('expanded');
+}
+
+// Gaveta da navegação mobile
+const drawer = document.getElementById('navDrawer');
+let touchStartY = 0;
+
+function toggleDrawer() {
+  drawer.classList.toggle('expanded');
+}
+
+if (drawer) {
+  drawer.addEventListener('touchstart', e => {
+    touchStartY = e.touches[0].clientY;
+  });
+
+  drawer.addEventListener('touchmove', e => {
+    const diff = touchStartY - e.touches[0].clientY;
+
+    if (diff > 15) drawer.classList.add('expanded');
+    else if (diff < -15) drawer.classList.remove('expanded');
   });
 }
 
@@ -529,7 +609,7 @@ update();
 
 <!-- CONTROLE DE SESSÃO -->
 <script>
-
+async function protectPage() {
   try {
     await getSession();
 
@@ -539,6 +619,7 @@ update();
 
     window.location.replace('login.html');
   }
+}
 
 
 const logoutButton = document.getElementById('logoutButton');
