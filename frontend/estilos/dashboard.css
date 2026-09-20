@@ -687,44 +687,89 @@ body {
   /* Ativa a nav mobile */
   .app-nav.mobile {
     position: fixed;
-    bottom: 2.5rem;
+    bottom: 1.5rem;
     left: 0;
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    z-index: 100;
   }
 
-  .app-nav.mobile .nav-center{
-    background: rgba(255, 255, 255, 0.5);
+  .app-nav.mobile .nav-center {
+    background: rgba(255, 255, 255, 0.3);
     border: 1px solid var(--line);
-    border-radius: var(--radius-pill);
-    padding: 12px 12px;
-    backdrop-filter: blur(6px);
+    border-radius: 28px; /* Mais arredondado para imitar a imagem */
+    backdrop-filter: blur(12px);
+    width: calc(100% - 3rem);
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px;
+    overflow: hidden;
+    
+    /* Altura fechada: apenas a primeira linha + puxador */
+    height: 70px; 
+    transition: height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  /* Altura aberta: acomoda mais de duas linhas */
+  .app-nav.mobile .nav-center.expanded {
+    height: 210px; 
+  }
+
+  /* O puxador no topo */
+  .drag-handle {
+    width: 100%;
+    min-height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .handle-bar {
+    width: 32px;
+    height: 4px;
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
+    opacity: 0.5;
+  }
+
+  /* O Grid de 4 colunas */
+  .app-nav.mobile .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 0.7rem;
+    width: 100%;
+    list-style: none;
+  }
+
+  .nav-grid li {
+    display: flex;
+    justify-content: center;
   }
 
   .app-nav.mobile button {
     display: flex;
     align-items: center;
-    gap: 7px;
-    border: 0;
-    background: transparent;
-    color: black;
-    padding: 10px 14px;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 700;
+    justify-content: center;
     border-bottom: 2px solid transparent;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    border-radius: 50px;
+    background: rgba(0, 0, 0, 0.1);
+    color: black;
+    width: 100%;
+    height: 55px;
+    cursor: pointer;
   }
 
-  .app-nav.mobile .nav-center button.active {
-    background: var(--card);
-    color: var(--green-light);
-    border-radius: 2rem;
-    border-bottom-color: var(--green);
+  .app-nav.mobile button.active {
+    color: var(--green);
+    border-bottom: 2px solid var(--green);
+    background: rgba(41, 199, 119, 0.15);
+  }
+  
+  /* Esconde o texto para ficar apenas ícones, prevenção */
+  .app-nav.mobile .nav-text {
+    display: none;
   }
 
   .viewport {
@@ -732,7 +777,7 @@ body {
   }
 
   .page {
-    padding: 24px 15px 150px;
+    padding: 24px 15px 120px;
   }
 
   .group-head {
