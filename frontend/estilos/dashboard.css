@@ -66,6 +66,10 @@ body {
   justify-content: center;
 }
 
+.app-nav.mobile {
+  display: none;
+}
+
 .app-nav ul {
   display: flex;
   gap: 4px;
@@ -675,12 +679,60 @@ body {
     gap: 8px;
   }
 
+  /* Tira a Nav padrão */
+  .app-nav {
+    display: none;
+  }
+
+  /* Ativa a nav mobile */
+  .app-nav.mobile {
+    position: fixed;
+    bottom: 2.5rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .app-nav.mobile .nav-center{
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    padding: 12px 12px;
+    backdrop-filter: blur(6px);
+  }
+
+  .app-nav.mobile button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border: 0;
+    background: transparent;
+    color: black;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-bottom: 2px solid transparent;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .app-nav.mobile .nav-center button.active {
+    background: var(--card);
+    color: var(--green-light);
+    border-radius: 2rem;
+    border-bottom-color: var(--green);
+  }
+
   .viewport {
     top: 64px;
   }
 
   .page {
-    padding: 24px 15px 55px;
+    padding: 24px 15px 150px;
   }
 
   .group-head {

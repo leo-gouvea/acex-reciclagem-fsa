@@ -28,10 +28,90 @@
       <span class="brand-name">Eco<span>Hora</span></span>
     </a>
 
-    <nav class="primary-nav" aria-label="Navegação principal">
-      <a class="btn btn-nav" href="login.html">Entrar no site</a>
-      <a class="btn btn-nav-outline" href="#sobre">Conhecer o projeto</a>
-    </nav>
+  <nav class="app-nav" aria-label="Navegação do painel">
+    <ul>
+      <li>
+        <button class="active" data-page="0" aria-current="page">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8.5V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="nav-text">Home</span>
+        </button>
+      </li>
+      <li>
+        <button data-page="1">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="14.5" cy="8" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 17c0-3 2-4.8 4.5-4.8s4.5 1.8 4.5 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12.5 12.6c2.1.2 3.5 1.9 3.5 4.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="nav-text">Grupo</span>
+        </button>
+      </li>
+      <li>
+        <button data-page="2">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 3 10 3 10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 3c3.5 0.6 6 3.6 6 7a6 6 0 0 1-2 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M13 17 10 17 10 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 17c-3.5-.6-6-3.6-6-7a6 6 0 0 1 2-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="nav-text">Lixão</span>
+        </button>
+      </li>
+      <li>
+        <button data-page="3">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 6h10l-1 10.5a1 1 0 0 1-1 .9H7a1 1 0 0 1-1-.9L5 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 6V5a2.5 2.5 0 0 1 5 0v1" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="nav-text">Loja</span>
+        </button>
+      </li>
+      <li>
+        <button data-page="4">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 17 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M18 3 11 10l1.5 1.5L19 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 3l4.5 1.5L8 9 5 10 2 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14.5" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="nav-text">Batalha</span>
+        </button>
+      </li>
+      <li>
+        <button data-page="5">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 18s6-5.2 6-9.8A6 6 0 0 0 4 8.2C4 12.8 10 18 10 18Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="8.2" r="2.1" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span class="nav-text">Postos</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Adicionado para compreender a estrutura usada -->
+  <nav class="app-nav mobile" aria-label="Navegação do painel">
+    <div class="nav-center">
+      <ul>
+        <li>
+          <button class="active" data-page="0" aria-current="page" onclick="goToPageMobile(this)">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8.5V16a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="nav-text">Home</span>
+          </button>
+        </li>
+        <li>
+          <button data-page="2" onclick="goToPageMobile(this)">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 3 10 3 10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 3c3.5 0.6 6 3.6 6 7a6 6 0 0 1-2 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M13 17 10 17 10 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 17c-3.5-.6-6-3.6-6-7a6 6 0 0 1 2-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span class="nav-text">Lixão</span>
+          </button>
+        </li>
+        <li>
+          <button data-page="5" onclick="goToPageMobile(this)">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 18s6-5.2 6-9.8A6 6 0 0 0 4 8.2C4 12.8 10 18 10 18Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="8.2" r="2.1" stroke="currentColor" stroke-width="1.6"/></svg>
+            <span class="nav-text">Postos</span>
+          </button>
+        </li>
+        <li>
+          <button data-page="1" onclick="goToPageMobile(this)">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="14.5" cy="8" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 17c0-3 2-4.8 4.5-4.8s4.5 1.8 4.5 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12.5 12.6c2.1.2 3.5 1.9 3.5 4.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span class="nav-text">Grupo</span>
+          </button>
+        </li>
+        <li>
+          <button data-page="3" onclick="goToPageMobile(this)">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 6h10l-1 10.5a1 1 0 0 1-1 .9H7a1 1 0 0 1-1-.9L5 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 6V5a2.5 2.5 0 0 1 5 0v1" stroke="currentColor" stroke-width="1.6"/></svg>
+            <span class="nav-text">Loja</span>
+          </button>
+        </li>
+        <li>
+          <button data-page="4" onclick="goToPageMobile(this)">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 17 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M18 3 11 10l1.5 1.5L19 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 3l4.5 1.5L8 9 5 10 2 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14.5" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+            <span class="nav-text">Batalha</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
     <button
       class="menu-toggle"
@@ -220,18 +300,177 @@
   </section>
 </main>
 
-<footer class="site-footer">
-  <p>Projeto ACEX FSA</p>
-</footer>
 
-<button class="back-to-top" id="backToTop" type="button" aria-label="Voltar ao topo">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <path d="M8 13V3M8 3 3 8M8 3l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  Topo
-</button>
+<div class="toast" id="toast"></div>
 
-<script src="home.js"></script>
+
+<!-- API E AUTENTICAÇÃO -->
+<script src="api.js"></script>
+<script src="auth.js"></script>
+
+
+<!-- FUNCIONALIDADES DA PÁGINA -->
+<script>
+const pages = document.getElementById('pages');
+const buttons = [...document.querySelectorAll('.app-nav button')];
+
+let current = 0;
+let points = 0;
+let deliveries = 0;
+let startX = 0;
+
+
+function goToPage(n) {
+  n = Math.max(0, Math.min(5, n));
+  current = n;
+
+  pages.style.transform = `translateX(-${n * 100}vw)`;
+
+  buttons.forEach((b, i) => {
+    b.classList.toggle('active', i === n);
+    b.toggleAttribute('aria-current', i === n);
+  });
+}
+
+function goToPageMobile(btn) {
+  btn.classList.toggle('active');
+  console.log('Botão clicado:', btn.dataset.page);
+}
+
+
+buttons.forEach(b => {
+  b.addEventListener('click', () => goToPage(+b.dataset.page));
+});
+
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') {
+    goToPage(current + 1);
+  }
+
+  if (e.key === 'ArrowLeft') {
+    goToPage(current - 1);
+  }
+});
+
+
+pages.addEventListener('pointerdown', e => {
+  startX = e.clientX;
+});
+
+
+pages.addEventListener('pointerup', e => {
+  const d = startX - e.clientX;
+
+  if (Math.abs(d) > 55) {
+    goToPage(current + (d > 0 ? 1 : -1));
+  }
+});
+
+
+function update() {
+  document.getElementById('points').textContent =
+    points.toLocaleString('pt-BR');
+
+  document.getElementById('pointsHome').textContent =
+    points.toLocaleString('pt-BR');
+
+  document.getElementById('deliveries').textContent =
+    deliveries;
+
+  document.getElementById('rankPoints').textContent =
+    points.toLocaleString('pt-BR') + ' pts';
+
+  document.getElementById('teamScore').textContent =
+    points.toLocaleString('pt-BR');
+}
+
+
+function recycle(material, value) {
+  points += value;
+  deliveries++;
+
+  update();
+
+  showToast(`${material} registrado! +${value} pontos`);
+}
+
+
+function buy(item) {
+  showToast(`${item}: resgate demonstrativo.`);
+}
+
+
+let timer;
+
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+
+  t.textContent = msg;
+  t.classList.add('show');
+
+  clearTimeout(timer);
+
+  timer = setTimeout(() => {
+    t.classList.remove('show');
+  }, 2800);
+}
+
+
+update();
+</script>
+
+
+<!-- CONTROLE DE SESSÃO -->
+<script>
+async function protectPage() {
+  try {
+    await getSession();
+
+    console.log('Sessão válida.');
+  } catch (error) {
+    console.warn('Sessão inválida:', error.message);
+
+    window.location.replace('login.html');
+  }
+}
+
+
+const logoutButton = document.getElementById('logoutButton');
+
+
+logoutButton.addEventListener('click', async function () {
+  try {
+    logoutButton.disabled = true;
+    logoutButton.textContent = 'Saindo...';
+
+    await logout();
+
+    localStorage.removeItem('usuarioEmail');
+
+    window.location.replace('login.html');
+
+  } catch (error) {
+    console.error('Erro ao realizar logout:', error);
+
+    localStorage.removeItem('usuarioEmail');
+
+    window.location.replace('login.html');
+  }
+});
+
+
+protectPage();
+
+
+window.addEventListener('pageshow', async function (event) {
+  if (event.persisted) {
+    await protectPage();
+  }
+});
+</script>
+
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
