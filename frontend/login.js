@@ -171,7 +171,7 @@ criarContaForm.addEventListener("submit", async function (event) {
 
     console.log("Usuário criado:", resposta);
 
-    mostrarMensagem("Perfil criado com sucesso! 🌱");
+    mostrarMensagem("Perfil criado com sucesso!");
 
     criarContaForm.reset();
 
@@ -209,11 +209,11 @@ entrarForm.addEventListener("submit", async function (event) {
     // Mantém o e-mail disponível para uso no frontend
     localStorage.setItem("usuarioEmail", email);
 
-    mostrarMensagem("Login realizado com sucesso! 🚀");
+    mostrarMensagem("Login realizado com sucesso!");
 
     // Redireciona para a página principal
     setTimeout(() => {
-      window.location.href = "index.html";
+      window.location.href = "home.html";
     }, 800);
   } catch (erro) {
     console.error("Erro ao fazer login:", erro);

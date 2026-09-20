@@ -150,3 +150,5 @@ vite.config.ts.timestamp-*
 discloud.config
 .discloudignore
 __pycache__/
+.vercel
+.env*
