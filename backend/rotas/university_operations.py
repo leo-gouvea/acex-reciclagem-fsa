@@ -8,8 +8,8 @@ from pydantic import BaseModel, Field
 from main import check_access
 
 router = APIRouter(
-    prefix="/fsa",
-    tags=["Faculdade"],
+        prefix="/fsa",
+        tags=["Faculdade"],
     )
 
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database", "ecohora.db")

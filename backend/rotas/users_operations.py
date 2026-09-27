@@ -15,8 +15,8 @@ from main import check_access
 
 # Identificar rota de grupo e fora de main
 router = APIRouter(
-    prefix="/user",
-    tags=["Usuários"]
+        prefix="/user",
+        tags=["Usuários"]
     )
 
 # Usando os para navegar entre os arquivos de forma segura entre sistemas operacionais diferentes
@@ -102,7 +102,7 @@ async def user_register(user: UserRegisterRequest):
 # Identifica o padrão de Request (entrada) para o login
 class UserLoginRequest(BaseModel):
     email: EmailStr = Field(..., max_length=150, title="Email institucional", description="Digite o e-mail cadastrado.")
-    password: str = Field(..., examples=["Senha_Fraca1"], pattern=PATTERN_PASSWORD, title="Senha de usuário", description="Digite a senha para entrar.")
+    password: str = Field(..., examples=["Senha0_Forte"], pattern=PATTERN_PASSWORD, title="Senha de usuário", description="Digite a senha para entrar.")
 
 # Identifica o padrão de Return (saída) para o login
 class UserLoginReturn(BaseModel):
