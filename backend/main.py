@@ -3,7 +3,7 @@ import os # Essa importação serve para realizarmos uma leitura dos arquivos ex
 import importlib # Para efetivamente importar bibliotecas dinamicamente
 
 # Bibliotecas de FastAPI (Ela é assíncrona)
-from fastapi import FastAPI, Security, HTTPException, status, Depends, Request, Response
+from fastapi import FastAPI, Security, HTTPException, status, Depends, Request
 from fastapi.security import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
 # Para repelir robos de busca automática de consumir da API sem necessidade (Não protege contra ataques)
