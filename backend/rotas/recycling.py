@@ -109,7 +109,7 @@ async def delete_material(material_id: int):
 
 class PostRecyclingRequest(BaseModel):
     fk_cd_material: int
-    nr_weight_kilograms: int
+    nr_weight_kilograms: float
     fk_cd_user: int
 
 # Resposta padrão para as operações

@@ -63,7 +63,11 @@ async def get_classes():
 # ADICIONAR VERIFICAÇÃO DE HIERARQUIA POR COOKIE
 # Adiciona e remove um Curso ao DB
 class PostCourseRequest(BaseModel):
-    course_name: str = Field(..., min_length=5, examples=["Análise e Desenvolvimento de Sistemas"])
+    course_name: str = Field(
+        ...,
+        min_length=5, 
+        examples=["Análise e Desenvolvimento de Sistemas"]
+    )
 
 class PostCourseReturn(BaseModel):
     status: int
@@ -118,7 +122,12 @@ async def delete_course(id: int, user: dict = Depends(check_access)):
 
 # Adiciona e remove uma Turma ao DB
 class PostClassRequest(BaseModel):
-    class_code: str = Field(..., min_length=4, max_length=4, examples=["1A/M"])
+    class_code: str = Field(
+        ...,
+        min_length=4,
+        max_length=4,
+        examples=["1A/M"]
+    )
 
 class PostClassReturn(BaseModel):
     status: int
