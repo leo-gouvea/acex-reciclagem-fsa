@@ -128,24 +128,46 @@ async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_ac
     async with aiosqlite.connect(DB_PATH) as db:
         # Ativa suporte a chaves estrangeiras no SQLite para validar os IDs
         await db.execute("PRAGMA foreign_keys = ON;")
-        
-        query = """
-            INSERT INTO recycling (fk_cd_material, nr_weight_kilograms, fk_cd_user)
-            VALUES (?, ?, ?)
+
+        # Faz uma busca dos materiais pelo id selecionado (para usar os pontos como base de calculo)
+        query_select_material_points = """ 
+        SELECT nr_points_per_kilogram
+        FROM materials
+        WHERE id = ?
+        """
+        select_material_points_args = (data.fk_cd_material,)
+        cursor = await db.execute(query_select_material_points, select_material_points_args)
+        points_per_kg = await cursor.fetchone()
+
+        # Cálculo de pontos por kilo, indexado da tupla
+        points_earned = points_per_kg[0] * data.nr_weight_kilograms
+        # Arredonda os pontos para 1 casa decimal
+        points_earned_rounded = round(points_earned, 1)
+
+        query_adding_points = """
+        UPDATE users
+        SET nr_points = nr_points + ?
+        WHERE id = ?
+        """
+        query_adding_points_args = (points_earned, data_user_id)
+        cursor = await db.execute(query_adding_points, query_adding_points_args)
+
+
+        query_recycle_adding_history = """
+        INSERT INTO recycling (fk_cd_material, nr_weight_kilograms, fk_cd_user)
+        VALUES (?, ?, ?)
         """
         
-        query_data = (
+        query_recycle_adding_history_args = (
             data.fk_cd_material,
             data.nr_weight_kilograms,
             data_user_id
         )
 
-        await db.execute(query, query_data)
+        await db.execute(query_recycle_adding_history, query_recycle_adding_history_args)
         await db.commit()
 
         return {"status": 201, "detail": "Reciclagem registrada com sucesso!"}
-
-
 
 
 @router.delete("/recycle/{recycle_id}", response_model=RecyclingResponse, response_description="Informa o status de exclusão do registro")
