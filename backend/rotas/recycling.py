@@ -1,7 +1,7 @@
 import os
 
 import aiosqlite
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel
 
 # Importando do main para facilitar
@@ -49,68 +49,66 @@ class PostMaterialReturn(BaseModel):
     detail: str
 
 @router.post("/material", response_model=PostMaterialReturn, response_description="Informa o status de inserção do material")
-async def post_material(data: PostMaterialRequest):
+async def post_material(data: PostMaterialRequest, user: dict = Depends(check_access)):
     """Insere um material permitido na reciclagem, na tabela"""
 
-    try:
-        async with aiosqlite.connect(DB_PATH) as db:
-            query = """
-                INSERT INTO materials (nm_material, nr_points_per_kilogram)
-                VALUES (?, ?)
-            """
-            
-            query_data = (
-                data.material_name,
-                data.points_per_kilogram
-            )
-
-            await db.execute(query, query_data)
-            await db.commit()
-
-        return {"status": 200, "detail": "Tudo certo!"}
-
-    except Exception as e:
+    if user.get("role") != "Administrador":
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
-            detail="Erros encontrados internamente."
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Você não tem permissão para adicionar um material."
         )
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        query = """
+            INSERT INTO materials (nm_material, nr_points_per_kilogram)
+            VALUES (?, ?)
+        """
+        
+        query_data = (
+            data.material_name,
+            data.points_per_kilogram
+        )
+
+        await db.execute(query, query_data)
+        await db.commit()
+
+    return {"status": 200, "detail": "Tudo certo!"}
+
+
 
 class DeleteMaterialReturn(BaseModel):
     status: int
     detail: str
 
 @router.delete("/material/{material_id}", response_model=DeleteMaterialReturn, response_description="Informa o status de exclusão do material")
-async def delete_material(material_id: int):
+async def delete_material(material_id: int, user: dict = Depends(check_access)):
     """Remove um material da tabela de reciclagem usando o seu ID."""
 
-    try:
-        async with aiosqlite.connect(DB_PATH) as db:
-            query = "DELETE FROM materials WHERE id = ?"
-            
-            async with db.execute(query, (material_id,)) as cur:
-                if cur.rowcount == 0:
-                    raise HTTPException(
-                        status_code=status.HTTP_404_NOT_FOUND,
-                        detail=f"Material com o ID {material_id} não foi encontrado."
-                    )
-            
-            await db.commit()
-
-        return {"status": 200, "detail": f"Material {material_id} deletado com sucesso!"}
-    
-    except HTTPException:
-        raise
-    except Exception:
+    if user.get("role") != "Administrador":
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
-            detail="Erros encontrados internamente ao tentar deletar."
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Você não tem permissão para deletar um material."
         )
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        query = "DELETE FROM materials WHERE id = ?"
+        
+        async with db.execute(query, (material_id,)) as cur:
+            if cur.rowcount == 0:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Material com o ID {material_id} não foi encontrado."
+                )
+        
+        await db.commit()
+
+    return {"status": 200, "detail": f"Material {material_id} deletado com sucesso!"}
+
 
 
 class PostRecyclingRequest(BaseModel):
     fk_cd_material: int
     nr_weight_kilograms: float
-    fk_cd_user: int
 
 # Resposta padrão para as operações
 class RecyclingResponse(BaseModel):
@@ -118,73 +116,59 @@ class RecyclingResponse(BaseModel):
     detail: str
 
 @router.post("/recycle", response_model=RecyclingResponse, response_description="Registra uma nova atividade de reciclagem")
-async def post_recycle(data: PostRecyclingRequest):
+async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_access)):
     """Registra uma entrega de material feita por um usuário."""
-    try:
-        # Trava  de peso negativo
-        if data.nr_weight_kilograms <= 0:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O peso deve ser maior que ZERO")
-        
-        async with aiosqlite.connect(DB_PATH) as db:
-            # Ativa suporte a chaves estrangeiras no SQLite para validar os IDs
-            await db.execute("PRAGMA foreign_keys = ON;")
-            
-            query = """
-                INSERT INTO recycling (fk_cd_material, nr_weight_kilograms, fk_cd_user)
-                VALUES (?, ?, ?)
-            """
-            
-            query_data = (
-                data.fk_cd_material,
-                data.nr_weight_kilograms,
-                data.fk_cd_user
-            )
 
-            await db.execute(query, query_data)
-            await db.commit()
+    data_user_id: int = user.get("id")
+
+    # Trava  de peso negativo
+    if data.nr_weight_kilograms <= 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O peso deve ser maior que ZERO")
+    
+    async with aiosqlite.connect(DB_PATH) as db:
+        # Ativa suporte a chaves estrangeiras no SQLite para validar os IDs
+        await db.execute("PRAGMA foreign_keys = ON;")
+        
+        query = """
+            INSERT INTO recycling (fk_cd_material, nr_weight_kilograms, fk_cd_user)
+            VALUES (?, ?, ?)
+        """
+        
+        query_data = (
+            data.fk_cd_material,
+            data.nr_weight_kilograms,
+            data_user_id
+        )
+
+        await db.execute(query, query_data)
+        await db.commit()
 
         return {"status": 201, "detail": "Reciclagem registrada com sucesso!"}
-    
-    except HTTPException:
-        raise
-    except aiosqlite.IntegrityError as e:
-        # Captura se o usuário passar um ID de material ou usuário que não existe
-        print(f"Erro de integridade: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Erro de integridade. Verifique se o material e o usuário informados existem."
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Erros encontrados internamente ao registrar."
-        )
+
+
 
 
 @router.delete("/recycle/{recycle_id}", response_model=RecyclingResponse, response_description="Informa o status de exclusão do registro")
-async def delete_recycling(recycle_id: int):
+async def delete_recycling(recycle_id: int, user: dict = Depends(check_access)):
     """Remove um registro de reciclagem do histórico através do ID."""
-    try:
-        async with aiosqlite.connect(DB_PATH) as db:
-            query = "DELETE FROM recycling WHERE id = ?"
-            
-            async with db.execute(query, (recycle_id,)) as cur:
-                # Se nenhuma linha foi afetada, o ID enviado não existe
-                if cur.rowcount == 0:
-                    raise HTTPException(
-                        status_code=status.HTTP_404_NOT_FOUND,
-                        detail=f"Registro de reciclagem com ID {recycle_id} não foi encontrado."
-                    )
-            
-            await db.commit()
 
-        return {"status": 200, "detail": f"Registro de reciclagem {recycle_id} deletado com sucesso!"}
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Erro ao deletar: {e}")
+    if user.get("role") != "Administrador":
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Erros encontrados internamente ao tentar deletar o registro."
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Você não tem permissão para deletar uma reciclagem"
         )
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        query = "DELETE FROM recycling WHERE id = ?"
+        
+        async with db.execute(query, (recycle_id,)) as cur:
+            # Se nenhuma linha foi afetada, o ID enviado não existe
+            if cur.rowcount == 0:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Registro de reciclagem com ID {recycle_id} não foi encontrado."
+                )
+        
+        await db.commit()
+
+    return {"status": 200, "detail": f"Registro de reciclagem {recycle_id} deletado com sucesso!"}
