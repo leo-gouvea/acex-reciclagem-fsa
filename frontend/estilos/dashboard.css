@@ -173,9 +173,10 @@ body {
 ========================================= */
 
 .perfil-page {
-    width: 100%;
-    min-height: 100%;
-    padding: 40px 30px 100px;
+  /* Comentado e removido para visualização de exemplo */
+  /* width: 100%; */
+  min-height: 100%;
+  padding: 40px 30px 100px;
 }
 
 .perfil-container {
