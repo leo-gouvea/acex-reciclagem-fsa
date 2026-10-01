@@ -52,16 +52,32 @@
       </li>
       <li>
         <button data-page="4">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 17 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M18 3 11 10l1.5 1.5L19 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 3l4.5 1.5L8 9 5 10 2 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14.5" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
-          <span class="nav-text">Batalha</span>
-        </button>
-      </li>
-      <li>
-        <button data-page="5">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 18s6-5.2 6-9.8A6 6 0 0 0 4 8.2C4 12.8 10 18 10 18Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="8.2" r="2.1" stroke="currentColor" stroke-width="1.6"/></svg>
           <span class="nav-text">Postos</span>
         </button>
       </li>
+      <li>
+        <button data-page="5">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle
+              cx="10"
+              cy="6"
+              r="3"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+            <path
+              d="M4.5 17c.7-3.2 2.5-4.8 5.5-4.8s4.8 1.6 5.5 4.8"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
+
+          <span class="nav-text">Perfil</span>
+        </button>
+      </li>
+
     </ul>
   </nav>
 
@@ -136,7 +152,6 @@
         <li><strong>Grupo:</strong> veja quem mais pontuou na sua turma e quantos alunos participam.</li>
         <li><strong>Lixão:</strong> registre o material que você entregou pra reciclagem.</li>
         <li><strong>Loja:</strong> troque pontos por decoração de perfil ou horas complementares.</li>
-        <li><strong>Batalha:</strong> dispute com outras turmas pra ver quem recicla mais.</li>
         <li><strong>Postos:</strong> mapa com os pontos de coleta espalhados pelo campus.</li>
       </ul>
 
@@ -354,53 +369,6 @@
 
 
 <section class="page"><div class="container">
-  <h2 class="title">Batalha</h2>
-  <p class="subtitle">Desafios entre turmas para conquistar recompensas.</p>
-
-  <div class="battle">
-
-    <div class="team">
-      <svg width="40" height="40" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 3C8 3 4 8 4 14c0 6.5 5 10.5 10 11 5-0.5 10-4.5 10-11 0-6-4-11-10-11Z" fill="var(--green-light)"/><path d="M9 18c3-6 6-9 11-11" stroke="var(--bg-alt)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
-      <h2>Guardiões da Terra</h2>
-      <div class="team-score" id="teamScore">0</div>
-      <small>pontos</small>
-
-      <div class="battlebar">
-        <div></div>
-      </div>
-    </div>
-
-    <div class="vs">VS</div>
-
-    <div class="team">
-      <svg width="40" height="40" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 12c2-1.5 3.5-1.5 5.5 0s3.5 1.5 5.5 0 3.5-1.5 5-0" stroke="var(--green-light)" stroke-width="1.6" stroke-linecap="round"/><path d="M2 16c2-1.5 3.5-1.5 5.5 0s3.5 1.5 5.5 0 3.5-1.5 5-0" stroke="var(--green-light)" stroke-width="1.6" stroke-linecap="round"/><path d="M10 3c1.5 2-1 3 0 5" stroke="var(--green-light)" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <h2>Eco Warriors</h2>
-      <div class="team-score">0</div>
-      <small>pontos</small>
-
-      <div class="battlebar">
-        <div style="width:52%"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="card">
-    <span class="badge">Desafio da semana</span>
-    <h2>Quem recicla mais?</h2>
-    <p>Registre suas entregas e ajude a sua turma a conquistar a próxima vitória.</p>
-
-    <button
-      class="btn btn-primary"
-      style="margin-top:16px"
-      onclick="showToast('Você entrou no desafio!')">
-      Participar
-    </button>
-  </div>
-</div></section>
-
-
-<section class="page"><div class="container">
   <h2 class="title">Postos</h2>
   <p class="subtitle">Locais para coleta de recicláveis.</p>
 
@@ -455,6 +423,187 @@
     </div>
   </div>
 </div></section>
+
+<!-- =========================
+     PERFIL
+========================= -->
+<section class="page perfil-page" data-page="perfil">
+
+    <div class="perfil-container">
+
+        <!-- Cabeçalho -->
+        <div class="perfil-header">
+            <div>
+                <span class="perfil-kicker">MINHA CONTA</span>
+                <h1>Meu perfil</h1>
+                <p>Gerencie suas informações pessoais.</p>
+            </div>
+        </div>
+
+        <!-- Card principal -->
+        <div class="perfil-card">
+
+            <!-- Avatar -->
+            <div class="perfil-avatar-area">
+                <div class="perfil-avatar" id="perfilAvatar">
+                    U
+                </div>
+
+                <div class="perfil-avatar-info">
+                    <strong id="perfilNomeTopo">Usuário</strong>
+                    <span id="perfilEmailTopo">usuario@email.com</span>
+                </div>
+            </div>
+
+            <div class="perfil-divider"></div>
+
+            <!-- Formulário -->
+            <form id="perfilForm">
+
+                <div class="perfil-form-grid">
+
+                    <!-- Nome -->
+                    <div class="perfil-field">
+                        <label for="perfilNome">Nome</label>
+
+                        <input
+                            type="text"
+                            id="perfilNome"
+                            name="nome"
+                            placeholder="Digite seu nome"
+                            disabled
+                            required
+                        >
+                    </div>
+
+                    <!-- RA -->
+                    <div class="perfil-field">
+                        <label for="perfilRA">
+                            RA
+                            <span class="campo-bloqueado">Não pode ser alterado</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="perfilRA"
+                            name="ra"
+                            placeholder="Seu RA"
+                            disabled
+                        >
+                    </div>
+
+                    <!-- Email -->
+                    <div class="perfil-field">
+                        <label for="perfilEmail">E-mail</label>
+
+                        <input
+                            type="email"
+                            id="perfilEmail"
+                            name="email"
+                            placeholder="Digite seu e-mail"
+                            disabled
+                            required
+                        >
+                    </div>
+
+                    <!-- Curso -->
+                    <div class="perfil-field">
+                        <label for="perfilCurso">Curso</label>
+
+                        <select
+                            id="perfilCurso"
+                            name="curso"
+                            disabled
+                            required
+                        >
+                            <option value="">Selecione seu curso</option>
+                            <option value="ADS">Análise e Desenvolvimento de Sistemas</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Medicina">Medicina</option>
+                        </select>
+                    </div>
+
+                    <!-- Turma -->
+                    <div class="perfil-field">
+                        <label for="perfilTurma">Turma</label>
+
+                        <select
+                            id="perfilTurma"
+                            name="turma"
+                            disabled
+                            required
+                        >
+                            <option value="">Selecione sua turma</option>
+                            <option value="1° A Matutino">1° A Matutino</option>
+                            <option value="1° B Matutino">1° B Matutino</option>
+                            <option value="2° A Matutino">2° A Matutino</option>
+                            <option value="2° B Noturno">2° B Noturno</option>
+                            <option value="3° A Matutino">3° A Matutino</option>
+                            <option value="3° B Noturno">3° B Noturno</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Mensagem -->
+                <div
+                    class="perfil-message"
+                    id="perfilMessage"
+                    aria-live="polite"
+                ></div>
+
+                <!-- Ações -->
+                <div class="perfil-actions">
+
+                    <button
+                        type="button"
+                        class="perfil-btn perfil-btn-secondary"
+                        id="perfilCancelar"
+                        hidden
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="button"
+                        class="perfil-btn perfil-btn-primary"
+                        id="perfilEditar"
+                    >
+                        Editar perfil
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="perfil-btn perfil-btn-primary"
+                        id="perfilSalvar"
+                        hidden
+                    >
+                        Salvar alterações
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- Informação -->
+        <div class="perfil-info-card">
+            <div class="perfil-info-icon">i</div>
+
+            <div>
+                <strong>Sobre seus dados</strong>
+                <p>
+                    Seu RA é utilizado como identificação acadêmica
+                    e não pode ser alterado por este painel.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
 
 </div>
 </main>
@@ -667,6 +816,254 @@ window.addEventListener('pageshow', async function (event) {
       });
     });
   }
+</script>
+
+<script>
+
+/* =========================================
+   PERFIL DO USUÁRIO
+   Versão visual / localStorage
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const form = document.getElementById("perfilForm");
+
+    if (!form) return;
+
+    const nome = document.getElementById("perfilNome");
+    const ra = document.getElementById("perfilRA");
+    const email = document.getElementById("perfilEmail");
+    const curso = document.getElementById("perfilCurso");
+    const turma = document.getElementById("perfilTurma");
+
+    const avatar = document.getElementById("perfilAvatar");
+    const nomeTopo = document.getElementById("perfilNomeTopo");
+    const emailTopo = document.getElementById("perfilEmailTopo");
+
+    const editarBtn = document.getElementById("perfilEditar");
+    const salvarBtn = document.getElementById("perfilSalvar");
+    const cancelarBtn = document.getElementById("perfilCancelar");
+
+    const message = document.getElementById("perfilMessage");
+
+    const STORAGE_KEY = "ecohoraPerfil";
+
+    /* -----------------------------
+       Dados iniciais
+    ----------------------------- */
+
+    const dadosPadrao = {
+        nome: "João da Silva",
+        ra: "202600123",
+        email: "joao@email.com",
+        curso: "ADS",
+        turma: "3° B Noturno"
+    };
+
+    /* -----------------------------
+       Carregar dados
+    ----------------------------- */
+
+    function carregarPerfil() {
+
+        const dadosSalvos = localStorage.getItem(STORAGE_KEY);
+
+        const dados = dadosSalvos
+            ? JSON.parse(dadosSalvos)
+            : dadosPadrao;
+
+        nome.value = dados.nome || "";
+        ra.value = dados.ra || "";
+        email.value = dados.email || "";
+        curso.value = dados.curso || "";
+        turma.value = dados.turma || "";
+
+        atualizarTopo();
+    }
+
+    /* -----------------------------
+       Atualizar avatar/cabeçalho
+    ----------------------------- */
+
+    function atualizarTopo() {
+
+        const nomeAtual = nome.value.trim() || "Usuário";
+        const emailAtual = email.value.trim() || "usuario@email.com";
+
+        nomeTopo.textContent = nomeAtual;
+        emailTopo.textContent = emailAtual;
+
+        avatar.textContent = nomeAtual
+            .charAt(0)
+            .toUpperCase();
+    }
+
+    /* -----------------------------
+       Ativar edição
+    ----------------------------- */
+
+    function ativarEdicao() {
+
+        nome.disabled = false;
+        email.disabled = false;
+        curso.disabled = false;
+        turma.disabled = false;
+
+        // RA continua bloqueado
+        ra.disabled = true;
+
+        editarBtn.hidden = true;
+        salvarBtn.hidden = false;
+        cancelarBtn.hidden = false;
+
+        message.textContent = "";
+
+        nome.focus();
+    }
+
+    /* -----------------------------
+       Cancelar edição
+    ----------------------------- */
+
+    function cancelarEdicao() {
+
+        carregarPerfil();
+
+        nome.disabled = true;
+        email.disabled = true;
+        curso.disabled = true;
+        turma.disabled = true;
+        ra.disabled = true;
+
+        editarBtn.hidden = false;
+        salvarBtn.hidden = true;
+        cancelarBtn.hidden = true;
+
+        message.textContent = "";
+        message.classList.remove("error");
+    }
+
+    /* -----------------------------
+       Salvar
+    ----------------------------- */
+
+    function salvarPerfil() {
+
+        const novoPerfil = {
+            nome: nome.value.trim(),
+            ra: ra.value.trim(),
+            email: email.value.trim(),
+            curso: curso.value,
+            turma: turma.value
+        };
+
+        if (!novoPerfil.nome) {
+
+            mostrarErro("Digite seu nome.");
+            nome.focus();
+
+            return;
+        }
+
+        if (!novoPerfil.email) {
+
+            mostrarErro("Digite seu e-mail.");
+            email.focus();
+
+            return;
+        }
+
+        if (!novoPerfil.curso) {
+
+            mostrarErro("Selecione seu curso.");
+            curso.focus();
+
+            return;
+        }
+
+        if (!novoPerfil.turma) {
+
+            mostrarErro("Selecione sua turma.");
+            turma.focus();
+
+            return;
+        }
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(novoPerfil)
+        );
+
+        atualizarTopo();
+
+        nome.disabled = true;
+        email.disabled = true;
+        curso.disabled = true;
+        turma.disabled = true;
+        ra.disabled = true;
+
+        editarBtn.hidden = false;
+        salvarBtn.hidden = true;
+        cancelarBtn.hidden = true;
+
+        message.classList.remove("error");
+        message.textContent = "Perfil atualizado com sucesso.";
+
+        setTimeout(() => {
+            message.textContent = "";
+        }, 3500);
+    }
+
+    /* -----------------------------
+       Mensagem de erro
+    ----------------------------- */
+
+    function mostrarErro(texto) {
+
+        message.classList.add("error");
+        message.textContent = texto;
+    }
+
+    /* -----------------------------
+       Eventos
+    ----------------------------- */
+
+    editarBtn.addEventListener(
+        "click",
+        ativarEdicao
+    );
+
+    cancelarBtn.addEventListener(
+        "click",
+        cancelarEdicao
+    );
+
+    form.addEventListener(
+        "submit",
+        (event) => {
+
+            event.preventDefault();
+
+            salvarPerfil();
+        }
+    );
+
+    /* -----------------------------
+       Inicialização
+    ----------------------------- */
+
+    carregarPerfil();
+
+    nome.disabled = true;
+    email.disabled = true;
+    curso.disabled = true;
+    turma.disabled = true;
+    ra.disabled = true;
+
+});
+
+
 </script>
 
 </body>
