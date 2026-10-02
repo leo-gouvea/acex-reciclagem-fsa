@@ -50,7 +50,7 @@
           <span class="nav-text">Loja</span>
         </button>
       </li>
-      <li>
+      <li style="display: none;">
         <button data-page="4">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 17 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M18 3 11 10l1.5 1.5L19 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 3l4.5 1.5L8 9 5 10 2 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14.5" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
           <span class="nav-text">Batalha</span>
@@ -60,6 +60,11 @@
         <button data-page="5">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 18s6-5.2 6-9.8A6 6 0 0 0 4 8.2C4 12.8 10 18 10 18Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="8.2" r="2.1" stroke="currentColor" stroke-width="1.6"/></svg>
           <span class="nav-text">Postos</span>
+        </button>
+      </li>
+      <li>
+        <button data-page="6">
+          <span class="nav-text">Perfil</span>
         </button>
       </li>
     </ul>
@@ -101,6 +106,11 @@
           </button>
         </li>
         <li>
+          <button data-page="6">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="6.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M4 17c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </button>
+        </li>
+        <li>
           <button data-page="1">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="14.5" cy="8" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 17c0-3 2-4.8 4.5-4.8s4.5 1.8 4.5 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12.5 12.6c2.1.2 3.5 1.9 3.5 4.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           </button>
@@ -112,7 +122,7 @@
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 6h10l-1 10.5a1 1 0 0 1-1 .9H7a1 1 0 0 1-1-.9L5 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 6V5a2.5 2.5 0 0 1 5 0v1" stroke="currentColor" stroke-width="1.6"/></svg>
           </button>
         </li>
-        <li>
+        <li style="display: none;">
           <button data-page="4">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 17 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M18 3 11 10l1.5 1.5L19 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 3l4.5 1.5L8 9 5 10 2 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14.5" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
           </button>
@@ -456,6 +466,174 @@
   </div>
 </div></section>
 
+<section class="page perfil-page" data-page="6">
+
+    <div class="perfil-container">
+
+        <!-- Cabeçalho -->
+        <div class="perfil-header">
+            <div>
+                <span class="perfil-kicker">MINHA CONTA</span>
+                <h1>Meu perfil</h1>
+                <p>Gerencie suas informações pessoais.</p>
+            </div>
+        </div>
+
+        <!-- Card principal -->
+        <div class="perfil-card">
+
+            <!-- Avatar -->
+            <div class="perfil-avatar-area">
+                <div class="perfil-avatar" id="perfilAvatar">
+                    U
+                </div>
+
+                <div class="perfil-avatar-info">
+                    <strong id="perfilNomeTopo">Usuário</strong>
+                    <span id="perfilEmailTopo">usuario@email.com</span>
+                </div>
+            </div>
+
+            <div class="perfil-divider"></div>
+
+            <!-- Formulário -->
+            <form id="perfilForm">
+
+                <div class="perfil-form-grid">
+
+                    <!-- Nome -->
+                    <div class="perfil-field">
+                        <label for="perfilNome">Nome</label>
+
+                        <input
+                            type="text"
+                            id="perfilNome"
+                            name="nome"
+                            placeholder="Digite seu nome"
+                            disabled
+                            required
+                        >
+                    </div>
+
+                    <!-- RA -->
+                    <div class="perfil-field">
+                        <label for="perfilRA">
+                            RA
+                            <span class="campo-bloqueado">Não pode ser alterado</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="perfilRA"
+                            name="ra"
+                            placeholder="Seu RA"
+                            disabled
+                        >
+                    </div>
+
+                    <!-- Email -->
+                    <div class="perfil-field">
+                        <label for="perfilEmail">E-mail</label>
+
+                        <input
+                            type="email"
+                            id="perfilEmail"
+                            name="email"
+                            placeholder="Digite seu e-mail"
+                            disabled
+                            required
+                        >
+                    </div>
+
+                    <!-- Curso -->
+                    <div class="perfil-field">
+                        <label for="perfilCurso">Curso</label>
+
+                        <select
+                            id="perfilCurso"
+                            name="curso"
+                            disabled
+                            required
+                        >
+                            <option value="">Carregando cursos...</option>
+                        </select>
+                    </div>
+
+                    <!-- Turma -->
+                    <div class="perfil-field">
+                        <label for="perfilTurma">Turma</label>
+
+                        <select
+                            id="perfilTurma"
+                            name="turma"
+                            disabled
+                            required
+                        >
+                            <option value="">Carregando turmas...</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Mensagem -->
+                <div
+                    class="perfil-message"
+                    id="perfilMessage"
+                    aria-live="polite"
+                ></div>
+
+                <!-- Ações -->
+                <div class="perfil-actions">
+
+                    <button
+                        type="button"
+                        class="perfil-btn perfil-btn-secondary"
+                        id="perfilCancelar"
+                        hidden
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="button"
+                        class="perfil-btn perfil-btn-primary"
+                        id="perfilEditar"
+                    >
+                        Editar perfil
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="perfil-btn perfil-btn-primary"
+                        id="perfilSalvar"
+                        hidden
+                    >
+                        Salvar alterações
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- Informação -->
+        <div class="perfil-info-card">
+            <div class="perfil-info-icon">i</div>
+
+            <div>
+                <strong>Sobre seus dados</strong>
+                <p>
+                    Seu RA é utilizado como identificação acadêmica
+                    e não pode ser alterado por este painel.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
 </div>
 </main>
 
@@ -480,7 +658,7 @@ let startX = 0;
 
 
 function goToPage(n) {
-  n = Math.max(0, Math.min(5, n));
+  n = Math.max(0, Math.min(6, n));
   current = n;
 
   pages.style.transform = `translateX(-${n * 100}vw)`;
