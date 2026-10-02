@@ -32,6 +32,7 @@ CREATE TABLE "users" (
     "ds_email" TEXT UNIQUE NOT NULL,
     "ds_password" TEXT NOT NULL,
     "fk_cd_user_type" INTEGER NOT NULL DEFAULT 1 REFERENCES "user_types"("id"),
+    "nr_points" REAL NOT NULL DEFAULT 0,
     "dh_created_at" TEXT DEFAULT (CURRENT_TIMESTAMP)
 );
 
@@ -39,7 +40,7 @@ CREATE TABLE "users" (
 CREATE TABLE "recycling" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT, 
     "fk_cd_material" INTEGER NOT NULL REFERENCES "materials"("id"),
-    "nr_weight_kilograms" INTEGER NOT NULL,
+    "nr_weight_kilograms" REAL NOT NULL,
     "fk_cd_user" INTEGER NOT NULL REFERENCES "users"("id") ON DELETE SET NULL,
     "dh_gave" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
