@@ -29,6 +29,8 @@ As bibliotecas externas importadas, e suas dependências, podem ser encontradas 
 
 * `pydantic` - Foi fundamentalmente utilizado para criar regras de validação, promessas de resposta e esquemas legíveis, tanto para as requisições, quanto para as respostas, possibilitando uma dupla validação para o Frontend.
 
+* `dotenv` - Foi utilizado para utilização de variáveis de ambiente e e uso seguro de chaves de acesso.
+
 ## Tecnologias usadas no Backend
 * `Discloud` - Foi utilizada uma hospedagem fornecida pela Discloud, adquirindo um plano de assinatura mensal, para manter o projeto. [Discloud](https://discloud.com/)
 

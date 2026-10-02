@@ -15,8 +15,8 @@ from main import check_access
 
 # Identificar rota de grupo e fora de main
 router = APIRouter(
-    prefix="/user",
-    tags=["Usuários"]
+        prefix="/user",
+        tags=["Usuários"]
     )
 
 # Usando os para navegar entre os arquivos de forma segura entre sistemas operacionais diferentes
@@ -27,14 +27,55 @@ PATTERN_PASSWORD = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_.])
 
 # Identifica padrão de Request para registro
 class UserRegisterRequest(BaseModel):
-    name: str = Field(..., min_length=3, max_length=60, title="Nome de usuário", description='Seu nome de Identificação.')
-    ra: str = Field(..., min_length=6, max_length=6, title="RA do Aluno (Não editável)", description="Seu Registro de Aluno na Universidade. Esse número não poderá ser editado depois por meios convencionais.")
-    # Adicionada validação de email com Pydantic já
-    email: EmailStr = Field(..., max_lenght=150, title="Email institucional da universidade.", description="Adicione seu email para contato.")
-    password: str = Field(..., examples=["Senha0_Forte"], min_length=6, pattern=PATTERN_PASSWORD, title="Senha de usuário", description="Adicione a senha do usuário. Deve incluir pelo menos 6 caracteres, uma letra maiúscula, uma letra minúscula e um símbolo especial.")
-    course: int = Field(..., ge=1, le=23, title="Código do curso do estudante.", description="Adicione o código do curso do estudante.")
-    user_class: int = Field(..., ge=1, le=10, title="Código da turma do aluno.", description="Digite o código da turma do aluno a ser cadastrado.")
-    user_type: int = Field(1, ge=1, le=3, title="Tipo de usuário a ser cadastrado.", description="Adicione o código de tipo de usuário a ser cadastrado.")
+    name: str = Field(
+        ...,
+        min_length=3,
+        max_length=60,
+        title="Nome de usuário",
+        description='Seu nome de Identificação.'
+    )
+    ra: str = Field(
+        ...,
+        min_length=6,
+        max_length=6,
+        title="RA do Aluno (Não editável)",
+        description="Seu Registro de Aluno na Universidade. Esse número não poderá ser editado depois por meios convencionais."
+    )
+    # Adicionada validação de email com Pydantic já EmailStr
+    email: EmailStr = Field(
+        ...,
+        max_length=150,
+        title="Email institucional da universidade.",
+        description="Adicione seu email para contato."
+    )
+    password: str = Field(
+        ...,
+        examples=["Senha0_Forte"],
+        min_length=6,
+        pattern=PATTERN_PASSWORD,
+        title="Senha de usuário",
+        description="Adicione a senha do usuário. Deve incluir pelo menos 6 caracteres, uma letra maiúscula, uma letra minúscula e um símbolo especial."
+    )
+    course: int = Field(
+        ...,
+        ge=1,
+        le=23,
+        title="Código do curso do estudante.",
+        description="Adicione o código do curso do estudante."
+    )
+    user_class: int = Field(
+        ...,
+        ge=1,
+        le=10,
+        title="Código da turma do aluno.",
+        description="Digite o código da turma do aluno a ser cadastrado."
+    )
+    user_type: int = Field(1,
+        ge=1,
+        le=3,
+        title="Tipo de usuário a ser cadastrado.",
+        description="Adicione o código de tipo de usuário a ser cadastrado."
+    )
 
 # Identifica padrão de Return para registro
 class UserRegisterReturn(BaseModel):
@@ -102,7 +143,7 @@ async def user_register(user: UserRegisterRequest):
 # Identifica o padrão de Request (entrada) para o login
 class UserLoginRequest(BaseModel):
     email: EmailStr = Field(..., max_length=150, title="Email institucional", description="Digite o e-mail cadastrado.")
-    password: str = Field(..., examples=["Senha_Fraca1"], pattern=PATTERN_PASSWORD, title="Senha de usuário", description="Digite a senha para entrar.")
+    password: str = Field(..., examples=["Senha0_Forte"], pattern=PATTERN_PASSWORD, title="Senha de usuário", description="Digite a senha para entrar.")
 
 # Identifica o padrão de Return (saída) para o login
 class UserLoginReturn(BaseModel):
@@ -290,13 +331,47 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
 
 
 class UserUpdateRequest(BaseModel):
-    ra: str = Field(..., title="O RA do Usuário.", description="Adicione o RA do usuáro que será editado.", max_length=6, min_length=6)
-    name: str | None = Field(title="Nome (Opcional)", description="Caso o usuário altere o nome.", max_length=150, min_length=6)
-    email: EmailStr | None = Field(title="Email (Opcional)", description="Caso o usuário altere o e-mail.")
-    course: int | None = Field(title="Código de curso (Opcional)", description="Caso o usuário altere o curso.", ge=1, le=23)
-    user_class: int | None = Field(title="Código de turma (Opcional)", description="Caso o usuário altere a turma.", ge=1, le=10)
-    user_type: int | None = Field(title="Código de tipo de usuário (Opcional)", description="Caso o usuário venha a ter seu cargo alterado.", ge=1, le=3)
-    # password: str | None = Field(title="Nova senha (Opcional)", description="Caso o usuário altere a senha.", examples=["S3nh4*B04"], pattern=PATTERN_PASSWORD)
+    ra: str = Field(
+        ...,
+        title="O RA do Usuário.",
+        description="Adicione o RA do usuário que será editado.",
+        max_length=6,
+        min_length=6
+    )
+    name: str | None = Field(
+        default=None,
+        title="Nome (Opcional)",
+        description="Caso o usuário altere o nome.",
+        max_length=150,
+        min_length=6
+    )
+    email: EmailStr | None = Field(
+        default=None,
+        title="Email (Opcional)",
+        description="Caso o usuário altere o e-mail."
+    )
+    course: int | None = Field(
+        default=None,
+        title="Código de curso (Opcional)",
+        description="Caso o usuário altere o curso.",
+        ge=1,
+        le=23
+    )
+    user_class: int | None = Field(
+        default=None,
+        title="Código de turma (Opcional)",
+        description="Caso o usuário altere a turma.",
+        ge=1,
+        le=10
+    )
+    # Pode ser incluso, mas devemos avaliar o meio de alteração qeu será usado.
+    # user_type: int | None = Field(
+    #     default=None,
+    #     title="Código de tipo de usuário (Opcional)",
+    #     description="Caso o usuário venha a ter seu cargo alterado.",
+    #     ge=1,
+    #     le=3
+    # )
 
 class UserUpdateReturn(BaseModel):
     id: int

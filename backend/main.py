@@ -3,7 +3,7 @@ import os # Essa importação serve para realizarmos uma leitura dos arquivos ex
 import importlib # Para efetivamente importar bibliotecas dinamicamente
 
 # Bibliotecas de FastAPI (Ela é assíncrona)
-from fastapi import FastAPI, Security, HTTPException, status, Depends, Request, Response
+from fastapi import FastAPI, Security, HTTPException, status, Depends, Request
 from fastapi.security import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
 # Para repelir robos de busca automática de consumir da API sem necessidade (Não protege contra ataques)
@@ -57,7 +57,13 @@ def check_access(request: Request, key: str = Security(header_api_key)):
 
 
 # Instanciamento (Inicia a nossa API)
-app = FastAPI(title="API ACEX", description="API construída para o projeto ACEX 2026", version="0.3.2")
+version = "0.3.5"
+title = "API ACEX"
+description = """
+API construída para o projeto ACEX 2026\n
+O horário da API é definido no modelo **UTC TIMESTAMP, 3 horas a frente ao Brasil**.
+"""
+app = FastAPI(title=title, description=description, version=version)
 
 # Adicionado o CORS para que o front se comunique com o Back
 app.add_middleware(
