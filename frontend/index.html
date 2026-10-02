@@ -785,6 +785,192 @@ update();
 </script>
 
 
+
+<!-- PERFIL -->
+<script>
+const perfilForm = document.getElementById('perfilForm');
+const perfilNome = document.getElementById('perfilNome');
+const perfilRA = document.getElementById('perfilRA');
+const perfilEmail = document.getElementById('perfilEmail');
+const perfilCurso = document.getElementById('perfilCurso');
+const perfilTurma = document.getElementById('perfilTurma');
+
+const perfilNomeTopo = document.getElementById('perfilNomeTopo');
+const perfilEmailTopo = document.getElementById('perfilEmailTopo');
+
+const perfilMessage = document.getElementById('perfilMessage');
+const perfilCancelar = document.getElementById('perfilCancelar');
+const perfilEditar = document.getElementById('perfilEditar');
+const perfilSalvar = document.getElementById('perfilSalvar');
+
+let perfilAtual = null;
+let perfilOpcoes = {
+    courses: [],
+    classes: []
+};
+
+function mostrarMensagemPerfil(mensagem, erro = false) {
+    perfilMessage.textContent = mensagem;
+    perfilMessage.classList.toggle('error', erro);
+}
+
+function preencherCursos(courses) {
+    perfilCurso.innerHTML = '<option value="">Selecione seu curso</option>';
+
+    courses.forEach(course => {
+        const option = document.createElement('option');
+
+        option.value = course.id;
+        option.textContent = course.course;
+
+        perfilCurso.appendChild(option);
+    });
+}
+
+function preencherTurmas(classes) {
+    perfilTurma.innerHTML = '<option value="">Selecione sua turma</option>';
+
+    classes.forEach(item => {
+        const option = document.createElement('option');
+
+        option.value = item.id;
+        option.textContent = item.class_code;
+
+        perfilTurma.appendChild(option);
+    });
+}
+
+function preencherPerfil(user) {
+    perfilAtual = user;
+
+    perfilNome.value = user.name;
+    perfilRA.value = user.ra;
+    perfilEmail.value = user.email;
+
+    perfilNomeTopo.textContent = user.name;
+    perfilEmailTopo.textContent = user.email;
+
+    const curso = perfilOpcoes.courses.find(
+        item => item.course === user.course
+    );
+
+    const turma = perfilOpcoes.classes.find(
+        item => item.class_code === user.user_class
+    );
+
+    perfilCurso.value = curso ? String(curso.id) : '';
+    perfilTurma.value = turma ? String(turma.id) : '';
+}
+
+function definirModoEdicao(editando) {
+    perfilNome.disabled = !editando;
+    perfilEmail.disabled = !editando;
+    perfilCurso.disabled = !editando;
+    perfilTurma.disabled = !editando;
+
+    // O RA nunca pode ser alterado pelo perfil.
+    perfilRA.disabled = true;
+
+    perfilEditar.hidden = editando;
+    perfilSalvar.hidden = !editando;
+    perfilCancelar.hidden = !editando;
+}
+
+async function carregarPerfil() {
+    try {
+        mostrarMensagemPerfil('Carregando dados...');
+
+        const session = await getSession();
+
+        if (!session.authenticated || !session.user?.ra) {
+            throw new Error('Não foi possível identificar o usuário autenticado.');
+        }
+
+        const [user, options] = await Promise.all([
+            getAuthenticatedUser(session.user.ra),
+            loadRegistrationOptions()
+        ]);
+
+        perfilOpcoes = options;
+
+        preencherCursos(options.courses);
+        preencherTurmas(options.classes);
+        preencherPerfil(user);
+
+        definirModoEdicao(false);
+        mostrarMensagemPerfil('');
+
+    } catch (error) {
+        console.error('Erro ao carregar perfil:', error);
+        mostrarMensagemPerfil(
+            error.message || 'Não foi possível carregar seu perfil.',
+            true
+        );
+    }
+}
+
+perfilEditar.addEventListener('click', function () {
+    mostrarMensagemPerfil('');
+    definirModoEdicao(true);
+});
+
+perfilCancelar.addEventListener('click', function () {
+    if (perfilAtual) {
+        preencherPerfil(perfilAtual);
+    }
+
+    definirModoEdicao(false);
+    mostrarMensagemPerfil('');
+});
+
+perfilForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    try {
+        perfilSalvar.disabled = true;
+        perfilSalvar.textContent = 'Salvando...';
+        mostrarMensagemPerfil('');
+
+        const dados = {
+            ra: perfilAtual.ra,
+            name: perfilNome.value.trim(),
+            email: perfilEmail.value.trim(),
+            course: Number(perfilCurso.value),
+            user_class: Number(perfilTurma.value)
+        };
+
+        if (!dados.name || !dados.email || !dados.course || !dados.user_class) {
+            throw new Error('Preencha todos os campos do perfil.');
+        }
+
+        const atualizado = await updateProfile(dados);
+
+        preencherPerfil({
+            ...perfilAtual,
+            ...atualizado
+        });
+
+        definirModoEdicao(false);
+        mostrarMensagemPerfil('Perfil atualizado com sucesso.');
+
+    } catch (error) {
+        console.error('Erro ao atualizar perfil:', error);
+
+        mostrarMensagemPerfil(
+            error.message || 'Não foi possível atualizar seu perfil.',
+            true
+        );
+
+    } finally {
+        perfilSalvar.disabled = false;
+        perfilSalvar.textContent = 'Salvar alterações';
+    }
+});
+
+carregarPerfil();
+</script>
+
+
 <!-- CONTROLE DE SESSÃO -->
 <script>
 async function protectPage() {
