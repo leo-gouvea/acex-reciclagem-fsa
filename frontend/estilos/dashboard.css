@@ -772,6 +772,12 @@ body {
     display: none;
   }
 
+  /* Toast mobile */
+  .toast.show {
+    transform: translateY(-100px);
+    opacity: 1;
+  }
+
   .viewport {
     top: 64px;
   }

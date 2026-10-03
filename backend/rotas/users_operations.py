@@ -284,7 +284,6 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado.")
             response1 = dict(response1) # Converte em dicionário e atualiza a var
 
-            print(response1)
             # Remove os itens em números de Curso e Classe, senha e tipo de usuário
             response1.pop("fk_cd_course")
             response1.pop("fk_cd_class")
@@ -364,14 +363,14 @@ class UserUpdateRequest(BaseModel):
         ge=1,
         le=10
     )
-    # Pode ser incluso, mas devemos avaliar o meio de alteração qeu será usado.
-    # user_type: int | None = Field(
-    #     default=None,
-    #     title="Código de tipo de usuário (Opcional)",
-    #     description="Caso o usuário venha a ter seu cargo alterado.",
-    #     ge=1,
-    #     le=3
-    # )
+    # SOB REVISÃO: O tipo de usuário não deveria ser alterável por qualquer usuário, apenas por Operadores.
+    user_type: int | None = Field(
+        default=None,
+        title="Código de tipo de usuário (Opcional)",
+        description="Caso o usuário venha a ter seu cargo alterado.",
+        ge=1,
+        le=3
+    )
 
 class UserUpdateReturn(BaseModel):
     id: int
