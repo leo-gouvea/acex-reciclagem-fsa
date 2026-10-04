@@ -167,7 +167,7 @@ async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_ac
         await db.execute(query_recycle_adding_history, query_recycle_adding_history_args)
         await db.commit()
 
-        return {"status": 201, "detail": "Reciclagem registrada com sucesso!"}
+        return {"status": 200, "detail": "Reciclagem registrada com sucesso!"}
 
 
 @router.delete("/recycle/{recycle_id}", response_model=RecyclingResponse, response_description="Informa o status de exclusão do registro")
