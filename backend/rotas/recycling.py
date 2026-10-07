@@ -114,6 +114,8 @@ class PostRecyclingRequest(BaseModel):
 class RecyclingResponse(BaseModel):
     status: int
     detail: str
+    points_earned: float
+    total_points: float
 
 @router.post("/recycle", response_model=RecyclingResponse, response_description="Registra uma nova atividade de reciclagem")
 async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_access)):
@@ -139,17 +141,21 @@ async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_ac
         cursor = await db.execute(query_select_material_points, select_material_points_args)
         points_per_kg = await cursor.fetchone()
 
+        if not points_per_kg:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Material não encontrado")
+
+
         # Cálculo de pontos por kilo, indexado da tupla
         points_earned = points_per_kg[0] * data.nr_weight_kilograms
-        # Arredonda os pontos para 1 casa decimal
-        points_earned_rounded = round(points_earned, 1)
+        # Arredonda os pontos para 2 casas decimais
+        points_earned_rounded = round(points_earned, 2)
 
         query_adding_points = """
         UPDATE users
         SET nr_points = nr_points + ?
         WHERE id = ?
         """
-        query_adding_points_args = (points_earned, data_user_id)
+        query_adding_points_args = (points_earned_rounded, data_user_id)
         cursor = await db.execute(query_adding_points, query_adding_points_args)
 
 
@@ -167,7 +173,16 @@ async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_ac
         await db.execute(query_recycle_adding_history, query_recycle_adding_history_args)
         await db.commit()
 
-        return {"status": 200, "detail": "Reciclagem registrada com sucesso!"}
+        user_cursor = await db.execute("SELECT nr_points FROM users WHERE id = ?", (data_user_id,))
+        total_points_row = await user_cursor.fetchone()
+        total_points = round(total_points_row[0], 2) if total_points_row else 0.0
+
+        return {
+            "status": 200,
+            "detail": "Reciclagem registrada com sucesso!",
+            "points_earned": points_earned_rounded,
+            "total_points": total_points
+        }
 
 
 @router.delete("/recycle/{recycle_id}", response_model=RecyclingResponse, response_description="Informa o status de exclusão do registro")
