@@ -528,3 +528,41 @@ async def logout(response: Response):
         "status": 200,
         "detail": "Logout realizado com sucesso."
     }
+
+
+class UserRankingReturn(BaseModel):
+    id: int
+    name: str
+    ra: str
+    points: float
+
+@router.get("/ranking", response_model=list[UserRankingReturn], response_description="Retorna o ranking de usuários baseado na soma de pontos.")
+async def get_ranking(user: dict = Depends(check_access)):
+    """
+    Retorna o ranking de usuários baseado na soma de pontos.
+    """
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+
+        query = """
+        SELECT users.id, users.nm_user, users.nr_ra, users.nr_points
+        FROM users
+        ORDER BY users.nr_points DESC
+        LIMIT 10
+        """
+
+        async with db.execute(query) as cur:
+            results = await cur.fetchall()
+
+            ranking = [
+                {
+                    "id": row["id"],
+                    "name": row["nm_user"],
+                    "ra": row["nr_ra"],
+                    "points": row["nr_points"]
+                }
+                for row in results
+            ]
+
+    return ranking

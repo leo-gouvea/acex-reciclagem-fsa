@@ -57,7 +57,7 @@ def check_access(request: Request, key: str = Security(header_api_key)):
 
 
 # Instanciamento (Inicia a nossa API)
-version = "0.3.5"
+version = "0.4.3"
 title = "API ACEX"
 description = """
 API construída para o projeto ACEX 2026\n

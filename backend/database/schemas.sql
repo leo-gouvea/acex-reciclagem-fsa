@@ -33,7 +33,8 @@ CREATE TABLE "users" (
     "ds_password" TEXT NOT NULL,
     "fk_cd_user_type" INTEGER NOT NULL DEFAULT 1 REFERENCES "user_types"("id"),
     "nr_points" REAL NOT NULL DEFAULT 0,
-    "dh_created_at" TEXT DEFAULT (CURRENT_TIMESTAMP)
+    "dh_created_at" TEXT DEFAULT (CURRENT_TIMESTAMP),
+    "fk_cd_event" INTEGER REFERENCES "events"("id") ON DELETE SET NULL
 );
 
 
@@ -43,4 +44,17 @@ CREATE TABLE "recycling" (
     "nr_weight_kilograms" REAL NOT NULL,
     "fk_cd_user" INTEGER NOT NULL REFERENCES "users"("id") ON DELETE SET NULL,
     "dh_gave" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+);
+
+
+CREATE TABLE "events" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nm_event" TEXT NOT NULL
+);
+
+
+CREATE TABLE "event_groups" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "group_name" TEXT NOT NULL,
+    "fk_cd_event" INTEGER NOT NULL REFERENCES "events"("id") ON DELETE CASCADE
 );
