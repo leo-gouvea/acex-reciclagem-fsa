@@ -295,7 +295,7 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
             SELECT recycling.id,
             materials.nm_material,
             recycling.nr_weight_kilograms,
-            dh_gave
+            dt_gave
             FROM recycling
             INNER JOIN users ON users.id = recycling.fk_cd_user
             INNER JOIN materials ON recycling.fk_cd_material = materials.id
@@ -310,7 +310,7 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
                 "id": row["id"],
                 "material": row["nm_material"],
                 "weight_kilograms": row["nr_weight_kilograms"],
-                "gave_at": row["dh_gave"]
+                "gave_at": row["dt_gave"]
             } for row in response2]
 
             # Junção da resposta e normalização das chaves
@@ -319,7 +319,7 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
                 "name": response1["nm_user"],
                 "ra": response1["nr_ra"],
                 "email": response1["ds_email"],
-                "created_at": response1["dh_created_at"],
+                "created_at": response1["dt_created_at"],
                 "user_class": response1["ds_class_code"],
                 "course": response1["nm_course"],
                 "user_type": response1["nm_type"],
