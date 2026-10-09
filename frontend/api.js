@@ -100,9 +100,16 @@ async function loginUser(email, password) {
 }
 
 
-async function getUser(userId) {
-    return apiRequest(`/user/get/${userId}`, {
+async function getUser(userRa) {
+    return apiRequest(`/user/get/${userRa}`, {
         method: "GET"
+    });
+}
+
+async function updateUser(userData) {
+    return apiRequest("/user/update", {
+        method: "PATCH",
+        body: JSON.stringify(userData)
     });
 }
 
@@ -133,5 +140,30 @@ async function getCourses() {
 async function getClasses() {
     return apiRequest("/fsa/get/classes", {
         method: "GET"
+    });
+}
+
+/* =========================================================
+   RECICLAGEM
+========================================================= */
+
+async function getMaterials() {
+    return apiRequest("/recycling/materials-info", {
+        method: "GET"
+    });
+}
+
+
+async function registerRecycling(recyclingData) {
+    return apiRequest("/recycling/recycle", {
+        method: "POST",
+        body: JSON.stringify(recyclingData)
+    });
+}
+
+
+async function deleteRecycling(recyclingId) {
+    return apiRequest(`/recycling/recycle/${recyclingId}`, {
+        method: "DELETE"
     });
 }

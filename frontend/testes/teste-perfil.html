@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Teste Perfil - EcoHora</title>
+</head>
+
+<body>
+
+    <h1>Teste de Perfil</h1>
+
+    <button id="btn-login">
+        Fazer login
+    </button>
+
+    <button id="btn-session">
+        Ver sessão
+    </button>
+
+    <button id="btn-user">
+        Buscar perfil
+    </button>
+
+    <button id="btn-update">
+        Atualizar perfil
+    </button>
+
+    <button id="btn-courses">Ver cursos</button>
+    <button id="btn-classes">Ver turmas</button>
+
+    <button id="btn-logout">Sair</button>
+
+    <pre id="resultado">Aguardando...</pre>
+
+    <script src="../api.js"></script>
+    <script src="../auth.js"></script>
+
+    <script>
+        const resultado = document.getElementById("resultado");
+
+        function mostrar(data) {
+            resultado.textContent =
+                typeof data === "string"
+                    ? data
+                    : JSON.stringify(data, null, 2);
+        }
+
+        document.getElementById("btn-session").addEventListener("click", async () => {
+            try {
+                const resposta = await checkSession();
+                mostrar(resposta);
+            } catch (error) {
+                mostrar(`Erro: ${error.message}`);
+            }
+        });
+
+        document.getElementById("btn-user").addEventListener("click", async () => {
+            try {
+                const session = await checkSession();
+                const resposta = await getUser(session.user.ra);
+                mostrar(resposta);
+            } catch (error) {
+                mostrar(`Erro: ${error.message}`);
+            }
+        });
+
+        document.getElementById("btn-login").addEventListener("click", async () => {
+            try {
+                const email = prompt("E-mail:");
+                const password = prompt("Senha:");
+
+                const resposta = await loginUser(email, password);
+
+                mostrar(resposta);
+            } catch (error) {
+                mostrar(`Erro: ${error.message}`);
+            }
+        });
+
+        document.getElementById("btn-update").addEventListener("click", async () => {
+            try {
+                const session = await checkSession();
+
+                const resposta = await updateUser({
+                    ra: session.user.ra,
+                    name: "Teste de user atualizado"
+                });
+
+                mostrar(resposta);
+            } catch (error) {
+                mostrar(`Erro: ${error.message}`);
+            }
+        });
+
+        document.getElementById("btn-courses").addEventListener("click", async () => {
+            try {
+                const resposta = await getCourses();
+                mostrar(resposta);
+            } catch (error) {
+                mostrar(`Erro: ${error.message}`);
+            }
+        });
+
+        document.getElementById("btn-classes").addEventListener("click", async () => {
+            try {
+                const resposta = await getClasses();
+                mostrar(resposta);
+            } catch (error) {
+                mostrar(`Erro: ${error.message}`);
+            }
+        });
+
+        document.getElementById("btn-logout").addEventListener("click", async () => {
+            try {
+                const resposta = await logoutUser();
+                mostrar(resposta);
+            } catch (error) {
+                mostrar(`Erro: ${error.message}`);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

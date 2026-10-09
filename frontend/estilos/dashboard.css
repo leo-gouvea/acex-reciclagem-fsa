@@ -167,6 +167,401 @@ body {
   line-height: 1.55;
 }
 
+
+/* =========================================
+   PERFIL
+========================================= */
+
+.perfil-page {
+  /* Comentado e removido para visualização de exemplo */
+  /* width: 100%; */
+  min-height: 100%;
+  padding: 40px 30px 100px;
+}
+
+.perfil-container {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+}
+
+/* Cabeçalho */
+
+.perfil-header {
+    margin-bottom: 28px;
+}
+
+.perfil-kicker {
+    display: block;
+    margin-bottom: 7px;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+
+    color: #70d6a3;
+}
+
+.perfil-header h1 {
+    margin: 0;
+
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.05;
+
+    color: #f4fff9;
+}
+
+.perfil-header p {
+    margin: 10px 0 0;
+
+    color: #9db3aa;
+    font-size: 15px;
+}
+
+/* Card */
+
+.perfil-card {
+    width: 100%;
+
+    padding: 34px;
+
+    background: #102d28;
+    border: 1px solid rgba(112, 214, 163, 0.13);
+    border-radius: 28px;
+
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.20);
+}
+
+/* Avatar */
+
+.perfil-avatar-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.perfil-avatar {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #70d6a3;
+    color: #08231e;
+
+    font-size: 28px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+.perfil-avatar-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.perfil-avatar-info strong {
+    color: #f4fff9;
+    font-size: 18px;
+}
+
+.perfil-avatar-info span {
+    color: #8fa9a0;
+    font-size: 14px;
+}
+
+/* Divisor */
+
+.perfil-divider {
+    width: 100%;
+    height: 1px;
+
+    margin: 30px 0;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Grid */
+
+.perfil-form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 22px 24px;
+}
+
+/* Campos */
+
+.perfil-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.perfil-field label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #e6f5ee;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.campo-bloqueado {
+    font-size: 10px;
+    font-weight: 600;
+
+    color: #8da69d;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    padding: 4px 8px;
+
+    border-radius: 999px;
+}
+
+/* Inputs */
+
+.perfil-field input,
+.perfil-field select {
+    width: 100%;
+    min-height: 52px;
+
+    padding: 0 16px;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+
+    outline: none;
+
+    background: #0b2420;
+    color: #f2fff8;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.perfil-field select {
+    cursor: pointer;
+}
+
+.perfil-field input::placeholder {
+    color: #718b82;
+}
+
+/* Campo bloqueado */
+
+.perfil-field input:disabled,
+.perfil-field select:disabled {
+    opacity: 0.68;
+    cursor: not-allowed;
+
+    background: #0c2622;
+}
+
+/* Campos editáveis */
+
+.perfil-field input:not(:disabled),
+.perfil-field select:not(:disabled) {
+    background: #0d2924;
+}
+
+.perfil-field input:not(:disabled):focus,
+.perfil-field select:not(:disabled):focus {
+    border-color: #70d6a3;
+
+    box-shadow:
+        0 0 0 3px rgba(112, 214, 163, 0.10);
+}
+
+/* Mensagem */
+
+.perfil-message {
+    min-height: 22px;
+
+    margin-top: 22px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    color: #70d6a3;
+}
+
+.perfil-message.error {
+    color: #f18b7c;
+}
+
+/* Botões */
+
+.perfil-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 8px;
+}
+
+.perfil-btn {
+    min-height: 48px;
+
+    padding: 0 22px;
+
+    border: none;
+    border-radius: 999px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        background 0.2s ease;
+}
+
+.perfil-btn:hover {
+    transform: translateY(-1px);
+}
+
+.perfil-btn:active {
+    transform: translateY(0);
+}
+
+.perfil-btn-primary {
+    background: #70d6a3;
+    color: #08231e;
+}
+
+.perfil-btn-primary:hover {
+    background: #83e0b0;
+}
+
+.perfil-btn-secondary {
+    background: rgba(255, 255, 255, 0.07);
+    color: #dcece5;
+}
+
+.perfil-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.11);
+}
+
+/* Card de informação */
+
+.perfil-info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+
+    margin-top: 20px;
+    padding: 20px 22px;
+
+    border: 1px solid rgba(112, 214, 163, 0.10);
+    border-radius: 20px;
+
+    background: rgba(16, 45, 40, 0.65);
+}
+
+.perfil-info-icon {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: rgba(112, 214, 163, 0.12);
+    color: #70d6a3;
+
+    font-weight: 800;
+}
+
+.perfil-info-card strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #e8f6f0;
+    font-size: 14px;
+}
+
+.perfil-info-card p {
+    margin: 0;
+
+    color: #8fa9a0;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   RESPONSIVO
+========================================= */
+
+@media (max-width: 700px) {
+
+    .perfil-page {
+        padding: 28px 16px 100px;
+    }
+
+    .perfil-card {
+        padding: 22px 18px;
+        border-radius: 22px;
+    }
+
+    .perfil-avatar {
+        width: 60px;
+        height: 60px;
+
+        font-size: 23px;
+    }
+
+    .perfil-form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .perfil-divider {
+        margin: 24px 0;
+    }
+
+    .perfil-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .perfil-btn {
+        width: 100%;
+    }
+
+    .perfil-info-card {
+        padding: 17px;
+    }
+}
+
+
+
 /* =========================================================
    GRID / CARTÃO
 ========================================================= */
