@@ -92,7 +92,7 @@ async def root():
     return response
 
 # Rota efetiva dos robôs
-@app.get("/robots.txt", response_class=PlainTextResponse)
+@app.get("/robots.txt", response_class=PlainTextResponse, include_in_schema=False)
 def robots():
     """
     For reliable bots to know that they are not allowed to crawl the API.
