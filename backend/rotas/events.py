@@ -68,6 +68,27 @@ class DeleteEventReturn(BaseModel):
     Modelo padrão de retorno para deleção de evento realizada com sucesso.
     """
     message: str = "Evento deletado com sucesso"
+    
+    
+class UserAssignReturn(BaseModel):
+    """
+    Modelo padrão de retorno para atribuição de usuário a grupo de evento realizada com sucesso.
+    """
+    message: str = "Usuário atribuído ao grupo de evento com sucesso."
+
+
+class UserUnassignReturn(BaseModel):
+    """
+    Modelo padrão de retorno para desinscrição de usuário de grupo de evento.
+    """
+    message: str = "Usuário desinscrito do grupo de evento com sucesso."
+    
+
+class AdminActionReturn(BaseModel):
+    """
+    Modelo padrão de retorno para ações de gerenciamento do Administrador.
+    """
+    message: str
 
 
 # ==========================================
@@ -105,6 +126,27 @@ class EventUpdate(BaseModel):
         default_factory=datetime.now,
         examples=["2026-12-31 23:59:59"]
     )
+    
+    
+class UserAssign(BaseModel):
+    """
+    Modelo de dados para atribuir um usuário a um grupo de evento.
+    """
+    group_id: int = Field(..., description="ID do grupo de evento ativo que o aluno escolheu.")
+
+
+class AdminUserAssignRequest(BaseModel):
+    """
+    Modelo de dados para o Administrador vincular um aluno a um grupo.
+    """
+    user_id: int = Field(..., description="ID do usuário/aluno que será inscrito.")
+    group_id: int = Field(..., description="ID do grupo de evento de destino.")
+
+class AdminUserUnassignRequest(BaseModel):
+    """
+    Modelo de dados para o Administrador remover um aluno de um grupo.
+    """
+    user_id: int = Field(..., description="ID do usuário/aluno que será desvinculado.")
 
 
 # ==========================================
@@ -237,3 +279,157 @@ async def delete_event(event_id: int, user=Depends(check_access)):
         await db.commit()
 
     return DeleteEventReturn()
+
+
+# O susuário só consegue se inscrever a um evento.
+@router.post("/group/user/assign", status_code=status.HTTP_200_OK, response_model=UserAssignReturn)
+async def assign_user_to_event_group(data: UserAssign, user=Depends(check_access)):
+    """
+    Rota para o próprio usuário autenticado se inscrever em um grupo de evento ativo.
+    """
+    # Recupera o ID do usuário diretamente da sessão/token injetado
+    logged_user_id = user.get("id")
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        # Valida se o grupo do evento realmente existe antes de tentar associar
+        async with db.execute("SELECT id FROM events_groups WHERE id = ?", (data.group_id,)) as cursor:
+            group = await cursor.fetchone()
+            if not group:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, 
+                    detail="Grupo de evento não encontrado ou inativo."
+                )
+
+        # Atualiza o perfil do próprio usuário logado com o ID do grupo escolhido
+        async with db.cursor() as cursor:
+            await cursor.execute(
+                """
+                UPDATE users
+                SET fk_cd_event_group = ?
+                WHERE id = ?
+                """,
+                (data.group_id, logged_user_id)
+            )
+            
+            if cursor.rowcount == 0:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Erro ao processar inscrição. Usuário não encontrado."
+                )
+                
+        await db.commit()
+
+    return UserAssignReturn()
+
+
+@router.delete("/group/user/unassign", status_code=status.HTTP_200_OK, response_model=UserUnassignReturn)
+async def unassign_user_from_event_group(user=Depends(check_access)):
+    """
+    Rota para o próprio usuário autenticado se desinscrever do seu grupo atual (redefinindo para 0).
+    """
+    # Recupera o ID do usuário diretamente da sessão/token injetado
+    logged_user_id = user.get("id")
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        # Atualiza a coluna do grupo para 0 apenas para o ID de quem disparou a requisição
+        async with db.cursor() as cursor:
+            await cursor.execute(
+                """
+                UPDATE users 
+                SET fk_cd_event_group = 0 
+                WHERE id = ?
+                """,
+                (logged_user_id,)
+            )
+            
+            # Se rowcount for 0, o ID da sessão não foi localizado (falha crítica ou sessão inválida)
+            if cursor.rowcount == 0:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Não foi possível processar a desinscrição."
+                )
+                
+        await db.commit()
+
+    return UserUnassignReturn()
+
+
+@router.post("/admin/group/user/assign", status_code=status.HTTP_200_OK, response_model=AdminActionReturn)
+async def admin_assign_user_to_group(data: AdminUserAssignRequest, user=Depends(check_access)):
+    """
+    Rota para o Administrador inscrever qualquer aluno em um grupo de evento à força.
+    """
+    # Trava estrita de hierarquia: Apenas Administradores podem acessar
+    if user.get("role") != "Administrador":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, 
+            detail="Acesso negado. Apenas administradores podem gerenciar inscrições de terceiros."
+        )
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        # Valida se o grupo de evento realmente existe na base de dados
+        async with db.execute("SELECT id FROM events_groups WHERE id = ?", (data.group_id,)) as cursor:
+            group = await cursor.fetchone()
+            if not group:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND, 
+                    detail="Grupo de evento não encontrado."
+                )
+
+        # Executa a alteração do campo no ID do usuário enviado no corpo da requisição (data.user_id)
+        async with db.cursor() as cursor:
+            await cursor.execute(
+                """
+                UPDATE users
+                SET fk_cd_event_group = ?
+                WHERE id = ?
+                """,
+                (data.group_id, data.user_id)
+            )
+            
+            # Se nenhuma linha foi afetada, significa que o ID do aluno enviado não existe na tabela users
+            if cursor.rowcount == 0:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Usuário com ID {data.user_id} não foi encontrado na base de dados."
+                )
+                
+        await db.commit()
+
+    return AdminActionReturn(message=f"Usuário {data.user_id} vinculado ao grupo {data.group_id} com sucesso.")
+
+
+@router.delete("/admin/group/user/unassign", status_code=status.HTTP_200_OK, response_model=AdminActionReturn)
+async def admin_unassign_user_from_group(data: AdminUserUnassignRequest, user=Depends(check_access)):
+    """
+    Rota para o Administrador desinscrever qualquer aluno de seu grupo atual (redefinindo para 0).
+    """
+    # Trava estrita de hierarquia: Apenas Administradores podem acessar
+    if user.get("role") != "Administrador":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, 
+            detail="Acesso negado. Apenas administradores podem remover usuários de grupos."
+        )
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        # Executa o reset do campo fk_cd_event_group para 0 no usuário especificado
+        async with db.cursor() as cursor:
+            await cursor.execute(
+                """
+                UPDATE users 
+                SET fk_cd_event_group = 0 
+                WHERE id = ?
+                """,
+                (data.user_id,)
+            )
+            
+            # Valida se o aluno informado de fato existia para evitar um falso sucesso
+            if cursor.rowcount == 0:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Usuário com ID {data.user_id} não foi encontrado na base de dados."
+                )
+                
+        await db.commit()
+
+    return AdminActionReturn(message=f"Usuário {data.user_id} removido do grupo de evento com sucesso.")
