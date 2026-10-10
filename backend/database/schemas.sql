@@ -49,12 +49,16 @@ CREATE TABLE "recycling" (
 
 CREATE TABLE "events" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "nm_event" TEXT NOT NULL
+    "nm_event" TEXT NOT NULL DEFAULT 'Evento sem nome',
+    "ds_event_description" TEXT NOT NULL DEFAULT 'Evento sem descrição.',
+    "dt_event_start" TEXT NOT NULL,
+    "dt_event_end" TEXT NOT NULL
 );
 
 
 CREATE TABLE "event_groups" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "group_name" TEXT NOT NULL,
+    "group_name" TEXT NOT NULL DEFAULT 'Grupo sem nome',
     "fk_cd_event" INTEGER NOT NULL REFERENCES "events"("id") ON DELETE CASCADE
 );
+
