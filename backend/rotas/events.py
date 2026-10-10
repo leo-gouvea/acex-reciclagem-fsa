@@ -336,7 +336,7 @@ async def unassign_user_from_event_group(user=Depends(check_access)):
             await cursor.execute(
                 """
                 UPDATE users 
-                SET fk_cd_event_group = 0 
+                SET fk_cd_event_group = NULL 
                 WHERE id = ?
                 """,
                 (logged_user_id,)
@@ -417,7 +417,7 @@ async def admin_unassign_user_from_group(data: AdminUserUnassignRequest, user=De
             await cursor.execute(
                 """
                 UPDATE users 
-                SET fk_cd_event_group = 0 
+                SET fk_cd_event_group = NULL 
                 WHERE id = ?
                 """,
                 (data.user_id,)
