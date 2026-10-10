@@ -192,7 +192,7 @@ async def list_event_groups():
         events_groups = [
             EventsGroupsReturn(
                 id=row["id"], 
-                group_name=row["group_name"], 
+                group_name=row["nm_group_name"], 
                 event_id=row["fk_cd_event"]
             ) 
             for row in events
@@ -325,7 +325,7 @@ async def assign_user_to_event_group(data: UserAssign, user=Depends(check_access
 @router.delete("/group/user/unassign", status_code=status.HTTP_200_OK, response_model=UserUnassignReturn)
 async def unassign_user_from_event_group(user=Depends(check_access)):
     """
-    Rota para o próprio usuário autenticado se desinscrever do seu grupo atual (redefinindo para 0).
+    Rota para o próprio usuário autenticado se desinscrever do seu grupo atual (redefinindo para Null).
     """
     # Recupera o ID do usuário diretamente da sessão/token injetado
     logged_user_id = user.get("id")
@@ -402,7 +402,7 @@ async def admin_assign_user_to_group(data: AdminUserAssignRequest, user=Depends(
 @router.delete("/admin/group/user/unassign", status_code=status.HTTP_200_OK, response_model=AdminActionReturn)
 async def admin_unassign_user_from_group(data: AdminUserUnassignRequest, user=Depends(check_access)):
     """
-    Rota para o Administrador desinscrever qualquer aluno de seu grupo atual (redefinindo para 0).
+    Rota para o Administrador desinscrever qualquer aluno de seu grupo atual (redefinindo para Null).
     """
     # Trava estrita de hierarquia: Apenas Administradores podem acessar
     if user.get("role") != "Administrador":

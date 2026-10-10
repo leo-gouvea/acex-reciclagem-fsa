@@ -58,9 +58,11 @@ class GetUserInfosReturn(BaseModel):
     ra: str
     email: str
     created_at: str
-    user_class: str
-    course: str
+    user_class: str | None
+    course: str | None
     user_type: str
+    event_group_id: int | None
+    event_group_name: str | None
     recycling: list[RecyclingHistoryScheme]
 
 
@@ -68,9 +70,9 @@ class UserUpdateReturn(BaseModel):
     id: int
     ra: str
     name: str
-    email: str
-    course: str
-    user_class: str
+    email: str 
+    course: str | None
+    user_class: str | None
     user_type: str
 
 
@@ -303,11 +305,12 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
 
         query1 = """
         SELECT users.id, users.nm_user, users.nr_ra, users.ds_email, users.dt_created_at,
-               classes.ds_class_code, courses.nm_course, user_types.nm_type
+               classes.ds_class_code, courses.nm_course, user_types.nm_type, events_groups.id AS event_group_id, events_groups.nm_group_name AS event_group_name
         FROM users 
-        INNER JOIN classes ON users.fk_cd_class = classes.id
-        INNER JOIN courses ON users.fk_cd_course = courses.id
+        LEFT JOIN classes ON users.fk_cd_class = classes.id
+        LEFT JOIN courses ON users.fk_cd_course = courses.id
         INNER JOIN user_types ON users.fk_cd_user_type = user_types.id
+        LEFT JOIN events_groups ON users.fk_cd_event_group = events_groups.id
         WHERE users.nr_ra = ?
         """
 
@@ -345,6 +348,8 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
             user_class=response1["ds_class_code"],
             course=response1["nm_course"],
             user_type=response1["nm_type"],
+            event_group_id=response1["event_group_id"],
+            event_group_name=response1["event_group_name"],
             recycling=all_recycles
         )
             
@@ -414,8 +419,8 @@ async def user_update(data: UserUpdateRequest, user: dict = Depends(check_access
         SELECT users.id, users.nr_ra, users.nm_user, users.ds_email,
         courses.nm_course, classes.ds_class_code, user_types.nm_type
         FROM users
-        INNER JOIN courses ON courses.id = users.fk_cd_course
-        INNER JOIN classes ON classes.id = users.fk_cd_class
+        LEFT JOIN courses ON courses.id = users.fk_cd_course
+        LEFT JOIN classes ON classes.id = users.fk_cd_class
         INNER JOIN user_types ON user_types.id = users.fk_cd_user_type
         WHERE users.nr_ra = ?
         """
