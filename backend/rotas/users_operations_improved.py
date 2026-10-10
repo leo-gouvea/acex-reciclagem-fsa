@@ -124,15 +124,15 @@ class UserRegisterRequest(BaseModel):
         title="Senha de usuário",
         description="Deve incluir pelo menos 6 caracteres, uma letra maiúscula, uma letra minúscula e um símbolo especial."
     )
-    course: int = Field(
-        ...,
+    course: int | None= Field(
+        default=None,
         ge=1,
         le=23,
         title="Código do curso do estudante.",
         description="Adicione o código do curso do estudante."
     )
-    user_class: int = Field(
-        ...,
+    user_class: int | None = Field(
+        default=None,
         ge=1,
         le=10,
         title="Código da turma do aluno.",
