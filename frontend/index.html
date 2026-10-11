@@ -655,8 +655,22 @@ const buttons = [...document.querySelectorAll('.app-nav button')];
 let current = 0;
 let points = 0;
 let deliveries = 0;
+let materiaisReciclagem = [];
 let startX = 0;
 
+async function carregarMateriaisReciclagem() {
+  try {
+    materiaisReciclagem = await getMaterials();
+    console.log("Materiais carregados:", materiaisReciclagem);
+  } catch (erro) {
+    console.error("Erro ao carregar materiais:", erro);
+    materiaisReciclagem = [];
+  }
+}
+
+window.addEventListener('load', () => {
+  carregarMateriaisReciclagem();
+});
 
 function goToPage(n) {
   n = Math.max(0, Math.min(6, n));
@@ -750,15 +764,56 @@ function update() {
 }
 
 
-function recycle(material, value) {
-  points += value;
-  deliveries++;
+async function recycle(material, value) {
+  const item = materiaisReciclagem.find(
+    m => m.material_name.trim().toLowerCase() === material.trim().toLowerCase()
+  );
 
-  update();
+  if (!item) {
+    showToast("Material indisponível. Recarregue a página e tente novamente.");
+    return;
+  }
 
-  showToast(`${material} registrado! +${value} pontos`);
+  const entrada = prompt(`Quantos kg de ${material} foram entregues?`);
+
+  if (entrada === null) return;
+
+  const peso = Number(entrada.trim().replace(",", "."));
+
+  if (!Number.isFinite(peso) || peso <= 0) {
+    showToast("Informe um peso válido, maior que zero.");
+    return;
+  }
+
+  try {
+    const resposta = await registerRecycling({
+      fk_cd_material: item.id,
+      nr_weight_kilograms: peso
+    });
+
+    if (
+      !resposta ||
+      typeof resposta.total_points !== "number" ||
+      typeof resposta.points_earned !== "number"
+    ) {
+      throw new Error(
+        "A API não retornou os dados de pontuação esperados. Verifique o registro antes de tentar novamente."
+      );
+    }
+
+    points = resposta.total_points;
+    deliveries++;
+
+    update();
+
+    showToast(
+      `${material} registrado! +${resposta.points_earned.toLocaleString("pt-BR")} pontos`
+    );
+  } catch (error) {
+    console.error("Erro ao registrar reciclagem:", error);
+    showToast(error.message || "Não foi possível registrar a reciclagem.");
+  }
 }
-
 
 function buy(item) {
   showToast(`${item}: resgate demonstrativo.`);
