@@ -222,47 +222,50 @@
 
 <section class="page"><div class="container">
   <h2 class="title">Sua turma</h2>
-  <p class="subtitle">A pontuação coletiva incentiva a participação de todos.</p>
+  <p class="subtitle">
+    Consulte os eventos e escolha um grupo para participar.
+  </p>
+
+  <div class="card" style="margin-bottom:20px">
+    <h3>Eventos disponíveis</h3>
+    <label for="grupoEvento">Selecione um evento</label>
+    <select id="grupoEvento" class="input" style="width:100%;margin:10px 0">
+      <option value="">Carregando eventos...</option>
+    </select>
+
+    <label for="grupoOpcao">Grupos do evento</label>
+    <select id="grupoOpcao" class="input" style="width:100%;margin:10px 0">
+      <option value="">Selecione um evento primeiro</option>
+    </select>
+
+    <button id="grupoEntrar" class="btn btn-primary" type="button">
+      Entrar no grupo selecionado
+    </button>
+    <button id="grupoSair" class="btn btn-solid-green" type="button"
+      style="margin-left:8px" hidden>
+      Sair do grupo atual
+    </button>
+
+    <p id="grupoMensagem" role="status" style="margin-top:14px">
+      Carregando informações...
+    </p>
+  </div>
 
   <div class="group-head">
     <div>
-      <span class="badge">Grupo atual</span>
-      <div class="group-name">Guardiões da Terra</div>
-      <p class="subtitle" style="margin:6px 0 0">12 integrantes</p>
-    </div>
-
-    <div class="group-score">
-      <strong>0</strong> pontos
+      <span class="badge">Seu grupo atual</span>
+      <div class="group-name" id="grupoAtualNome">Nenhum grupo</div>
+      <p class="subtitle" id="grupoAtualEvento" style="margin:6px 0 0">
+        Você ainda não está em um grupo.
+      </p>
     </div>
   </div>
 
-  <h2 class="section-title">Ranking</h2>
-
-  <div class="ranking">
-    <div class="rank">
-      <div class="pos">1</div>
-      <div class="name">Você</div>
-      <div class="score" id="rankPoints">0 pts</div>
-    </div>
-
-    <div class="rank">
-      <div class="pos">2</div>
-      <div class="name">Ana</div>
-      <div class="score">0 pts</div>
-    </div>
-
-    <div class="rank">
-      <div class="pos">3</div>
-      <div class="name">Pedro</div>
-      <div class="score">0 pts</div>
-    </div>
-
-    <div class="rank">
-      <div class="pos">4</div>
-      <div class="name">Lucas</div>
-      <div class="score">0 pts</div>
-    </div>
-  </div>
+  <h2 class="section-title">Pontuação e ranking</h2>
+  <p class="subtitle">
+    A pontuação coletiva e o ranking serão exibidos quando houver dados
+    reais disponibilizados pelo backend.
+  </p>
 </div></section>
 
 
@@ -755,12 +758,6 @@ function update() {
 
   document.getElementById('deliveries').textContent =
     deliveries;
-
-  document.getElementById('rankPoints').textContent =
-    points.toLocaleString('pt-BR') + ' pts';
-
-  document.getElementById('teamScore').textContent =
-    points.toLocaleString('pt-BR');
 }
 
 
@@ -1087,6 +1084,183 @@ window.addEventListener('pageshow', async function (event) {
       });
     });
   }
+</script>
+
+
+<script>
+// INTEGRACAO_GRUPOS_ECOHORA
+(function () {
+    const eventoSelect = document.getElementById("grupoEvento");
+    const grupoSelect = document.getElementById("grupoOpcao");
+    const entrarBtn = document.getElementById("grupoEntrar");
+    const sairBtn = document.getElementById("grupoSair");
+    const mensagem = document.getElementById("grupoMensagem");
+    const nomeAtual = document.getElementById("grupoAtualNome");
+    const eventoAtual = document.getElementById("grupoAtualEvento");
+
+    if (!eventoSelect || !grupoSelect || !entrarBtn || !sairBtn) return;
+
+    let eventos = [];
+    let grupos = [];
+    let usuario = null;
+
+    function lista(valor, propriedade) {
+        if (Array.isArray(valor)) return valor;
+        if (Array.isArray(valor?.[propriedade])) return valor[propriedade];
+        if (Array.isArray(valor?.data)) return valor.data;
+        return [];
+    }
+
+    function informar(texto, erro = false) {
+        mensagem.textContent = texto;
+        mensagem.style.color = erro ? "#b42318" : "";
+    }
+
+    function nomeEvento(eventoId) {
+        const evento = eventos.find(e => Number(e.id) === Number(eventoId));
+        return evento?.event_name || "Evento";
+    }
+
+    function atualizarGrupoAtual() {
+        const grupoId = usuario?.event_group_id;
+        const grupo = grupos.find(g => Number(g.id) === Number(grupoId));
+
+        if (grupo) {
+            nomeAtual.textContent = grupo.group_name;
+            eventoAtual.textContent = nomeEvento(grupo.event_id);
+            sairBtn.hidden = false;
+        } else {
+            nomeAtual.textContent = "Nenhum grupo";
+            eventoAtual.textContent = "Você ainda não está em um grupo.";
+            sairBtn.hidden = true;
+        }
+
+        entrarBtn.disabled = !usuario || !grupoSelect.value ||
+            Number(grupoSelect.value) === Number(grupoId);
+    }
+
+    function atualizarGrupos() {
+        const eventoId = eventoSelect.value;
+        const disponiveis = grupos.filter(
+            g => Number(g.event_id) === Number(eventoId)
+        );
+
+        grupoSelect.replaceChildren();
+
+        const inicial = document.createElement("option");
+        inicial.value = "";
+        inicial.textContent = disponiveis.length
+            ? "Selecione um grupo"
+            : "Nenhum grupo cadastrado neste evento";
+        grupoSelect.appendChild(inicial);
+
+        disponiveis.forEach(grupo => {
+            const option = document.createElement("option");
+            option.value = grupo.id;
+            option.textContent = grupo.group_name;
+            grupoSelect.appendChild(option);
+        });
+
+        atualizarGrupoAtual();
+    }
+
+    async function carregarDados() {
+        informar("Carregando eventos e grupos...");
+
+        try {
+            const session = await getSession();
+
+            if (!session?.authenticated || !session.user?.ra) {
+                throw new Error("Faça login para consultar e escolher seu grupo.");
+            }
+
+            const resultados = await Promise.all([
+                getEvents(),
+                getEventGroups(),
+                getAuthenticatedUser(session.user.ra)
+            ]);
+
+            eventos = lista(resultados[0], "events");
+            grupos = lista(resultados[1], "groups");
+            usuario = resultados[2];
+
+            eventoSelect.replaceChildren();
+
+            if (!eventos.length) {
+                const option = document.createElement("option");
+                option.value = "";
+                option.textContent = "Nenhum evento cadastrado";
+                eventoSelect.appendChild(option);
+            } else {
+                eventos.forEach(evento => {
+                    const option = document.createElement("option");
+                    option.value = evento.id;
+                    option.textContent = evento.event_name;
+                    eventoSelect.appendChild(option);
+                });
+            }
+
+            atualizarGrupos();
+            informar(
+                "Dados carregados. Selecione um evento e um grupo para participar."
+            );
+        } catch (error) {
+            console.error("Erro ao carregar eventos e grupos:", error);
+            informar(
+                error.message || "Não foi possível carregar os grupos.",
+                true
+            );
+        }
+    }
+
+    eventoSelect.addEventListener("change", atualizarGrupos);
+    grupoSelect.addEventListener("change", atualizarGrupoAtual);
+
+    entrarBtn.addEventListener("click", async function () {
+        const grupoId = grupoSelect.value;
+        if (!grupoId) {
+            informar("Selecione um grupo primeiro.", true);
+            return;
+        }
+
+        if (usuario?.event_group_id) {
+            informar(
+                "Você já está em um grupo. Saia dele antes de entrar em outro.",
+                true
+            );
+            return;
+        }
+
+        entrarBtn.disabled = true;
+        try {
+            await assignUserToGroup(grupoId);
+            informar("Inscrição realizada. Atualizando informações...");
+            await carregarDados();
+        } catch (error) {
+            console.error("Erro ao entrar no grupo:", error);
+            informar(error.message || "Não foi possível entrar no grupo.", true);
+            atualizarGrupoAtual();
+        }
+    });
+
+    sairBtn.addEventListener("click", async function () {
+        if (!usuario?.event_group_id) return;
+
+        sairBtn.disabled = true;
+        try {
+            await unassignUserFromGroup();
+            informar("Você saiu do grupo. Atualizando informações...");
+            await carregarDados();
+        } catch (error) {
+            console.error("Erro ao sair do grupo:", error);
+            informar(error.message || "Não foi possível sair do grupo.", true);
+        } finally {
+            sairBtn.disabled = false;
+        }
+    });
+
+    carregarDados();
+})();
 </script>
 
 </body>

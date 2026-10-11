@@ -167,3 +167,29 @@ async function deleteRecycling(recyclingId) {
         method: "DELETE"
     });
 }
+
+/* EVENTOS E GRUPOS */
+async function getEvents() {
+    return apiRequest("/contests/list", {
+        method: "GET"
+    });
+}
+
+async function getEventGroups() {
+    return apiRequest("/contests/groups/list", {
+        method: "GET"
+    });
+}
+
+async function assignUserToGroup(groupId) {
+    return apiRequest("/contests/group/user/assign", {
+        method: "POST",
+        body: JSON.stringify({ group_id: Number(groupId) })
+    });
+}
+
+async function unassignUserFromGroup() {
+    return apiRequest("/contests/group/user/unassign", {
+        method: "DELETE"
+    });
+}
