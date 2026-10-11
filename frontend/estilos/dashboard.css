@@ -677,6 +677,7 @@ body {
   .app-header {
     height: 64px;
     gap: 8px;
+    justify-content: space-between; 
   }
 
   /* Tira a Nav padrão */

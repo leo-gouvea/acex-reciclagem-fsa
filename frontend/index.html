@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <link rel="stylesheet" href="estilos/tokens.css">
 <link rel="stylesheet" href="estilos/dashboard.css">
@@ -489,7 +490,9 @@
             <!-- Avatar -->
             <div class="perfil-avatar-area">
                 <div class="perfil-avatar" id="perfilAvatar">
-                    U
+                    <span class="material-symbols-outlined">
+                      person
+                    </span>
                 </div>
 
                 <div class="perfil-avatar-info">
@@ -1060,7 +1063,7 @@ async function protectPage() {
   } catch (error) {
     console.warn('Sessão inválida:', error.message);
 
-    window.location.replace('login.html');
+    // window.location.replace('login.html');
   }
 }
 
