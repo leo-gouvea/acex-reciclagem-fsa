@@ -45,26 +45,16 @@
           <span class="nav-text">Lixão</span>
         </button>
       </li>
+
+
       <li>
         <button data-page="3">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 6h10l-1 10.5a1 1 0 0 1-1 .9H7a1 1 0 0 1-1-.9L5 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 6V5a2.5 2.5 0 0 1 5 0v1" stroke="currentColor" stroke-width="1.6"/></svg>
-          <span class="nav-text">Loja</span>
-        </button>
-      </li>
-      <li style="display: none;">
-        <button data-page="4">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 17 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M18 3 11 10l1.5 1.5L19 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 3l4.5 1.5L8 9 5 10 2 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14.5" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
-          <span class="nav-text">Batalha</span>
-        </button>
-      </li>
-      <li>
-        <button data-page="5">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 18s6-5.2 6-9.8A6 6 0 0 0 4 8.2C4 12.8 10 18 10 18Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="8.2" r="2.1" stroke="currentColor" stroke-width="1.6"/></svg>
           <span class="nav-text">Postos</span>
         </button>
       </li>
       <li>
-        <button data-page="6">
+        <button data-page="4">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="6.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M4 17c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           <span class="nav-text">Perfil</span>
         </button>
@@ -83,7 +73,7 @@
 <!-- NAVEGAÇÃO MOBILE (gaveta inferior) -->
   <nav class="app-nav mobile" aria-label="Navegação do painel">
     <div class="nav-center" id="navDrawer">
-      
+
       <!-- O puxador (handle) da gaveta -->
       <div class="drag-handle" onclick="toggleDrawer()">
         <div class="handle-bar"></div>
@@ -103,12 +93,12 @@
           </button>
         </li>
         <li>
-          <button data-page="5">
+          <button data-page="3">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 18s6-5.2 6-9.8A6 6 0 0 0 4 8.2C4 12.8 10 18 10 18Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="8.2" r="2.1" stroke="currentColor" stroke-width="1.6"/></svg>
           </button>
         </li>
         <li>
-          <button data-page="6">
+          <button data-page="4">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="6.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M4 17c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
           </button>
         </li>
@@ -119,17 +109,9 @@
         </li>
 
         <!-- Ícones Secundários (Segunda linha, escondida inicialmente) -->
-        <li>
-          <button data-page="3">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 6h10l-1 10.5a1 1 0 0 1-1 .9H7a1 1 0 0 1-1-.9L5 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 6V5a2.5 2.5 0 0 1 5 0v1" stroke="currentColor" stroke-width="1.6"/></svg>
-          </button>
-        </li>
-        <li style="display: none;">
-          <button data-page="4">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 17 8 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M18 3 11 10l1.5 1.5L19 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 3l4.5 1.5L8 9 5 10 2 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14.5" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
-          </button>
-        </li>
-        
+
+
+
       </ul>
     </div>
   </nav>
@@ -147,8 +129,6 @@
       <ul class="hero-list">
         <li><strong>Grupo:</strong> veja quem mais pontuou na sua turma e quantos alunos participam.</li>
         <li><strong>Lixão:</strong> registre o material que você entregou pra reciclagem.</li>
-        <li><strong>Loja:</strong> troque pontos por decoração de perfil ou horas complementares.</li>
-        <li><strong>Batalha:</strong> dispute com outras turmas pra ver quem recicla mais.</li>
         <li><strong>Postos:</strong> mapa com os pontos de coleta espalhados pelo campus.</li>
       </ul>
 
@@ -206,19 +186,16 @@
       <div class="points">+50 XP</div>
     </div>
 
-    <div class="card mission" onclick="goToPage(5)">
+    <div class="card mission" onclick="goToPage(3)">
       <h3>Explorador verde</h3>
       <p>Encontre um ponto de coleta na faculdade.</p>
       <div class="points">+30 XP</div>
     </div>
 
-    <div class="card mission" onclick="goToPage(4)">
-      <h3>Entre na batalha</h3>
-      <p>Veja a disputa entre os grupos.</p>
-      <div class="points">+20 XP</div>
+
     </div>
   </div>
-</div></section>
+</section>
 
 
 <section class="page"><div class="container">
@@ -281,28 +258,28 @@
 
   <div class="grid recycle-grid">
 
-    <div class="card recycle" onclick="recycle('Plástico',50)">
+    <div class="card recycle plastico" onclick="selecionarMaterial(this.querySelector(&quot;h3&quot;).textContent)">
       <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 3h6v2.5l1.5 2V19a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2V7.5L9 5.5V3Z" stroke="var(--green-light)" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 12h7" stroke="var(--green-light)" stroke-width="1.5"/></svg>
       <h3>Plástico</h3>
       <p>Garrafas, embalagens e outros recicláveis.</p>
       <div class="points">+50 pontos</div>
     </div>
 
-    <div class="card recycle" onclick="recycle('Papel',40)">
+    <div class="card recycle papel" onclick="selecionarMaterial(this.querySelector(&quot;h3&quot;).textContent)">
       <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3h9l3 3v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="var(--green-light)" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12h6M9 15.5h6M9 8.5h3" stroke="var(--green-light)" stroke-width="1.4" stroke-linecap="round"/></svg>
       <h3>Papel</h3>
       <p>Folhas, caixas e materiais de papel.</p>
       <div class="points">+40 pontos</div>
     </div>
 
-    <div class="card recycle" onclick="recycle('Vidro',70)">
+    <div class="card recycle vidro" onclick="selecionarMaterial(this.querySelector(&quot;h3&quot;).textContent)">
       <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 2h4v3.2l2 2.3V20a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V7.5l2-2.3V2Z" stroke="var(--green-light)" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 13h8" stroke="var(--green-light)" stroke-width="1.5"/></svg>
       <h3>Vidro</h3>
       <p>Garrafas e recipientes de vidro.</p>
       <div class="points">+70 pontos</div>
     </div>
 
-    <div class="card recycle" onclick="recycle('Metal',80)">
+    <div class="card recycle metal" onclick="selecionarMaterial(this.querySelector(&quot;h3&quot;).textContent)">
       <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8 6.5 20a1.5 1.5 0 0 0 1.5 1.6h8a1.5 1.5 0 0 0 1.5-1.6L17 8" stroke="var(--green-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="12" cy="8" rx="5" ry="2" stroke="var(--green-light)" stroke-width="1.5"/></svg>
       <h3>Metal</h3>
       <p>Latas e outros metais recicláveis.</p>
@@ -310,6 +287,24 @@
     </div>
 
   </div>
+
+  <form id="recycleForm" class="card recycle-form" onsubmit="return registrarReciclagemFormulario(event)">
+    <h3>Registrar entrega</h3>
+    <p class="subtitle">Selecione o material e informe o peso entregue.</p>
+    <div class="field">
+      <label for="recycleMaterial">Material reciclável</label>
+      <select id="recycleMaterial" name="material" required>
+        <option value="">Carregando materiais...</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="recycleWeight">Peso (kg)</label>
+      <input id="recycleWeight" name="weight" type="text" inputmode="decimal" autocomplete="off" placeholder="Ex.: 1,5" aria-describedby="recycleHelp" required>
+      <small id="recycleHelp">Informe um valor entre 1 e 10 kg. Você pode usar vírgula ou ponto decimal.</small>
+    </div>
+    <button id="recycleSubmit" class="btn btn-primary" type="submit">Registrar reciclagem</button>
+    <p id="recycleStatus" role="status" aria-live="polite"></p>
+  </form>
 
   <div class="card info-card">
     <h3>Como funciona?</h3>
@@ -322,97 +317,10 @@
 </div></section>
 
 
-<section class="page"><div class="container">
-  <h2 class="title">Loja</h2>
-  <p class="subtitle">Use os pontos conquistados para desbloquear recompensas.</p>
-
-  <div class="grid shop-grid">
-
-    <div class="card shop">
-      <div class="shop-image">
-        <svg width="34" height="34" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3 2 6.5 10 10 18 6.5 10 3Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/><path d="M5.5 8.3V12c0 1.4 2 2.5 4.5 2.5s4.5-1.1 4.5-2.5V8.3" stroke="var(--gold)" stroke-width="1.5" fill="none"/></svg>
-      </div>
-      <h3>Horas complementares</h3>
-      <div class="price">1.000 pts</div>
-      <button class="btn btn-solid-green" onclick="buy('Horas complementares')">Resgatar</button>
-    </div>
-
-    <div class="card shop">
-      <div class="shop-image">
-        <svg width="34" height="34" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 4 3 6l2 2.5 1.5-1V17a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V7.5l1.5 1L17 6l-3-2-2.5 1.5h-3L6 4Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/></svg>
-      </div>
-      <h3>Roupas</h3>
-      <div class="price">500 pts</div>
-      <button class="btn btn-solid-green" onclick="buy('Camiseta')">Resgatar</button>
-    </div>
-
-    <div class="card shop">
-      <div class="shop-image">
-        <svg width="34" height="34" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="13" height="13" rx="1.5" stroke="var(--gold)" stroke-width="1.5"/><circle cx="7.5" cy="8" r="1.4" stroke="var(--gold)" stroke-width="1.3"/><path d="M4.5 14.5 8.5 11l2.5 2.3L14 10l2 2.5" stroke="var(--gold)" stroke-width="1.4" stroke-linejoin="round"/></svg>
-      </div>
-      <h3>Moldura</h3>
-      <div class="price">750 pts</div>
-      <button class="btn btn-solid-green" onclick="buy('Moldura de perfil')">Resgatar</button>
-    </div>
-
-    <div class="card shop">
-      <div class="shop-image">
-        <svg width="34" height="34" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 3h8v4a4 4 0 0 1-8 0V3Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/><path d="M4.5 4h1.5v2a2 2 0 0 1-2-2Zm11 0h-1.5v2a2 2 0 0 0 2-2Z" stroke="var(--gold)" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 11v3.5M7.5 16.5h5" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
-      <h3>Badge especial</h3>
-      <div class="price">10.000 pts</div>
-      <button class="btn btn-solid-green" onclick="buy('Badge especial')">Resgatar</button>
-    </div>
-
-  </div>
-</div></section>
 
 
-<section class="page"><div class="container">
-  <h2 class="title">Batalha</h2>
-  <p class="subtitle">Desafios entre turmas para conquistar recompensas.</p>
 
-  <div class="battle">
 
-    <div class="team">
-      <svg width="40" height="40" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 3C8 3 4 8 4 14c0 6.5 5 10.5 10 11 5-0.5 10-4.5 10-11 0-6-4-11-10-11Z" fill="var(--green-light)"/><path d="M9 18c3-6 6-9 11-11" stroke="var(--bg-alt)" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
-      <h2>Guardiões da Terra</h2>
-      <div class="team-score" id="teamScore">0</div>
-      <small>pontos</small>
-
-      <div class="battlebar">
-        <div></div>
-      </div>
-    </div>
-
-    <div class="vs">VS</div>
-
-    <div class="team">
-      <svg width="40" height="40" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 12c2-1.5 3.5-1.5 5.5 0s3.5 1.5 5.5 0 3.5-1.5 5-0" stroke="var(--green-light)" stroke-width="1.6" stroke-linecap="round"/><path d="M2 16c2-1.5 3.5-1.5 5.5 0s3.5 1.5 5.5 0 3.5-1.5 5-0" stroke="var(--green-light)" stroke-width="1.6" stroke-linecap="round"/><path d="M10 3c1.5 2-1 3 0 5" stroke="var(--green-light)" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <h2>Eco Warriors</h2>
-      <div class="team-score">0</div>
-      <small>pontos</small>
-
-      <div class="battlebar">
-        <div style="width:52%"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="card">
-    <span class="badge">Desafio da semana</span>
-    <h2>Quem recicla mais?</h2>
-    <p>Registre suas entregas e ajude a sua turma a conquistar a próxima vitória.</p>
-
-    <button
-      class="btn btn-primary"
-      style="margin-top:16px"
-      onclick="showToast('Você entrou no desafio!')">
-      Participar
-    </button>
-  </div>
-</div></section>
 
 
 <section class="page"><div class="container">
@@ -471,7 +379,7 @@
   </div>
 </div></section>
 
-<section class="page perfil-page" data-page="6">
+<section class="page perfil-page" data-page="4">
 
     <div class="perfil-container">
 
@@ -664,10 +572,31 @@ let deliveries = 0;
 let materiaisReciclagem = [];
 let startX = 0;
 
+
+function atualizarPontuacaoCards() {
+  document.querySelectorAll(".recycle").forEach(card => {
+    const nome = card.querySelector("h3")?.textContent.trim();
+    const exibicao = card.querySelector(".points");
+
+    const material = materiaisReciclagem.find(
+      m => m.material_name.trim().toLowerCase() === nome?.toLowerCase()
+    );
+
+    if (!exibicao) return;
+
+    exibicao.textContent =
+      material && Number.isFinite(Number(material.points_per_kilogram))
+        ? `${material.points_per_kilogram} pontos/kg`
+        : "Pontuação indisponível";
+  });
+}
+
 async function carregarMateriaisReciclagem() {
   try {
     materiaisReciclagem = await getMaterials();
     console.log("Materiais carregados:", materiaisReciclagem);
+    atualizarPontuacaoCards();
+    popularSeletorMateriais();
   } catch (erro) {
     console.error("Erro ao carregar materiais:", erro);
     materiaisReciclagem = [];
@@ -679,7 +608,7 @@ window.addEventListener('load', () => {
 });
 
 function goToPage(n) {
-  n = Math.max(0, Math.min(6, n));
+  n = Math.max(0, Math.min(4, n));
   current = n;
 
   pages.style.transform = `translateX(-${n * 100}vw)`;
@@ -749,6 +678,12 @@ document.addEventListener('keydown', e => {
 let swipePermitido = false;
 
 pages.addEventListener('pointerdown', e => {
+  // No desktop, arrastar o mouse não deve trocar de tela.
+  if (e.pointerType === 'mouse') {
+    swipePermitido = false;
+    return;
+  }
+
   startX = e.clientX;
 
   const alvo = e.target instanceof Element ? e.target : null;
@@ -787,54 +722,89 @@ function update() {
 }
 
 
-async function recycle(material, value) {
-  const item = materiaisReciclagem.find(
-    m => m.material_name.trim().toLowerCase() === material.trim().toLowerCase()
-  );
+function popularSeletorMateriais() {
+  const select = document.getElementById("recycleMaterial");
+  if (!select) return;
+  select.replaceChildren(new Option("Selecione um material", ""));
+  materiaisReciclagem.forEach(item => {
+    select.add(new Option(item.material_name, String(item.id)));
+  });
+  select.addEventListener("change", atualizarDestaqueMaterial);
+  atualizarDestaqueMaterial();
+}
 
+function atualizarDestaqueMaterial() {
+  const select = document.getElementById("recycleMaterial");
+  const form = document.getElementById("recycleForm");
+  if (!select || !form) return;
+  const item = materiaisReciclagem.find(m => String(m.id) === select.value);
+  const classes = ["plastico", "papel", "vidro", "metal"];
+  form.classList.remove(...classes.map(c => "material-" + c));
+  document.querySelectorAll(".recycle-grid .recycle").forEach(card => {
+    card.classList.remove("selected");
+  });
+  if (!item) return;
+  const material = item.material_name.trim().toLowerCase();
+  const nomeNormalizado = material.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const classe = classes.find(c => c === nomeNormalizado);
+  if (!classe) return;
+  form.classList.add("material-" + classe);
+  const card = document.querySelector(".recycle-grid .recycle." + classe);
+  if (card) card.classList.add("selected");
+}
+
+function selecionarMaterial(material) {
+  const select = document.getElementById("recycleMaterial");
+  if (!select) return;
+  const item = materiaisReciclagem.find(m => m.material_name.trim().toLowerCase() === material.trim().toLowerCase());
+  if (item) select.value = String(item.id);
+  atualizarDestaqueMaterial();
+  document.getElementById("recycleWeight").focus();
+}
+
+function registrarReciclagemFormulario(event) {
+  event.preventDefault();
+  const select = document.getElementById("recycleMaterial");
+  const pesoTexto = document.getElementById("recycleWeight").value.trim();
+  const status = document.getElementById("recycleStatus");
+  const peso = Number(pesoTexto.replace(",", "."));
+  if (!select.value) {
+    status.textContent = "Selecione um material reciclável.";
+    return false;
+  }
+  if (!pesoTexto || !Number.isFinite(peso) || peso < 1 || peso > 10) {
+    status.textContent = "Informe um peso válido entre 1 e 10 kg.";
+    return false;
+  }
+  recycle(select.value, peso);
+  return false;
+}
+
+async function recycle(materialId, peso) {
+  const item = materiaisReciclagem.find(m => String(m.id) === String(materialId));
+  const status = document.getElementById("recycleStatus");
+  const submit = document.getElementById("recycleSubmit");
   if (!item) {
-    showToast("Material indisponível. Recarregue a página e tente novamente.");
+    status.textContent = "Material indisponível. Recarregue a página e tente novamente.";
     return;
   }
-
-  const entrada = prompt(`Quantos kg de ${material} foram entregues?`);
-
-  if (entrada === null) return;
-
-  const peso = Number(entrada.trim().replace(",", "."));
-
-  if (!Number.isFinite(peso) || peso <= 0) {
-    showToast("Informe um peso válido, maior que zero.");
-    return;
-  }
-
+  status.textContent = "Registrando entrega...";
+  submit.disabled = true;
   try {
-    const resposta = await registerRecycling({
-      fk_cd_material: item.id,
-      nr_weight_kilograms: peso
-    });
-
-    if (
-      !resposta ||
-      typeof resposta.total_points !== "number" ||
-      typeof resposta.points_earned !== "number"
-    ) {
-      throw new Error(
-        "A API não retornou os dados de pontuação esperados. Verifique o registro antes de tentar novamente."
-      );
+    const resposta = await registerRecycling({ fk_cd_material: item.id, nr_weight_kilograms: peso });
+    if (!resposta || typeof resposta.total_points !== "number" || typeof resposta.points_earned !== "number") {
+      throw new Error("A API não retornou os dados de pontuação esperados. Verifique o registro antes de tentar novamente.");
     }
-
     points = resposta.total_points;
     deliveries++;
-
     update();
-
-    showToast(
-      `${material} registrado! +${resposta.points_earned.toLocaleString("pt-BR")} pontos`
-    );
+    status.textContent = `${item.material_name}: ${peso.toLocaleString("pt-BR")} kg registrados. +${resposta.points_earned.toLocaleString("pt-BR")} pontos.`;
+    document.getElementById("recycleWeight").value = "";
   } catch (error) {
     console.error("Erro ao registrar reciclagem:", error);
-    showToast(error.message || "Não foi possível registrar a reciclagem.");
+    status.textContent = error.message || "Não foi possível registrar a reciclagem.";
+  } finally {
+    submit.disabled = false;
   }
 }
 
