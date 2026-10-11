@@ -63,6 +63,7 @@ class GetUserInfosReturn(BaseModel):
     user_type: str
     event_group_id: int | None
     event_group_name: str | None
+    points: float
     recycling: list[RecyclingHistoryScheme]
 
 
@@ -304,15 +305,29 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
         db.row_factory = aiosqlite.Row
 
         query1 = """
-        SELECT users.id, users.nm_user, users.nr_ra, users.ds_email, users.dt_created_at,
-               classes.ds_class_code, courses.nm_course, user_types.nm_type, events_groups.id AS event_group_id, events_groups.nm_group_name AS event_group_name
-        FROM users 
-        LEFT JOIN classes ON users.fk_cd_class = classes.id
-        LEFT JOIN courses ON users.fk_cd_course = courses.id
-        INNER JOIN user_types ON users.fk_cd_user_type = user_types.id
-        LEFT JOIN events_groups ON users.fk_cd_event_group = events_groups.id
-        WHERE users.nr_ra = ?
-        """
+SELECT
+    users.id,
+    users.nm_user,
+    users.nr_ra,
+    users.ds_email,
+    users.dt_created_at,
+    users.nr_points,
+    classes.ds_class_code,
+    courses.nm_course,
+    user_types.nm_type,
+    events_groups.id AS event_group_id,
+    events_groups.nm_group_name AS event_group_name
+FROM users
+LEFT JOIN classes
+    ON users.fk_cd_class = classes.id
+LEFT JOIN courses
+    ON users.fk_cd_course = courses.id
+INNER JOIN user_types
+    ON users.fk_cd_user_type = user_types.id
+LEFT JOIN events_groups
+    ON users.fk_cd_event_group = events_groups.id
+WHERE users.nr_ra = ?
+"""
 
         async with db.execute(query1, (user_ra,)) as cur:
             response1 = await cur.fetchone()
@@ -348,6 +363,7 @@ async def user_get(user_ra: str = Path(description="Número de RA do aluno.", ex
             user_class=response1["ds_class_code"],
             course=response1["nm_course"],
             user_type=response1["nm_type"],
+            points=response1["nr_points"],
             event_group_id=response1["event_group_id"],
             event_group_name=response1["event_group_name"],
             recycling=all_recycles

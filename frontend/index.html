@@ -724,7 +724,16 @@ buttons.forEach(b => {
 });
 
 
+
 document.addEventListener('keydown', e => {
+  // Não trocar de aba enquanto o usuário navega por um campo.
+  if (
+    e.target instanceof Element &&
+    e.target.closest('input, select, textarea, [contenteditable="true"]')
+  ) {
+    return;
+  }
+
   if (e.key === 'ArrowRight') {
     goToPage(current + 1);
   }
@@ -734,19 +743,33 @@ document.addEventListener('keydown', e => {
   }
 });
 
+let swipePermitido = false;
 
 pages.addEventListener('pointerdown', e => {
   startX = e.clientX;
+
+  const alvo = e.target instanceof Element ? e.target : null;
+
+  swipePermitido = !alvo?.closest(
+    'select, input, textarea, button, a, label, [contenteditable="true"]'
+  );
 });
 
-
 pages.addEventListener('pointerup', e => {
+  if (!swipePermitido) {
+    swipePermitido = false;
+    return;
+  }
+
   const d = startX - e.clientX;
 
   if (Math.abs(d) > 55) {
     goToPage(current + (d > 0 ? 1 : -1));
   }
+
+  swipePermitido = false;
 });
+
 
 
 function update() {
@@ -945,6 +968,9 @@ async function carregarPerfil() {
         ]);
 
         perfilOpcoes = options;
+
+        points = Number(user.points ?? 0);
+        update();
 
         preencherCursos(options.courses);
         preencherTurmas(options.classes);
