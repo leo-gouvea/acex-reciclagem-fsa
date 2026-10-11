@@ -89,6 +89,41 @@ class AdminActionReturn(BaseModel):
     Modelo padrão de retorno para ações de gerenciamento do Administrador.
     """
     message: str
+    
+
+class EventRankingUsersScheme(BaseModel):
+    """
+    Modelo de retorno do ranking
+    """
+    user_id: int
+    user_name: str
+    group_id: int
+    group_name: str
+    recycles: int
+    total_weight: float
+    recycle_points: int
+
+class EventRanking(BaseModel):
+    """
+    Modelo de retorno do ranking das pessoas que mais reciclaram em um evento
+    """
+    event_id: int
+    event_name: str
+    ranking: list[EventRankingUsersScheme]
+
+
+class EventGroupResponse(BaseModel):
+    """Schema para padronizar a resposta enviada ao cliente"""
+    id: int
+    group_name: str
+    fk_cd_event: int
+
+
+class EventGroupDeletion(BaseModel):
+    """
+    Modelo de retorno da deleção de grupos
+    """
+    message: str
 
 
 # ==========================================
@@ -147,6 +182,14 @@ class AdminUserUnassignRequest(BaseModel):
     Modelo de dados para o Administrador remover um aluno de um grupo.
     """
     user_id: int = Field(..., description="ID do usuário/aluno que será desvinculado.")
+
+
+class EventGroupCreate(BaseModel):
+    """
+    Schema para receber os dados de criação de um grupo
+    """
+    group_name: str = Field(..., min_length=3, max_length=100, example="Eco Warriors")
+    fk_cd_event: int = Field(..., description="ID do evento ao qual o grupo pertence", example=1)
 
 
 # ==========================================
@@ -433,3 +476,141 @@ async def admin_unassign_user_from_group(data: AdminUserUnassignRequest, user=De
         await db.commit()
 
     return AdminActionReturn(message=f"Usuário {data.user_id} removido do grupo de evento com sucesso.")
+
+
+@router.get("/event/rank/{event_id}", response_model=EventRanking, response_description="Retorna o ranking de reciclagem, do primeiro ao décimo, respectivamente.")
+async def get_event_ranking(event_id: int):
+    """
+    Retorna o top 10 de usuários que mais reciclaram durante o período do evento.
+    """
+    async with aiosqlite.connect(DB_PATH) as DB:
+        DB.row_factory = aiosqlite.Row
+        
+        # Busca os dados do Evento (Topo do Schema)
+        async with DB.execute(
+            "SELECT id, nm_event FROM events WHERE id = ?", (event_id,)
+        ) as cursor:
+            event_row = await cursor.fetchone()
+            
+        if not event_row:
+            # Se o evento não existe, avisa o cliente com status 404
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail="Evento não encontrado"
+            )
+
+        # Busca o Top 10 usuários do evento
+        query_ranking = """
+            SELECT 
+                u.id AS user_id,
+                u.nm_user AS user_name,
+                eg.id AS group_id,
+                eg.nm_group_name AS group_name,
+                COUNT(r.id) AS recycles,
+                IFNULL(SUM(r.nr_weight_kilograms),0) AS total_weight,
+                CAST(IFNULL(SUM(r.nr_weight_kilograms * m.nr_points_per_kilogram), 0) AS INTEGER) AS recycle_points 
+            FROM 
+                events e
+            INNER JOIN 
+                events_groups eg ON eg.fk_cd_event = e.id
+            INNER JOIN 
+                users u ON u.fk_cd_event_GROUP = eg.id
+            INNER JOIN 
+                recycling r ON r.fk_cd_user = u.id
+            INNER JOIN 
+                materials m ON m.id = r.fk_cd_material
+            WHERE 
+                e.id = ? 
+                AND r.dt_gave BETWEEN e.dt_event_start AND e.dt_event_end
+            GROUP BY 
+                u.id, u.nm_user, eg.id, eg.nm_group_name
+            ORDER BY 
+                recycle_points DESC, total_weight DESC
+            LIMIT 10;
+        """
+        
+        # Misericórdia o CAST permite a multiplicação do REAL por INTEGER com retorno de inteiro - GROUP BY junta tudo agrupando por 
+        
+        async with DB.execute(query_ranking, (event_id,)) as cursor:
+            rows = await cursor.fetchall()
+            
+        # Mapeia as linhas do banco diretamente para o Pydantic
+        users_ranking = [EventRankingUsersScheme(**dict(row)) for row in rows]
+        
+        # Retorna o Schema principal montado
+        return EventRanking(
+            event_id=event_row["id"],
+            event_name=event_row["nm_event"],
+            ranking=users_ranking
+        )
+        
+
+@router.post("/event/group", response_model=EventGroupResponse, status_code=status.HTTP_201_CREATED)
+async def create_event_group(group_data: EventGroupCreate):
+    """
+    Cria um grupo para um evento existente
+    """
+    
+    async with aiosqlite.connect(DB_PATH) as DB:
+        DB.row_factory = aiosqlite.Row
+        
+        # Verificar se o evento realmente existe antes de criar o grupo
+        async with DB.execute("SELECT id FROM events WHERE id = ?", (group_data.fk_cd_event,)) as cursor:
+            event_exists = await cursor.fetchone()
+            
+        if not event_exists:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Não foi possível criar o grupo. O evento com ID {group_data.fk_cd_event} não existe."
+            )
+            
+        # Inserir o novo grupo no banco de dados
+        query_insert = """
+            INSERT INTO event_groups (group_name, fk_cd_event) 
+            VALUES (?, ?)
+            RETURNING id, group_name, fk_cd_event;
+        """
+        try:
+            async with DB.execute(query_insert, (group_data.group_name, group_data.fk_cd_event)) as cursor:
+                new_group = await cursor.fetchone()
+                await DB.commit()
+        except Exception as e:
+            await DB.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Erro interno ao salvar o grupo no banco de dados."
+            )
+            
+        return EventGroupResponse(**dict(new_group))
+
+
+@router.delete("/event/group/{group_id}", status_code=status.HTTP_200_OK)
+async def delete_event_group(group_id: int):
+    """
+    Deleta um grupo de um evento.
+    """
+    
+    async with aiosqlite.connect(DB_PATH) as DB:
+        # Verificar se o grupo existe antes de tentar deletar
+        async with DB.execute("SELECT id FROM event_groups WHERE id = ?", (group_id,)) as cursor:
+            group_exists = await cursor.fetchone()
+            
+        if not group_exists:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Grupo com ID {group_id} não encontrado."
+            )
+            
+        # Executar a deleção
+        try:
+            await DB.execute("DELETE FROM event_groups WHERE id = ?", (group_id,))
+            await DB.commit()
+        except Exception:
+            await DB.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Erro interno ao deletar o grupo."
+            )
+            
+        # Retornos 204 No Content não enviam corpo de resposta de volta
+        return EventGroupDeletion(message="Grupo de evento excluído com sucesso.")
