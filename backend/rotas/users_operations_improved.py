@@ -10,8 +10,8 @@ from fastapi import APIRouter, HTTPException, status, Path, Depends, Response
 from pydantic import BaseModel, Field, EmailStr
 import jwt
 
-# Importando do main para facilitar
-from main import check_access
+# Importando para facilitar
+from utils.jwt_validation import check_access
 
 # Identificar rota de grupo e fora de main
 router = APIRouter(

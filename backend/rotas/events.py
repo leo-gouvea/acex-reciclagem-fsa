@@ -10,7 +10,8 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel, Field
 
 # Importando do main para facilitar
-from main import check_access
+# from main import check_access
+from utils.jwt_validation import check_access
 from utils.sqlite_datetime_validator import SQLiteDateTime
 
 # Identificar rota de grupo e fora de main

@@ -4,8 +4,8 @@ import aiosqlite
 from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel
 
-# Importando do main para facilitar
-from main import check_access
+# Importando para facilitar
+from utils.jwt_validation import check_access
 
 # Identificar rota de grupo e fora de main
 router = APIRouter(

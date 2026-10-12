@@ -4,8 +4,8 @@ import aiosqlite
 from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel, Field
 
-# Importando do main para facilitar
-from main import check_access
+# Importando para facilitar
+from utils.jwt_validation import check_access
 
 router = APIRouter(
     prefix="/fsa",
