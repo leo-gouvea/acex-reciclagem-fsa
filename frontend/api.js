@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://apei-ecohora.discloud.app";
+const API_BASE_URL = "https://apei-ecohora.discloud.dev";
 // const API_BASE_URL = "http://127.0.0.1:8000"; // Endereço da API para testes. Terminal -> http://127.0.0.1:8000
 
 async function apiRequest(endpoint, options = {}) {
