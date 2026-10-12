@@ -120,11 +120,27 @@ class EventGroupResponse(BaseModel):
 
 
 class EventGroupDeletion(BaseModel):
-    """
-    Modelo de retorno da deleção de grupos
-    """
+    """Modelo de retorno da deleção de grupos"""
     message: str
+    
+    
+class EventGroupNested(BaseModel):
+    """Modelo para representar o grupo dentro da listagem de eventos"""
+    id: int
+    group_name: str
 
+
+class EventWithGroupsReturn(EventsReturn):
+    """Modelo que herda os dados de evento e adiciona a lista de grupos"""
+    groups: list[EventGroupNested]
+
+
+class EventStatsWithRankingReturn(BaseModel):
+    """Modelo para retornar os totais matemáticos e o Top 10 juntos"""
+    total_recycles: int
+    total_weight: float
+    total_points: int
+    ranking: list[EventRankingUsersScheme]
 
 # ==========================================
 # SCHEMAS DE ENTRADA (REQUESTS)
@@ -196,7 +212,48 @@ class EventGroupCreate(BaseModel):
 # ROTAS / ENDPOINTS
 # ==========================================
 
-@router.get("/list", response_model=list[EventsReturn])
+
+# Rota nova que substitui as listagens antigas
+@router.get("/list-with-groups", response_model=list[EventWithGroupsReturn])
+async def list_events_with_groups():
+    """
+    Rota para listar todos os eventos e os grupos associados a eles.
+    """
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+
+        # Busca todos os eventos
+        async with db.execute("SELECT * FROM events") as cursor:
+            events_rows = await cursor.fetchall()
+
+        # Busca todos os grupos na tabela correta
+        async with db.execute("SELECT * FROM events_groups") as cursor:
+            groups_rows = await cursor.fetchall()
+
+        events_list = []
+        for event in events_rows:
+            
+            # Filtra os grupos que pertencem a este evento
+            event_groups = [
+                EventGroupNested(id=g["id"], group_name=g["nm_group_name"]) 
+                for g in groups_rows if g["fk_cd_event"] == event["id"]
+            ]
+            
+            events_list.append(
+                EventWithGroupsReturn(
+                    id=event["id"], 
+                    event_name=event["nm_event"], 
+                    event_description=event["ds_event_description"], 
+                    event_start_date=event["dt_event_start"], 
+                    event_end_date=event["dt_event_end"],
+                    groups=event_groups
+                )
+            )
+            
+    return events_list
+
+
+@router.get("/list", response_model=list[EventsReturn], deprecated=True)
 async def list_events():
     """
     Rota para listar todos os eventos disponíveis.
@@ -221,7 +278,7 @@ async def list_events():
     return events_list
 
 
-@router.get("/groups/list", response_model=list[EventsGroupsReturn])
+@router.get("/groups/list", response_model=list[EventsGroupsReturn], deprecated=True)
 async def list_event_groups():
     """
     Rota para listar todos os grupos de eventos disponíveis.
@@ -322,6 +379,140 @@ async def delete_event(event_id: int, user=Depends(check_access)):
         await db.commit()
 
     return DeleteEventReturn()
+
+
+# ESTATISTICAS DE UM EVENTO
+@router.get("/event/{event_id}/stats", response_model=EventStatsWithRankingReturn)
+async def get_event_total_stats(event_id: int):
+    """
+    Retorna os pontos totais, quilos totais e o Top 10 do evento inteiro.
+    """
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        
+        #  Verifica se o evento existe (se não existir, retorna erro 404)
+        async with db.execute("SELECT id FROM events WHERE id = ?", (event_id,)) as cursor:
+            if not await cursor.fetchone():
+                raise HTTPException(status_code=404, detail="Evento não encontrado.")
+
+        #  Busca os totais matemáticos do evento
+        query_totals = """
+            SELECT 
+                COUNT(r.id) AS total_recycles,
+                IFNULL(SUM(r.nr_weight_kilograms), 0) AS total_weight,
+                CAST(IFNULL(SUM(r.nr_weight_kilograms * m.nr_points_per_kilogram), 0) AS INTEGER) AS total_points
+            FROM events e
+            INNER JOIN events_groups eg ON eg.fk_cd_event = e.id
+            INNER JOIN users u ON u.fk_cd_event_GROUP = eg.id
+            INNER JOIN recycling r ON r.fk_cd_user = u.id
+            INNER JOIN materials m ON m.id = r.fk_cd_material
+            WHERE e.id = ? 
+            AND r.dt_gave BETWEEN e.dt_event_start AND e.dt_event_end
+        """
+        async with db.execute(query_totals, (event_id,)) as cursor:
+            stats = await cursor.fetchone()
+            
+        #  Busca o ranking (Top 10) do evento
+        query_ranking = """
+            SELECT 
+                u.id AS user_id,
+                u.nm_user AS user_name,
+                eg.id AS group_id,
+                eg.nm_group_name AS group_name,
+                COUNT(r.id) AS recycles,
+                IFNULL(SUM(r.nr_weight_kilograms),0) AS total_weight,
+                CAST(IFNULL(SUM(r.nr_weight_kilograms * m.nr_points_per_kilogram), 0) AS INTEGER) AS recycle_points 
+            FROM events e
+            INNER JOIN events_groups eg ON eg.fk_cd_event = e.id
+            INNER JOIN users u ON u.fk_cd_event_GROUP = eg.id
+            INNER JOIN recycling r ON r.fk_cd_user = u.id
+            INNER JOIN materials m ON m.id = r.fk_cd_material
+            WHERE e.id = ? 
+            AND r.dt_gave BETWEEN e.dt_event_start AND e.dt_event_end
+            GROUP BY u.id, u.nm_user, eg.id, eg.nm_group_name
+            ORDER BY recycle_points DESC, total_weight DESC
+            LIMIT 10;
+        """
+        async with db.execute(query_ranking, (event_id,)) as cursor:
+            rows = await cursor.fetchall()
+
+        #  Converte as linhas do banco de dados para a lista do schema
+        users_ranking = [EventRankingUsersScheme(**dict(row)) for row in rows]
+
+        #  Retorna tudo empacotado no mesmo JSON
+        return EventStatsWithRankingReturn(
+            total_recycles=stats["total_recycles"],
+            total_weight=stats["total_weight"],
+            total_points=stats["total_points"],
+            ranking=users_ranking
+        )
+
+
+# ESTATISTICAS DE DE UM GRUPO
+@router.get("/event/{event_id}/group/{group_id}/stats", response_model=EventStatsWithRankingReturn)
+async def get_group_stats(event_id: int, group_id: int):
+    """
+    Retorna os pontos totais, quilos totais e o Top 10 de um grupo específico.
+    """
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        
+        #  Verifica se o grupo pertence a esse evento
+        async with db.execute("SELECT id FROM events_groups WHERE id = ? AND fk_cd_event = ?", (group_id, event_id)) as cursor:
+            if not await cursor.fetchone():
+                raise HTTPException(status_code=404, detail="Grupo ou evento não encontrado.")
+
+        #  Busca os totais matemáticos apenas desse grupo
+        query_totals = """
+            SELECT 
+                COUNT(r.id) AS total_recycles,
+                IFNULL(SUM(r.nr_weight_kilograms), 0) AS total_weight,
+                CAST(IFNULL(SUM(r.nr_weight_kilograms * m.nr_points_per_kilogram), 0) AS INTEGER) AS total_points
+            FROM events_groups eg
+            INNER JOIN users u ON u.fk_cd_event_GROUP = eg.id
+            INNER JOIN recycling r ON r.fk_cd_user = u.id
+            INNER JOIN materials m ON m.id = r.fk_cd_material
+            INNER JOIN events e ON e.id = eg.fk_cd_event
+            WHERE eg.id = ? AND eg.fk_cd_event = ?
+            AND r.dt_gave BETWEEN e.dt_event_start AND e.dt_event_end
+        """
+        async with db.execute(query_totals, (group_id, event_id)) as cursor:
+            stats = await cursor.fetchone()
+            
+        #  Busca o ranking (Top 10) restrito aos alunos deste grupo
+        query_ranking = """
+            SELECT 
+                u.id AS user_id,
+                u.nm_user AS user_name,
+                eg.id AS group_id,
+                eg.nm_group_name AS group_name,
+                COUNT(r.id) AS recycles,
+                IFNULL(SUM(r.nr_weight_kilograms),0) AS total_weight,
+                CAST(IFNULL(SUM(r.nr_weight_kilograms * m.nr_points_per_kilogram), 0) AS INTEGER) AS recycle_points 
+            FROM events_groups eg
+            INNER JOIN users u ON u.fk_cd_event_GROUP = eg.id
+            INNER JOIN recycling r ON r.fk_cd_user = u.id
+            INNER JOIN materials m ON m.id = r.fk_cd_material
+            INNER JOIN events e ON e.id = eg.fk_cd_event
+            WHERE eg.id = ? AND eg.fk_cd_event = ?
+            AND r.dt_gave BETWEEN e.dt_event_start AND e.dt_event_end
+            GROUP BY u.id, u.nm_user, eg.id, eg.nm_group_name
+            ORDER BY recycle_points DESC, total_weight DESC
+            LIMIT 10;
+        """
+        async with db.execute(query_ranking, (group_id, event_id)) as cursor:
+            rows = await cursor.fetchall()
+
+        #  Converte as linhas para o formato de retorno
+        users_ranking = [EventRankingUsersScheme(**dict(row)) for row in rows]
+
+        #  Retorna os dados combinados
+        return EventStatsWithRankingReturn(
+            total_recycles=stats["total_recycles"],
+            total_weight=stats["total_weight"],
+            total_points=stats["total_points"],
+            ranking=users_ranking
+        )
 
 
 # O susuário só consegue se inscrever a um evento.
@@ -476,73 +667,6 @@ async def admin_unassign_user_from_group(data: AdminUserUnassignRequest, user=De
         await db.commit()
 
     return AdminActionReturn(message=f"Usuário {data.user_id} removido do grupo de evento com sucesso.")
-
-
-@router.get("/event/rank/{event_id}", response_model=EventRanking, response_description="Retorna o ranking de reciclagem, do primeiro ao décimo, respectivamente.")
-async def get_event_ranking(event_id: int):
-    """
-    Retorna o top 10 de usuários que mais reciclaram durante o período do evento.
-    """
-    async with aiosqlite.connect(DB_PATH) as DB:
-        DB.row_factory = aiosqlite.Row
-        
-        # Busca os dados do Evento (Topo do Schema)
-        async with DB.execute(
-            "SELECT id, nm_event FROM events WHERE id = ?", (event_id,)
-        ) as cursor:
-            event_row = await cursor.fetchone()
-            
-        if not event_row:
-            # Se o evento não existe, avisa o cliente com status 404
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, 
-                detail="Evento não encontrado"
-            )
-
-        # Busca o Top 10 usuários do evento
-        query_ranking = """
-            SELECT 
-                u.id AS user_id,
-                u.nm_user AS user_name,
-                eg.id AS group_id,
-                eg.nm_group_name AS group_name,
-                COUNT(r.id) AS recycles,
-                IFNULL(SUM(r.nr_weight_kilograms),0) AS total_weight,
-                CAST(IFNULL(SUM(r.nr_weight_kilograms * m.nr_points_per_kilogram), 0) AS INTEGER) AS recycle_points 
-            FROM 
-                events e
-            INNER JOIN 
-                events_groups eg ON eg.fk_cd_event = e.id
-            INNER JOIN 
-                users u ON u.fk_cd_event_GROUP = eg.id
-            INNER JOIN 
-                recycling r ON r.fk_cd_user = u.id
-            INNER JOIN 
-                materials m ON m.id = r.fk_cd_material
-            WHERE 
-                e.id = ? 
-                AND r.dt_gave BETWEEN e.dt_event_start AND e.dt_event_end
-            GROUP BY 
-                u.id, u.nm_user, eg.id, eg.nm_group_name
-            ORDER BY 
-                recycle_points DESC, total_weight DESC
-            LIMIT 10;
-        """
-        
-        # Misericórdia o CAST permite a multiplicação do REAL por INTEGER com retorno de inteiro - GROUP BY junta tudo agrupando por 
-        
-        async with DB.execute(query_ranking, (event_id,)) as cursor:
-            rows = await cursor.fetchall()
-            
-        # Mapeia as linhas do banco diretamente para o Pydantic
-        users_ranking = [EventRankingUsersScheme(**dict(row)) for row in rows]
-        
-        # Retorna o Schema principal montado
-        return EventRanking(
-            event_id=event_row["id"],
-            event_name=event_row["nm_event"],
-            ranking=users_ranking
-        )
         
 
 @router.post("/event/group", response_model=EventGroupResponse, status_code=status.HTTP_201_CREATED)
@@ -564,11 +688,11 @@ async def create_event_group(group_data: EventGroupCreate):
                 detail=f"Não foi possível criar o grupo. O evento com ID {group_data.fk_cd_event} não existe."
             )
             
-        # Inserir o novo grupo no banco de dados
+        # Inserir o novo grupo no banco de dados com os nomes de tabela e coluna corrigidos
         query_insert = """
-            INSERT INTO event_groups (group_name, fk_cd_event) 
+            INSERT INTO events_groups (nm_group_name, fk_cd_event) 
             VALUES (?, ?)
-            RETURNING id, group_name, fk_cd_event;
+            RETURNING id, nm_group_name AS group_name, fk_cd_event;
         """
         try:
             async with DB.execute(query_insert, (group_data.group_name, group_data.fk_cd_event)) as cursor:
@@ -591,8 +715,8 @@ async def delete_event_group(group_id: int):
     """
     
     async with aiosqlite.connect(DB_PATH) as DB:
-        # Verificar se o grupo existe antes de tentar deletar
-        async with DB.execute("SELECT id FROM event_groups WHERE id = ?", (group_id,)) as cursor:
+        # Verificar se o grupo existe antes de tentar deletar na tabela correta
+        async with DB.execute("SELECT id FROM events_groups WHERE id = ?", (group_id,)) as cursor:
             group_exists = await cursor.fetchone()
             
         if not group_exists:
@@ -601,9 +725,9 @@ async def delete_event_group(group_id: int):
                 detail=f"Grupo com ID {group_id} não encontrado."
             )
             
-        # Executar a deleção
+        # Executar a deleção na tabela correta
         try:
-            await DB.execute("DELETE FROM event_groups WHERE id = ?", (group_id,))
+            await DB.execute("DELETE FROM events_groups WHERE id = ?", (group_id,))
             await DB.commit()
         except Exception:
             await DB.rollback()
@@ -612,5 +736,4 @@ async def delete_event_group(group_id: int):
                 detail="Erro interno ao deletar o grupo."
             )
             
-        # Retornos 204 No Content não enviam corpo de resposta de volta
         return EventGroupDeletion(message="Grupo de evento excluído com sucesso.")

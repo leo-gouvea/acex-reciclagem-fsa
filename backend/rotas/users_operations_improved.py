@@ -276,7 +276,8 @@ async def user_login(credentials: UserLoginRequest, response: Response):
                 "role": result["nm_type"]
             }
             
-            master_key = os.getenv("ECO_HORA_API_KEY")
+            # Nova secret exclusiva pra o JWT
+            master_key = os.getenv("JWT_SECRET")
             token_jwt = jwt.encode(user_data, master_key, algorithm="HS256")
             
             response.set_cookie(

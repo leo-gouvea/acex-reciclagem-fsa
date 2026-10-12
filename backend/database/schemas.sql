@@ -30,7 +30,7 @@ CREATE TABLE "users" (
     "fk_cd_user_type" INTEGER NOT NULL DEFAULT 1 REFERENCES "user_types"("id"),
     "nr_points" REAL NOT NULL DEFAULT 0,
     "dt_created_at" TEXT DEFAULT (CURRENT_TIMESTAMP),
-    "fk_cd_event_GROUP" INTEGER REFERENCES "event_groups"("id") ON DELETE SET NULL
+    "fk_cd_event_GROUP" INTEGER REFERENCES "events_groups"("id") ON DELETE SET NULL
 );
 
 CREATE TABLE "recycling" (
@@ -49,8 +49,8 @@ CREATE TABLE "events" (
     "dt_event_end" TEXT
 );
 
-CREATE TABLE "event_groups" (
+CREATE TABLE "events_groups" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "group_name" TEXT NOT NULL DEFAULT 'Grupo sem nome',
+    "nm_group_name" TEXT NOT NULL DEFAULT 'Grupo sem nome',
     "fk_cd_event" INTEGER NOT NULL REFERENCES "events"("id") ON DELETE CASCADE
 );
