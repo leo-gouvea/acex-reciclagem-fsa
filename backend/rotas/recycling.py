@@ -2,7 +2,7 @@ import os
 
 import aiosqlite
 from fastapi import APIRouter, HTTPException, status, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 # Importando para facilitar
 from utils.jwt_validation import check_access
@@ -56,7 +56,11 @@ class PostMaterialRequest(BaseModel):
 
 class PostRecyclingRequest(BaseModel):
     fk_cd_material: int
-    nr_weight_kilograms: float
+    nr_weight_kilograms: float = Field(
+        ..., 
+        ge=1, 
+        le=10
+    )
 
 
 # ==========================================
@@ -141,15 +145,17 @@ async def delete_material(material_id: int, user: dict = Depends(check_access)):
     return DeleteMaterialReturn(detail=f"Material {material_id} deletado com sucesso!")
 
 
+print(range(1, 11))
+
 @router.post("/recycle", response_model=RecyclingResponse, status_code=status.HTTP_201_CREATED, response_description="Registra uma nova atividade de reciclagem")
 async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_access)):
     """Registra uma entrega de material feita por um usuário."""
 
     data_user_id: int = user.get("id")
 
-    # Trava de peso negativo
-    if data.nr_weight_kilograms <= 0:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O peso deve ser maior que ZERO")
+    # Verificação de peso
+    if not 1 <= data.nr_weight_kilograms <= 11:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="O peso deve estar entre 1 e 10.")
     
     async with aiosqlite.connect(DB_PATH) as db:
         # Ativa suporte a chaves estrangeiras no SQLite para validar os IDs

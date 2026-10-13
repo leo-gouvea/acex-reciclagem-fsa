@@ -205,8 +205,8 @@ class EventGroupCreate(BaseModel):
     """
     Schema para receber os dados de criação de um grupo
     """
-    group_name: str = Field(..., min_length=3, max_length=100, example="Eco Warriors")
-    fk_cd_event: int = Field(..., description="ID do evento ao qual o grupo pertence", example=1)
+    group_name: str = Field(..., min_length=3, max_length=100, examples=["Eco Warriors"])
+    fk_cd_event: int = Field(..., description="ID do evento ao qual o grupo pertence", examples=[1])
 
 
 # ==========================================

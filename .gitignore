@@ -152,3 +152,4 @@ discloud.config
 __pycache__/
 .vercel
 .env*
+.pytest_cache/
