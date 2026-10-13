@@ -154,7 +154,7 @@ async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_ac
     data_user_id: int = user.get("id")
 
     # Verificação de peso
-    if not 1 <= data.nr_weight_kilograms <= 11:
+    if not 1 <= data.nr_weight_kilograms <= 10:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="O peso deve estar entre 1 e 10.")
     
     async with aiosqlite.connect(DB_PATH) as db:
