@@ -54,4 +54,4 @@ As bibliotecas externas importadas, e suas dependências, podem ser encontradas 
 
 
 # OBSERVAÇÃO:
-Para um funcionamento adequado, permita que o site / app EcoHora egrencie Cookies de Terceiros. Caso esteja negado, o login e sessão serão interrompidos.
+Para um funcionamento adequado, permita que o site / app EcoHora gerencie Cookies de Terceiros, pelo menos quando em preview. Caso esteja negado, o login e sessão serão interrompidos.
