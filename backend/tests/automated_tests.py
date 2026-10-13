@@ -35,7 +35,7 @@ def preparar_banco_de_teste(monkeypatch):
     # O yield acorda, e o comando abaixo apaga o banco clonado do Ubuntu (Meu OS)
     if os.path.exists(DB_TESTE):
         pass
-        # os.remove(DB_TESTE)
+        os.remove(DB_TESTE)
 
 # Cria um "navegador/cliente" falso para testar a nossa API
 client = TestClient(app)
@@ -87,3 +87,4 @@ def test_bloqueio_peso_abaixo_do_limite():
     
     # Pydantic deve bloquear e retornar 422
     assert resposta.status_code == 422
+

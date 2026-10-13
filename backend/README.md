@@ -51,3 +51,7 @@ As bibliotecas externas importadas, e suas dependências, podem ser encontradas 
 * `Discloud` ☁️ — Foi utilizada uma hospedagem fornecida pela Discloud, adquirindo um plano de assinatura mensal, para manter o projeto ativo. [Discloud](https://discloud.com/)
 
 * `Gemini` 🤖 — IA auxiliando no desenvolvimento de estruturas e guias nos processos de revisões + maturação de conteúdo.
+
+
+# OBSERVAÇÃO:
+Para um funcionamento adequado, permita que o site / app EcoHora egrencie Cookies de Terceiros. Caso esteja negado, o login e sessão serão interrompidos.
