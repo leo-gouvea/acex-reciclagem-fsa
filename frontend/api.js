@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://apei-ecohora.discloud.app";
+const API_BASE_URL = "https://apei-ecohora.discloud.dev";
 // const API_BASE_URL = "http://127.0.0.1:8000"; // Endereço da API para testes. Terminal -> http://127.0.0.1:8000
 
 async function apiRequest(endpoint, options = {}) {
@@ -100,9 +100,16 @@ async function loginUser(email, password) {
 }
 
 
-async function getUser(userId) {
-    return apiRequest(`/user/get/${userId}`, {
+async function getUser(userRa) {
+    return apiRequest(`/user/get/${userRa}`, {
         method: "GET"
+    });
+}
+
+async function updateUser(userData) {
+    return apiRequest("/user/update", {
+        method: "PATCH",
+        body: JSON.stringify(userData)
     });
 }
 
@@ -133,5 +140,56 @@ async function getCourses() {
 async function getClasses() {
     return apiRequest("/fsa/get/classes", {
         method: "GET"
+    });
+}
+
+/* =========================================================
+   RECICLAGEM
+========================================================= */
+
+async function getMaterials() {
+    return apiRequest("/recycling/materials-info", {
+        method: "GET"
+    });
+}
+
+
+async function registerRecycling(recyclingData) {
+    return apiRequest("/recycling/recycle", {
+        method: "POST",
+        body: JSON.stringify(recyclingData)
+    });
+}
+
+
+async function deleteRecycling(recyclingId) {
+    return apiRequest(`/recycling/recycle/${recyclingId}`, {
+        method: "DELETE"
+    });
+}
+
+/* EVENTOS E GRUPOS */
+async function getEvents() {
+    return apiRequest("/contests/list", {
+        method: "GET"
+    });
+}
+
+async function getEventGroups() {
+    return apiRequest("/contests/groups/list", {
+        method: "GET"
+    });
+}
+
+async function assignUserToGroup(groupId) {
+    return apiRequest("/contests/group/user/assign", {
+        method: "POST",
+        body: JSON.stringify({ group_id: Number(groupId) })
+    });
+}
+
+async function unassignUserFromGroup() {
+    return apiRequest("/contests/group/user/unassign", {
+        method: "DELETE"
     });
 }

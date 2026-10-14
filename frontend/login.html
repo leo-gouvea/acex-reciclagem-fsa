@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <link rel="stylesheet" href="estilos/tokens.css">
 <link rel="stylesheet" href="estilos/login.css">
@@ -80,7 +81,17 @@
 
           <div class="field">
             <label for="loginSenha">Senha</label>
-            <input type="password" id="loginSenha" placeholder="Digite sua senha" required>
+            <div class="password-field">
+                <input type="password" id="loginSenha" placeholder="Digite sua senha" required>
+                    <button type="button" class="password-change-visibility-button" onclick="togglePasswordVisibility(this)">
+                        <span class="material-symbols-outlined password-change-visibilitty-icons ">
+                            visibility
+                        </span>
+                        <span class="material-symbols-outlined password-change-visibilitty-icons hidden">
+                            visibility_off
+                        </span>
+                    </button>
+            </div>
           </div>
 
           <button type="submit" class="btn btn-cta-glow btn-block">Entrar</button>
@@ -114,12 +125,32 @@
 
           <div class="field">
             <label for="cadastroSenha">Senha</label>
-            <input type="password" id="cadastroSenha" placeholder="Crie uma senha" required>
+            <div class="password-field">
+                <input type="password" id="cadastroSenha" placeholder="Crie uma senha" required>
+                    <button type="button" class="password-change-visibility-button" onclick="togglePasswordVisibility(this)">
+                        <span class="material-symbols-outlined password-change-visibilitty-icons">
+                            visibility
+                        </span>
+                        <span class="material-symbols-outlined password-change-visibilitty-icons hidden">
+                            visibility_off
+                        </span>
+                    </button>
+            </div>
           </div>
 
           <div class="field">
             <label for="confirmarSenha">Confirmar senha</label>
-            <input type="password" id="confirmarSenha" placeholder="Digite sua senha novamente" required>
+            <div class="password-field">
+                <input type="password" id="confirmarSenha" placeholder="Digite sua senha novamente" required>
+                    <button type="button" class="password-change-visibility-button" onclick="togglePasswordVisibility(this)">
+                        <span class="material-symbols-outlined password-change-visibilitty-icons ">
+                            visibility
+                        </span>
+                        <span class="material-symbols-outlined password-change-visibilitty-icons hidden">
+                            visibility_off
+                        </span>
+                    </button>
+            </div>
           </div>
 
           <div class="field">
@@ -149,6 +180,31 @@
 </main>
 
 <div class="message" id="message"></div>
+
+
+<!-- Funcionalidades da página -->
+
+<script>
+    
+    function togglePasswordVisibility(button) {
+
+        const inputField = button.previousElementSibling;
+
+        const icons = button.querySelectorAll('.password-change-visibilitty-icons');
+        const visibilityIcon = icons[0];
+        const visibilityOffIcon = icons[1];
+
+        if (inputField.type === 'password') {
+            inputField.type = 'text';
+            visibilityIcon.classList.add('hidden');
+            visibilityOffIcon.classList.remove('hidden');
+        } else {
+            inputField.type = 'password';
+            visibilityIcon.classList.remove('hidden');
+            visibilityOffIcon.classList.add('hidden');
+        }
+    }
+</script>
 
 <script src="api.js"></script>
 <script src="auth.js"></script>
