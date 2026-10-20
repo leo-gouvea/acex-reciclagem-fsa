@@ -4,7 +4,6 @@ import importlib # Para efetivamente importar bibliotecas dinamicamente
 
 # Bibliotecas de FastAPI (Ela é assíncrona)
 from fastapi import FastAPI
-from fastapi.security import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
 # Para repelir robôs de busca automática de consumir da API sem necessidade
 from fastapi.responses import PlainTextResponse
@@ -24,10 +23,10 @@ app = FastAPI(title=title, description=description, version=version)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://acex-reciclagem-fsa.vercel.app",
+        "https://acex-reciclagem-fsa.vercel.app", # Hospedagem real
         "http://127.0.0.1:5500", # Live Server
     ],
-    allow_origin_regex=r"https://acex-reciclagem-[a-zA-Z0-9]+-leogouvea\.vercel\.app", 
+    allow_origin_regex=r"https://acex-reciclagem-[a-zA-Z0-9]+-leogouvea\.vercel\.app", # Hospedagem preview
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]

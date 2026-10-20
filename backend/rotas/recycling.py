@@ -3,6 +3,7 @@ import os
 import aiosqlite
 from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel, Field
+import qrcode
 
 # Importando para facilitar
 from utils.jwt_validation import check_access
@@ -240,9 +241,37 @@ async def delete_recycling(recycle_id: int, user: dict = Depends(check_access)):
 
 # Essa rota gera um QR CODE com as informações de reciclagem que serão lidas por um usuário para que a reciclagem seja oficialmente cadastrada.
 # Fluxo esperado: Usuário traz a reciclagem, Operador preenche o form, que bate nessa rota e a rota gera um qrcode. O usuário abre o leitor e as infofs lidas são enviadas para a rota POST /recycling/recycle
-@router.get()
-async def qr_code_validation(data: PostRecyclingRequest):
+@router.get("/qrcode/{material_id}/{weight}")
+async def qr_code_validation():  # Deixado como None para testar direto no navegador
     """
     Geração de QR CODE para validação dos dados de reciclagem
-    A leitura por parte do usuário deve bater na rota **POST /recycling/recycle**
+    A leitura por parte do usuário deve bater na rota **[POST /recycling/recycle](#/Reciclagem/post_recycle_recycling_recycle_post)**
     """
+    try:
+        # Passando o link do google explicitamente para o teste
+        qrcode_gen(data="")
+        return "Qrcode gerado"
+    except Exception as e:
+        # Tratamento simples para ver o erro no console se algo falhar
+        print(f"Erro detalhado: {e}")
+        return "Erro de geração"
+
+def qrcode_gen(data: str = None):
+    # Configurações avançadas do QR Code (poderia ser a simples...)
+    qr = qrcode.QRCode(
+        version=1,  # Tamanho do QR Code (1 a 40)
+        error_correction=qrcode.constants.ERROR_CORRECT_H,  # Nível de correção de erro (L, M, Q, H)
+        box_size=10,  # Tamanho de cada pixel do QR Code
+        border=4,  # Espessura da borda (mínimo é 4)
+    )
+
+    # Adicionar os dados (Usando o link de teste do google enviado por parâmetro ou fallback)
+    texto_qr = data if data else "ERRO DE CONFIRMAÇÃO"
+    qr.add_data(texto_qr)
+    qr.make(fit=True)
+
+    # Criar imagem com cores personalizadas
+    imagem = qr.make_image(fill_color="darkgreen", back_color="white")
+
+    # Salvar a imagem no diretório onde o servidor está rodando
+    imagem.save("qrcode_personalizado.png")
