@@ -1,7 +1,10 @@
 import os
+import json
+import io
 
 import aiosqlite
 from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 import qrcode
 
@@ -241,37 +244,47 @@ async def delete_recycling(recycle_id: int, user: dict = Depends(check_access)):
 
 # Essa rota gera um QR CODE com as informações de reciclagem que serão lidas por um usuário para que a reciclagem seja oficialmente cadastrada.
 # Fluxo esperado: Usuário traz a reciclagem, Operador preenche o form, que bate nessa rota e a rota gera um qrcode. O usuário abre o leitor e as infofs lidas são enviadas para a rota POST /recycling/recycle
-@router.get("/qrcode/{material_id}/{weight}")
-async def qr_code_validation():  # Deixado como None para testar direto no navegador
-    """
-    Geração de QR CODE para validação dos dados de reciclagem
-    A leitura por parte do usuário deve bater na rota **[POST /recycling/recycle](#/Reciclagem/post_recycle_recycling_recycle_post)**
-    """
-    try:
-        # Passando o link do google explicitamente para o teste
-        qrcode_gen(data="")
-        return "Qrcode gerado"
-    except Exception as e:
-        # Tratamento simples para ver o erro no console se algo falhar
-        print(f"Erro detalhado: {e}")
-        return "Erro de geração"
-
-def qrcode_gen(data: str = None):
-    # Configurações avançadas do QR Code (poderia ser a simples...)
+def qrcode_gen(data: str):
+    """Gera a imagem do qrcode e retorna o objeto da imagem (sem salvar no disco)"""
     qr = qrcode.QRCode(
-        version=1,  # Tamanho do QR Code (1 a 40)
-        error_correction=qrcode.constants.ERROR_CORRECT_H,  # Nível de correção de erro (L, M, Q, H)
-        box_size=10,  # Tamanho de cada pixel do QR Code
-        border=4,  # Espessura da borda (mínimo é 4)
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=4,
     )
-
-    # Adicionar os dados (Usando o link de teste do google enviado por parâmetro ou fallback)
-    texto_qr = data if data else "ERRO DE CONFIRMAÇÃO"
-    qr.add_data(texto_qr)
+    qr.add_data(data)
     qr.make(fit=True)
 
-    # Criar imagem com cores personalizadas
-    imagem = qr.make_image(fill_color="darkgreen", back_color="white")
+    # Retorna a imagem gerada
+    return qr.make_image(fill_color="darkgreen", back_color="white")
 
-    # Salvar a imagem no diretório onde o servidor está rodando
-    imagem.save("qrcode_personalizado.png")
+
+@router.get("/qrcode/{material_id}/{weight}")
+async def qr_code_validation(material_id: int, weight: float):
+    """
+    Gera um QR Code em formato JSON e o exibe diretamente na tela do navegador.
+    """
+    try:
+        # Monta os dados no formato que o POST /recycle exige
+        dados_para_qr = {
+            "fk_cd_material": material_id,
+            "nr_weight_kilograms": weight
+        }
+        
+        # Converte o dicionário Python para um texto JSON
+        texto_json = json.dumps(dados_para_qr)
+        print(texto_json)
+        
+        # Efetivamente Gera a imagem do QRCode
+        imagem = qrcode_gen(data=texto_json)
+        
+        # Asism vai tratar a imagem na memória para enviar pelo navegador sem salvar em disco
+        img_byte_arr = io.BytesIO()
+        imagem.save(img_byte_arr, format='PNG')
+        img_byte_arr.seek(0)
+        
+        # Retorna a imagem em bytes
+        return StreamingResponse(img_byte_arr, media_type="image/png")
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao gerar QR Code: {e}")
