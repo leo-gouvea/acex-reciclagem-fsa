@@ -145,8 +145,6 @@ async def delete_material(material_id: int, user: dict = Depends(check_access)):
     return DeleteMaterialReturn(detail=f"Material {material_id} deletado com sucesso!")
 
 
-print(range(1, 11))
-
 @router.post("/recycle", response_model=RecyclingResponse, status_code=status.HTTP_201_CREATED, response_description="Registra uma nova atividade de reciclagem")
 async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_access)):
     """Registra uma entrega de material feita por um usuário."""
@@ -238,3 +236,13 @@ async def delete_recycling(recycle_id: int, user: dict = Depends(check_access)):
         points_earned=0.0,
         total_points=0.0
     )
+
+
+# Essa rota gera um QR CODE com as informações de reciclagem que serão lidas por um usuário para que a reciclagem seja oficialmente cadastrada.
+# Fluxo esperado: Usuário traz a reciclagem, Operador preenche o form, que bate nessa rota e a rota gera um qrcode. O usuário abre o leitor e as infofs lidas são enviadas para a rota POST /recycling/recycle
+@router.get()
+async def qr_code_validation(data: PostRecyclingRequest):
+    """
+    Geração de QR CODE para validação dos dados de reciclagem
+    A leitura por parte do usuário deve bater na rota **POST /recycling/recycle**
+    """
