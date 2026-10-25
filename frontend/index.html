@@ -160,8 +160,8 @@
 
     <div class="card stat">
       <svg class="icon" width="26" height="26" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3 2 6.5 10 10 18 6.5 10 3Z" stroke="var(--green-light)" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 8.3V12c0 1.4 2 2.5 4.5 2.5s4.5-1.1 4.5-2.5V8.3" stroke="var(--green-light)" stroke-width="1.4" fill="none"/></svg>
-      <small>Horas complementares</small>
-      <strong>0h</strong>
+      <small>Peso reciclado</small>
+      <strong id="weightHome">0 kg</strong>
     </div>
 
     <div class="card stat">
@@ -573,6 +573,7 @@ const buttons = [...document.querySelectorAll('.app-nav button')];
 let current = 0;
 let points = 0;
 let deliveries = 0;
+let totalWeight = 0;
 let materiaisReciclagem = [];
 let startX = 0;
 
@@ -722,7 +723,14 @@ function update() {
     points.toLocaleString('pt-BR');
 
   document.getElementById('deliveries').textContent =
-    deliveries;
+    deliveries.toLocaleString('pt-BR');
+
+  const weightHome = document.getElementById('weightHome');
+  if (weightHome) {
+    weightHome.textContent = `${totalWeight.toLocaleString('pt-BR', {
+      maximumFractionDigits: 2
+    })} kg`;
+  }
 }
 
 
@@ -801,6 +809,7 @@ async function recycle(materialId, peso) {
     }
     points = resposta.total_points;
     deliveries++;
+    totalWeight += Number(peso) || 0;
     update();
     status.textContent = `${item.material_name}: ${peso.toLocaleString("pt-BR")} kg registrados. +${resposta.points_earned.toLocaleString("pt-BR")} pontos.`;
     document.getElementById("recycleWeight").value = "";
@@ -947,6 +956,16 @@ async function carregarPerfil() {
         perfilOpcoes = options;
 
         points = Number(user.points ?? 0);
+
+        const historico = Array.isArray(user.recycling)
+          ? user.recycling
+          : [];
+
+        deliveries = historico.length;
+        totalWeight = historico.reduce((total, entrega) => {
+          return total + (Number(entrega.weight_kilograms) || 0);
+        }, 0);
+
         update();
 
         preencherCursos(options.courses);
