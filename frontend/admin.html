@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Administração · EcoHora</title>
+<link rel="icon" href="assets/icon512_rounded.png">
+<meta name="theme-color" content="#071f1c">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="estilos/tokens.css">
+<link rel="stylesheet" href="estilos/admin.css">
+</head>
+
+<body>
+
+<!-- Ícones no traço da home e do painel do aluno; a cor vem do CSS (currentColor) -->
+<svg class="adm-sprite" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 20 20"><path d="M3 9.5 10 3l7 6.5"/><path d="M5 8.5V16h10V8.5"/></symbol>
+  <symbol id="i-star" viewBox="0 0 20 20"><path d="M10 2 12.2 7.4 18 8 13.6 11.8 15 17.5 10 14.3 5 17.5 6.4 11.8 2 8 7.8 7.4 10 2Z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 20 20"><circle cx="7" cy="7" r="3"/><circle cx="14.5" cy="8" r="2.4"/><path d="M2 16c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5"/><path d="M12.5 11.8c2.6-.4 5 1 5 4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 20 20"><path d="M10 18s6-5.2 6-9.8A6 6 0 0 0 4 8.2C4 12.8 10 18 10 18Z"/><circle cx="10" cy="8.5" r="2"/></symbol>
+  <symbol id="i-box" viewBox="0 0 20 20"><path d="M3.5 6 10 3l6.5 3v8L10 17l-6.5-3V6Z"/><path d="M3.5 6 10 9l6.5-3M10 9v8"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 20 20"><path d="M3.5 7h12L12.5 4"/><path d="M16.5 13h-12l3 3"/></symbol>
+  <symbol id="i-report" viewBox="0 0 20 20"><path d="M5.5 2.5h6L15 6v11.5H5.5V2.5Z"/><path d="M11.5 2.5V6H15M8 10.5h4.5M8 13.5h4.5"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 20 20"><path d="M16 10a6 6 0 1 1-1.8-4.3"/><path d="M16 3.5V7h-3.5"/></symbol>
+  <symbol id="i-id" viewBox="0 0 20 20"><rect x="2.5" y="4.5" width="15" height="11" rx="2"/><circle cx="7.5" cy="9.3" r="1.8"/><path d="M5 13c.4-1.2 1.4-1.8 2.5-1.8s2.1.6 2.5 1.8M12 8.5h3.5M12 11.5h3.5"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 20 20"><path d="M10 3 2 6.5 10 10 18 6.5 10 3Z"/><path d="M5.5 8.3V12c0 1.4 2 2.5 4.5 2.5s4.5-1.1 4.5-2.5V8.3"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 20 20"><path d="M4.5 17h11l-1.4-9H5.9L4.5 17Z"/><path d="M7.8 8a2.2 2.2 0 1 1 4.4 0"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 32 32"><rect x="5" y="14" width="22" height="14" rx="3"/><path d="M11 14v-4a5 5 0 0 1 10 0v4"/></symbol>
+  <!-- materiais: os mesmos desenhos da aba Lixão -->
+  <symbol id="i-plastico" viewBox="0 0 24 24"><path d="M9 3h6v2.5l1.5 2V19a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2V7.5L9 5.5V3Z"/><path d="M8.5 12h7"/></symbol>
+  <symbol id="i-papel" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M9 12h6M9 15.5h6M9 8.5h3"/></symbol>
+  <symbol id="i-vidro" viewBox="0 0 24 24"><path d="M10 2h4v3.2l2 2.3V20a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V7.5l2-2.3V2Z"/><path d="M8 13h8"/></symbol>
+  <symbol id="i-metal" viewBox="0 0 24 24"><path d="M7 8 6.5 20a1.5 1.5 0 0 0 1.5 1.6h8a1.5 1.5 0 0 0 1.5-1.6L17 8"/><ellipse cx="12" cy="8" rx="5" ry="2"/></symbol>
+</svg>
+
+<a class="skip-link" href="#adminMain">Ir para o conteúdo</a>
+
+<!-- O painel só aparece depois que a sessão é conferida. Isso é UX: quem autoriza é o backend. -->
+<div id="adminGate" class="adm-gate" aria-live="polite">
+  <section data-gate="loading">
+    <h1>Verificando acesso…</h1>
+  </section>
+
+  <section data-gate="restricted" hidden>
+    <svg class="adm-icon" aria-hidden="true"><use href="#i-lock"/></svg>
+    <h1>Área restrita</h1>
+    <p>Esta área é só para administradores.</p>
+    <a class="btn btn-solid-green" href="index.html">Voltar ao painel</a>
+  </section>
+
+  <section data-gate="error" hidden>
+    <h1>Não deu para verificar o acesso</h1>
+    <p id="gateError"></p>
+    <div class="adm-actions">
+      <button id="retryButton" class="btn btn-solid-green" type="button">Tentar de novo</button>
+      <a class="btn btn-ghost" href="login.html">Ir para o login</a>
+    </div>
+  </section>
+</div>
+
+<div id="adminApp" hidden>
+
+  <header class="adm-header">
+    <a class="brand" href="admin.html" aria-label="EcoHora, administração">
+      <img class="brand-mark" src="assets/Ca105ad9cfc8580c765101d17bbb2323.webp" width="26" height="26" alt="">
+      <span class="brand-name">Eco<span>Hora</span></span>
+    </a>
+    <span class="adm-where">Administração</span>
+
+    <div class="adm-header-user">
+      <span id="adminUserName" class="adm-user"></span>
+      <a class="adm-link" href="index.html">Painel do aluno</a>
+    </div>
+    <button id="logoutButton" class="btn btn-danger-outline" type="button">Sair</button>
+  </header>
+
+  <div class="adm-shell">
+
+    <nav class="adm-sidebar adm-nav" aria-label="Seções">
+      <ul>
+        <li><a href="#visao-geral"><svg class="adm-icon" aria-hidden="true"><use href="#i-home"/></svg>Visão geral</a></li>
+        <li><a href="#materiais"><svg class="adm-icon" aria-hidden="true"><use href="#i-plastico"/></svg>Materiais</a></li>
+        <li><a href="#ranking"><svg class="adm-icon" aria-hidden="true"><use href="#i-star"/></svg>Ranking</a></li>
+      </ul>
+      <p class="adm-nav-label">Aguardando backend</p>
+      <ul id="navPending"></ul>
+    </nav>
+
+    <main id="adminMain" class="adm-main" tabindex="-1">
+
+      <div id="dataToolbar" class="adm-toolbar">
+        <span id="lastUpdated" role="status"></span>
+        <button id="refreshButton" class="adm-link" type="button">
+          <svg class="adm-icon" aria-hidden="true"><use href="#i-refresh"/></svg>Atualizar
+        </button>
+      </div>
+
+      <section id="sec-visao-geral" data-section="data" aria-labelledby="h-visao-geral">
+        <h1 id="h-visao-geral" tabindex="-1">Visão geral</h1>
+        <img class="adm-doodle" src="assets/doodles/doodle-underline-short.png" width="140" height="51" alt="">
+
+        <div id="overviewFigures" class="adm-figures"></div>
+
+        <div class="adm-duo">
+          <div class="adm-panel" role="group" aria-labelledby="h-bars">
+            <h2 id="h-bars"><svg class="adm-icon" aria-hidden="true"><use href="#i-scale"/></svg>Pontos por kg</h2>
+            <div id="overviewBars"></div>
+          </div>
+          <div class="adm-panel" role="group" aria-labelledby="h-top">
+            <h2 id="h-top"><svg class="adm-icon" aria-hidden="true"><use href="#i-star"/></svg>Maiores pontuações</h2>
+            <div id="overviewTop"></div>
+            <a class="adm-link adm-more" href="#ranking">Ver ranking completo</a>
+          </div>
+        </div>
+
+        <p class="adm-note">Ainda sem dados na API: usuários ativos, volume reciclado, entregas, horas resgatadas e engajamento.</p>
+      </section>
+
+      <section id="sec-materiais" data-section="data" data-narrow hidden aria-labelledby="h-materiais">
+        <h1 id="h-materiais" tabindex="-1">Materiais</h1>
+        <img class="adm-doodle" src="assets/doodles/doodle-underline-short.png" width="140" height="51" alt="">
+        <div id="materialsBody"><p class="adm-note">Carregando…</p></div>
+      </section>
+
+      <section id="sec-ranking" data-section="data" hidden aria-labelledby="h-ranking">
+        <h1 id="h-ranking" tabindex="-1">Ranking</h1>
+        <img class="adm-doodle" src="assets/doodles/doodle-underline-short.png" width="140" height="51" alt="">
+        <div id="rankingBody"><p class="adm-note">Carregando…</p></div>
+      </section>
+
+      <!-- Os módulos que dependem do backend são criados por admin.js -->
+    </main>
+  </div>
+</div>
+
+<noscript><p class="adm-note">O painel precisa de JavaScript.</p></noscript>
+
+<script src="api.js"></script>
+<script src="admin-api.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>

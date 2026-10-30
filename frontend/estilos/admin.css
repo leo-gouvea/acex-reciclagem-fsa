@@ -1,0 +1,603 @@
+/* Painel administrativo. Usa as variáveis, .btn e .brand de tokens.css.
+   Não carrega dashboard.css: ele fixa um slider horizontal e overflow:hidden
+   no body, que não servem a listas longas. Prefixo .adm- para não colidir. */
+
+:root {
+  --adm-panel: rgba(11, 43, 35, 0.74);
+  --adm-panel-line: rgba(255, 255, 255, 0.12);
+  --adm-w: 980px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* foto do campus por trás de tudo, escurecida para o texto ler bem */
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(5, 24, 21, 0.7), rgba(5, 24, 21, 0.9)),
+    url("../assets/campus-casarao.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* ---- ícones: traço da home, cor herdada ---- */
+
+.adm-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.adm-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- vidro: caixa translúcida que deixa a foto aparecer ---- */
+
+.adm-panel {
+  background: var(--adm-panel);
+  border: 1px solid var(--adm-panel-line);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ---- acesso ---- */
+
+.adm-gate {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.adm-gate section {
+  max-width: 420px;
+  text-align: center;
+}
+
+.adm-gate .adm-icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 14px;
+  color: var(--green-light);
+}
+
+.adm-gate h1 {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+}
+
+.adm-gate p {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.adm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* ---- header ---- */
+
+.adm-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 28px;
+  background: rgba(11, 43, 35, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--adm-panel-line);
+}
+
+.adm-header .brand-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.adm-where {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.adm-header-user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.adm-user {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.adm-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.adm-link:hover {
+  color: var(--green-light);
+  text-decoration: underline;
+}
+
+.adm-link:disabled {
+  opacity: 0.5;
+  cursor: default;
+  text-decoration: none;
+}
+
+/* ---- estrutura ---- */
+
+.adm-shell {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  min-height: calc(100dvh - var(--header-h));
+}
+
+.adm-sidebar {
+  position: sticky;
+  top: var(--header-h);
+  align-self: start;
+  height: calc(100dvh - var(--header-h));
+  overflow-y: auto;
+  padding: 20px 12px;
+  background: rgba(11, 43, 35, 0.56);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-right: 1px solid var(--adm-panel-line);
+}
+
+.adm-nav ul {
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.adm-nav-label {
+  margin: 24px 0 8px 12px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.adm-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.adm-nav a:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+}
+
+.adm-nav a[aria-current="page"] {
+  background: rgba(41, 199, 119, 0.16);
+  color: var(--green-light);
+}
+
+/* ---- conteúdo centralizado ---- */
+
+.adm-main {
+  --w: var(--adm-w);
+  min-width: 0;
+  padding: 32px clamp(16px, 4vw, 48px) 80px;
+}
+
+.adm-main.narrow {
+  --w: 640px;
+}
+
+.adm-main:focus,
+.adm-main h1:focus {
+  outline: none;
+}
+
+.adm-main > section,
+.adm-toolbar {
+  width: min(100%, var(--w));
+  margin-inline: auto;
+}
+
+.adm-main h1 {
+  text-align: center;
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+}
+
+.adm-doodle {
+  display: block;
+  margin: -2px auto 26px;
+  opacity: 0.9;
+}
+
+.adm-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.adm-note {
+  color: var(--muted);
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.adm-note .adm-link {
+  margin-left: 8px;
+  color: var(--green-light);
+}
+
+h1 + .adm-note {
+  margin: 6px 0 20px;
+}
+
+/* ---- visão geral ---- */
+
+.adm-figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.adm-figure {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+}
+
+.adm-figure > .adm-icon {
+  width: 30px;
+  height: 30px;
+  color: var(--green-light);
+}
+
+.adm-figure > div {
+  min-width: 0; /* deixa o nome longo quebrar em vez de esticar o cartão */
+}
+
+.adm-figure strong {
+  display: block;
+  font-size: 1.7rem;
+  line-height: 1.15;
+}
+
+.adm-figure span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.86rem;
+  overflow-wrap: break-word;
+}
+
+.adm-duo {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.adm-duo .adm-panel {
+  padding: 20px 22px;
+}
+
+.adm-duo h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 1rem;
+}
+
+.adm-duo h2 .adm-icon {
+  color: var(--green-light);
+}
+
+.adm-duo .adm-note {
+  text-align: left;
+}
+
+.adm-bars,
+.adm-top {
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* sem isso a coluna cresce com o nome mais longo */
+  gap: 12px;
+}
+
+.adm-bars li,
+.adm-top li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.adm-bars .adm-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--green-light);
+}
+
+.adm-bar-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 700;
+  overflow-wrap: break-word;
+}
+
+.adm-bars .adm-bar-name {
+  flex: 0 0 70px;
+}
+
+.adm-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.adm-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--green);
+}
+
+.adm-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.adm-pos {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.adm-top .adm-pos {
+  width: 22px;
+  justify-content: center;
+}
+
+.adm-pos .adm-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--green-light);
+}
+
+.adm-more {
+  margin-top: 16px;
+  color: var(--green-light);
+}
+
+/* ---- planilha rolável ---- */
+
+.adm-sheet {
+  /* cabe na tela junto com o título; passou disso, rola dentro da caixa */
+  max-height: max(260px, calc(100dvh - 360px));
+  overflow: auto;
+  background: var(--adm-panel);
+  border: 1px solid var(--adm-panel-line);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) transparent;
+}
+
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.adm-table.wide {
+  min-width: 680px;
+}
+
+.adm-table th,
+.adm-table td {
+  padding: 13px 16px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.adm-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.adm-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.adm-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #0b2b23; /* opaco: as linhas passam por baixo ao rolar */
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.adm-table thead .adm-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  vertical-align: -2px;
+}
+
+.adm-table tbody th {
+  font-weight: 700;
+}
+
+.adm-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-table td.num {
+  font-weight: 700;
+}
+
+.adm-cell-lead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.adm-cell-lead .adm-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--green-light);
+}
+
+/* ---- módulos pendentes ---- */
+
+.adm-missing {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  padding: 22px 24px;
+}
+
+.adm-missing li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.adm-missing li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+/* ---- telas menores: o menu lateral vira barra horizontal ---- */
+
+@media (max-width: 900px) {
+  .adm-header {
+    padding: 0 14px;
+    gap: 12px;
+  }
+
+  .adm-where {
+    display: none;
+  }
+
+  .adm-shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr; /* sem isso a barra de seções estica até a altura da tela */
+  }
+
+  .adm-sidebar {
+    z-index: 15;
+    height: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--adm-panel-line);
+    background: rgba(11, 43, 35, 0.82);
+  }
+
+  .adm-nav ul {
+    display: flex;
+  }
+
+  .adm-nav a {
+    white-space: nowrap;
+  }
+
+  .adm-nav-label {
+    display: none;
+  }
+
+  #navPending {
+    margin-left: 6px;
+    padding-left: 10px;
+    border-left: 1px solid var(--adm-panel-line);
+  }
+
+  .adm-duo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  :root {
+    --header-h: 64px;
+  }
+
+  .adm-user {
+    display: none;
+  }
+
+  .adm-main {
+    padding-top: 22px;
+  }
+
+  .adm-table th,
+  .adm-table td {
+    padding: 12px;
+  }
+}
