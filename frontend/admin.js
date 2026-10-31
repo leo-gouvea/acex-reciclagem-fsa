@@ -174,6 +174,7 @@ function route(moveFocus) {
         else a.removeAttribute("aria-current");
     });
 
+    setDrawer(false);
     const title = current.querySelector("h1");
 
     $("adminMain").classList.toggle("narrow", current.hasAttribute("data-narrow"));
@@ -189,7 +190,7 @@ function route(moveFocus) {
 function buildPending() {
     for (const m of PENDING) {
         $("navPending").append(
-            h("li", {}, h("a", { href: `#${m.id}` }, icon(m.icon), m.label))
+            h("li", {}, h("a", { href: `#${m.id}` }, icon(m.icon), h("span", { class: "adm-nav-text", text: m.label })))
         );
 
         $("adminMain").append(
@@ -396,6 +397,25 @@ async function loadData() {
 }
 
 // ---- início -------------------------------------------------------------
+
+// Gaveta do menu no celular: mesmo gesto da navegação do painel do aluno.
+const drawer = document.querySelector(".adm-sidebar");
+const handle = $("navHandle");
+let touchY = 0;
+
+function setDrawer(open) {
+    drawer.classList.toggle("expanded", open);
+    handle.setAttribute("aria-expanded", String(open));
+}
+
+handle.addEventListener("click", () => setDrawer(!drawer.classList.contains("expanded")));
+drawer.addEventListener("touchstart", (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+drawer.addEventListener("touchmove", (e) => {
+    const diff = touchY - e.touches[0].clientY;
+    if (diff > 15) setDrawer(true);
+    else if (diff < -15) setDrawer(false);
+}, { passive: true });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") setDrawer(false); });
 
 buildPending();
 window.addEventListener("hashchange", () => route(true));

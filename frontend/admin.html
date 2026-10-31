@@ -83,10 +83,12 @@
   <div class="adm-shell">
 
     <nav class="adm-sidebar adm-nav" aria-label="Seções">
+      <!-- puxador da gaveta: só aparece no celular -->
+      <button id="navHandle" class="adm-handle" type="button" aria-label="Mostrar mais seções" aria-expanded="false"></button>
       <ul>
-        <li><a href="#visao-geral"><svg class="adm-icon" aria-hidden="true"><use href="#i-home"/></svg>Visão geral</a></li>
-        <li><a href="#materiais"><svg class="adm-icon" aria-hidden="true"><use href="#i-plastico"/></svg>Materiais</a></li>
-        <li><a href="#ranking"><svg class="adm-icon" aria-hidden="true"><use href="#i-star"/></svg>Ranking</a></li>
+        <li><a href="#visao-geral"><svg class="adm-icon" aria-hidden="true"><use href="#i-home"/></svg><span class="adm-nav-text">Visão geral</span></a></li>
+        <li><a href="#materiais"><svg class="adm-icon" aria-hidden="true"><use href="#i-plastico"/></svg><span class="adm-nav-text">Materiais</span></a></li>
+        <li><a href="#ranking"><svg class="adm-icon" aria-hidden="true"><use href="#i-star"/></svg><span class="adm-nav-text">Ranking</span></a></li>
       </ul>
       <p class="adm-nav-label">Aguardando backend</p>
       <ul id="navPending"></ul>

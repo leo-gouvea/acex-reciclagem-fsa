@@ -59,6 +59,13 @@
           <span class="nav-text">Perfil</span>
         </button>
       </li>
+      <!-- só aparece para administrador (UX: quem autoriza é o backend) -->
+      <li data-admin-only hidden>
+        <a href="admin.html" aria-label="Administração">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2.5 16 5v4.5c0 3.6-2.5 6.2-6 8-3.5-1.8-6-4.4-6-8V5l6-2.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m7.5 10 1.8 1.8 3.2-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="nav-text">Admin</span>
+        </a>
+      </li>
     </ul>
   </nav>
 
@@ -109,6 +116,11 @@
         </li>
 
         <!-- Ícones Secundários (Segunda linha, escondida inicialmente) -->
+        <li data-admin-only hidden>
+          <a href="admin.html" aria-label="Administração">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2.5 16 5v4.5c0 3.6-2.5 6.2-6 8-3.5-1.8-6-4.4-6-8V5l6-2.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m7.5 10 1.8 1.8 3.2-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </li>
 
 
 
@@ -1050,7 +1062,12 @@ carregarPerfil();
 <script>
 async function protectPage() {
   try {
-    await getSession();
+    const session = await getSession();
+
+    // Botão do painel administrativo: só para administrador.
+    if (session?.user?.role === 'Administrador') {
+      document.querySelectorAll('[data-admin-only]').forEach(el => { el.hidden = false; });
+    }
 
     console.log('Sessão válida.');
   } catch (error) {

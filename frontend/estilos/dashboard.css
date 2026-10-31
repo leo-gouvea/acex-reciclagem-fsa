@@ -70,14 +70,21 @@ body {
   display: none;
 }
 
+/* li com display próprio ignora o atributo hidden */
+.app-nav [hidden] {
+  display: none !important;
+}
+
 .app-nav ul {
   display: flex;
   gap: 4px;
   list-style: none;
 }
 
-.app-nav button {
+.app-nav button,
+.app-nav a {
   display: flex;
+  text-decoration: none;
   align-items: center;
   gap: 7px;
   border: 0;
@@ -93,7 +100,8 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.app-nav button:hover {
+.app-nav button:hover,
+.app-nav a:hover {
   background: var(--card);
   color: var(--text);
 }
@@ -705,7 +713,8 @@ body {
     display: none;
   }
 
-  .app-nav button {
+  .app-nav button,
+  .app-nav a {
     padding: 10px;
   }
 
@@ -811,7 +820,8 @@ body {
     justify-content: center;
   }
 
-  .app-nav.mobile button {
+  .app-nav.mobile button,
+  .app-nav.mobile a {
     display: flex;
     align-items: center;
     justify-content: center;
