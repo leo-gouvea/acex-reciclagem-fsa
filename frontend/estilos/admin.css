@@ -3,8 +3,10 @@
    no body, que não servem a listas longas. Prefixo .adm- para não colidir. */
 
 :root {
-  --adm-panel: rgba(11, 43, 35, 0.74);
-  --adm-panel-line: rgba(255, 255, 255, 0.12);
+  /* só cores do tokens.css; transparência vem de color-mix */
+  --adm-panel: color-mix(in srgb, var(--bg-alt) 74%, transparent);
+  --adm-panel-line: var(--line);
+  --adm-hover: color-mix(in srgb, var(--text) 6%, transparent);
   --adm-w: 980px;
 }
 
@@ -12,12 +14,18 @@
   display: none !important;
 }
 
-/* foto do campus por trás de tudo, escurecida para o texto ler bem */
+/* foto do campus por trás de tudo; o véu cor de --bg (chapado, sem degradê) garante a leitura */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+}
+
 body {
   background-color: var(--bg);
-  background-image:
-    linear-gradient(rgba(5, 24, 21, 0.7), rgba(5, 24, 21, 0.9)),
-    url("../assets/campus-casarao.jpg");
+  background-image: url("../assets/campus-casarao.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -102,7 +110,7 @@ body {
   align-items: center;
   gap: 16px;
   padding: 0 28px;
-  background: rgba(11, 43, 35, 0.72);
+  background: var(--adm-panel);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--adm-panel-line);
@@ -178,7 +186,7 @@ body {
   height: calc(100dvh - var(--header-h));
   overflow-y: auto;
   padding: 20px 12px;
-  background: rgba(11, 43, 35, 0.56);
+  background: color-mix(in srgb, var(--bg-alt) 56%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-right: 1px solid var(--adm-panel-line);
@@ -209,12 +217,12 @@ body {
 }
 
 .adm-nav a:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--adm-hover);
   color: var(--text);
 }
 
 .adm-nav a[aria-current="page"] {
-  background: rgba(41, 199, 119, 0.16);
+  background: color-mix(in srgb, var(--green) 16%, transparent);
   color: var(--green-light);
 }
 
@@ -383,7 +391,7 @@ h1 + .adm-note {
   flex: 1;
   height: 8px;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--line-soft);
   overflow: hidden;
 }
 
@@ -453,7 +461,7 @@ h1 + .adm-note {
   padding: 13px 16px;
   text-align: left;
   vertical-align: middle;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .adm-table tbody tr:last-child > * {
@@ -461,14 +469,14 @@ h1 + .adm-note {
 }
 
 .adm-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--adm-hover);
 }
 
 .adm-table thead th {
   position: sticky;
   top: 0;
   z-index: 1;
-  background: #0b2b23; /* opaco: as linhas passam por baixo ao rolar */
+  background: var(--bg-alt); /* opaco: as linhas passam por baixo ao rolar */
   color: var(--muted);
   font-size: 0.8rem;
   font-weight: 700;
@@ -561,7 +569,7 @@ h1 + .adm-note {
     padding: 8px 12px;
     border-right: 0;
     border-bottom: 1px solid var(--adm-panel-line);
-    background: rgba(11, 43, 35, 0.82);
+    background: color-mix(in srgb, var(--bg-alt) 82%, transparent);
   }
 
   .adm-nav ul {
@@ -598,18 +606,34 @@ h1 + .adm-note {
 
   .adm-main {
     padding-top: 22px;
-    padding-bottom: 130px; /* espaço para a gaveta fixa */
   }
 
+  .adm-table th,
+  .adm-table td {
+    padding: 12px;
+  }
+}
+
+/* ---- gaveta inferior: celular e tablet de toque (mesma regra do painel do aluno) ----
+   Só ícones, 4 por linha; o puxador abre as demais seções. */
+
+@media (max-width: 650px), (pointer: coarse) and (max-width: 1200px) {
   .adm-shell {
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto;
+  }
+
+  .adm-main {
+    padding-bottom: 130px; /* espaço para a gaveta fixa */
   }
 
   /* Gaveta flutuante embaixo, igual à navegação do painel do aluno:
      só ícones, 4 por linha; o puxador abre as demais seções. */
   .adm-sidebar {
     position: fixed;
-    inset: auto 1.5rem 1.5rem 1.5rem;
+    inset: auto 0 1.5rem 0;
+    width: min(520px, calc(100% - 3rem));
+    margin-inline: auto;
     z-index: 100;
     height: 78px;
     display: grid;
@@ -620,7 +644,9 @@ h1 + .adm-note {
     overflow: hidden;
     border: 1px solid var(--line);
     border-radius: 28px;
-    background: rgba(255, 255, 255, 0.3);
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     transition: height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 
@@ -645,7 +671,7 @@ h1 + .adm-note {
     width: 32px;
     height: 4px;
     border-radius: 4px;
-    background: #fff;
+    background: var(--text);
     opacity: 0.5;
   }
 
@@ -670,12 +696,12 @@ h1 + .adm-note {
     justify-content: center;
     border-bottom: 2px solid transparent;
     border-radius: 50px;
-    background: rgba(0, 0, 0, 0.1);
-    color: #000;
+    background: var(--card);
+    color: var(--muted);
   }
 
   .adm-nav a:hover {
-    color: #000;
+    color: var(--text);
   }
 
   .adm-nav a[aria-current="page"] {
@@ -692,10 +718,5 @@ h1 + .adm-note {
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
-  }
-
-  .adm-table th,
-  .adm-table td {
-    padding: 12px;
   }
 }

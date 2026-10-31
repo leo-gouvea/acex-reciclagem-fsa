@@ -741,14 +741,14 @@ body {
 }
 
 /* =========================================================
-   CELULAR
+   NAVEGAÇÃO INFERIOR (gaveta)
+   Celular e tablet de toque (iPad e similares, retrato ou paisagem):
+   o menu do topo some e entra a gaveta embaixo.
 ========================================================= */
 
-@media (max-width: 650px) {
+@media (max-width: 650px), (pointer: coarse) and (max-width: 1200px) {
   .app-header {
-    height: 64px;
-    gap: 8px;
-    justify-content: space-between; 
+    justify-content: space-between;
   }
 
   /* Tira a Nav padrão */
@@ -773,6 +773,7 @@ body {
     border-radius: 28px; /* Mais arredondado para imitar a imagem */
     backdrop-filter: blur(12px);
     width: calc(100% - 3rem);
+    max-width: 520px; /* no tablet não estica a tela toda */
     display: flex;
     flex-direction: column;
     padding: 0 5px;
@@ -849,6 +850,23 @@ body {
   .toast.show {
     transform: translateY(-100px);
     opacity: 1;
+  }
+
+  /* espaço para a gaveta não cobrir o fim da página */
+  .page {
+    padding-bottom: 120px;
+  }
+}
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 650px) {
+  .app-header {
+    height: 64px;
+    gap: 8px;
+    justify-content: space-between; 
   }
 
   .viewport {
