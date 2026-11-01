@@ -7,6 +7,67 @@ const cadastroForm = document.getElementById("cadastroForm");
 const message = document.getElementById("message");
 
 /* =========================================================
+   REGRAS DE SENHA
+   Espelha PATTERN_PASSWORD do backend (users_operations_improved.py):
+   só letras sem acento, números e @ $ ! % * ? & _ . — com ao menos
+   uma minúscula, uma maiúscula, um número e um símbolo. O limite de
+   72 bytes é do bcrypt. A senha nunca é exibida nem registrada.
+========================================================= */
+
+const SENHA_REGRAS = [
+  { id: "tam",  texto: "De 6 a 72 caracteres", falta: "de 6 a 72 caracteres",
+    ok: (s) => s.length >= 6 && new TextEncoder().encode(s).length <= 72 },
+  { id: "min",  texto: "Uma letra minúscula", falta: "uma letra minúscula",
+    ok: (s) => /[a-z]/.test(s) },
+  { id: "mai",  texto: "Uma letra maiúscula", falta: "uma letra maiúscula",
+    ok: (s) => /[A-Z]/.test(s) },
+  { id: "num",  texto: "Um número", falta: "um número",
+    ok: (s) => /\d/.test(s) },
+  { id: "simb", texto: "Um símbolo: @ $ ! % * ? & _ .", falta: "um símbolo (@ $ ! % * ? & _ .)",
+    ok: (s) => /[@$!%*?&_.]/.test(s) },
+  { id: "perm", texto: "Sem acentos, espaços ou outros símbolos", falta: "só letras sem acento, números e os símbolos @ $ ! % * ? & _ .",
+    ok: (s) => /^[A-Za-z\d@$!%*?&_.]*$/.test(s) },
+];
+
+function senhaFaltas(senha) {
+  return SENHA_REGRAS.filter((r) => !r.ok(senha)).map((r) => r.falta);
+}
+
+// Checklist ao vivo: cada item marca ✓ ou ○ (não depende só de cor)
+const senhaInput = document.getElementById("cadastroSenha");
+const senhaLista = document.getElementById("senhaRegras");
+
+function atualizarRegrasSenha() {
+  const tocou = senhaInput.value.length > 0;
+  senhaLista.innerHTML = "";
+  SENHA_REGRAS.forEach((r) => {
+    const ok = tocou && r.ok(senhaInput.value);
+    const li = document.createElement("li");
+    li.className = ok ? "ok" : tocou ? "pendente" : "";
+    li.textContent = `${ok ? "✓" : "○"} ${r.texto}`;
+    senhaLista.appendChild(li);
+  });
+}
+
+senhaInput.addEventListener("input", atualizarRegrasSenha);
+atualizarRegrasSenha();
+
+/* Troca mensagens cruas da API (regex do Pydantic etc.) por texto útil */
+function mensagemApi(erro, contexto) {
+  const texto = erro && erro.message ? erro.message : "";
+  const cru = /pattern|should match|String should|HTTP 422/i.test(texto);
+
+  if (contexto === "login") {
+    // Não revela as regras nem se o e-mail existe
+    return cru ? "E-mail ou senha incorretos." : texto || "E-mail ou senha incorretos.";
+  }
+  if (cru) {
+    return "Dados inválidos. Confira a senha: de 6 a 72 caracteres, com minúscula, maiúscula, número e um símbolo (@ $ ! % * ? & _ .).";
+  }
+  return texto || "Erro ao criar o perfil.";
+}
+
+/* =========================================================
    CARREGAR CURSOS E TURMAS
    Busca as opções disponíveis na API e preenche os campos
    do formulário de cadastro.
@@ -110,29 +171,11 @@ criarContaForm.addEventListener("submit", async function (event) {
     return;
   }
 
-  // Valida a senha
-  if (senha.length < 6) {
-    mostrarMensagem("A senha deve ter pelo menos 6 caracteres.");
-    return;
-  }
-
-  if (!/[a-z]/.test(senha)) {
-    mostrarMensagem("A senha deve conter uma letra minúscula.");
-    return;
-  }
-
-  if (!/[A-Z]/.test(senha)) {
-    mostrarMensagem("A senha deve conter uma letra maiúscula.");
-    return;
-  }
-
-  if (!/\d/.test(senha)) {
-    mostrarMensagem("A senha deve conter um número.");
-    return;
-  }
-
-  if (!/[^A-Za-z0-9]/.test(senha)) {
-    mostrarMensagem("A senha deve conter um caractere especial.");
+  // Valida a senha com as mesmas regras do backend
+  const faltas = senhaFaltas(senha);
+  if (faltas.length) {
+    mostrarMensagem(`Senha inválida. Ela precisa ter: ${faltas.join("; ")}.`);
+    document.getElementById("cadastroSenha").focus();
     return;
   }
 
@@ -182,7 +225,7 @@ criarContaForm.addEventListener("submit", async function (event) {
   } catch (erro) {
     console.error("Erro ao criar perfil:", erro);
 
-    mostrarMensagem(erro.message || "Erro ao criar o perfil.");
+    mostrarMensagem(mensagemApi(erro, "cadastro"));
   }
 });
 
@@ -218,7 +261,7 @@ entrarForm.addEventListener("submit", async function (event) {
   } catch (erro) {
     console.error("Erro ao fazer login:", erro);
 
-    mostrarMensagem(erro.message || "Email ou senha incorretos!");
+    mostrarMensagem(mensagemApi(erro, "login"));
   }
 });
 
@@ -235,9 +278,10 @@ function mostrarMensagem(texto) {
   message.textContent = texto;
   message.classList.add("show");
 
+  // Mensagem longa precisa de mais tempo de leitura
   messageTimeout = setTimeout(() => {
     message.classList.remove("show");
-  }, 3000);
+  }, Math.max(3000, texto.length * 70));
 }
 
 /* =========================================================
