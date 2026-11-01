@@ -259,21 +259,48 @@ def qrcode_gen(data: str):
     return qr.make_image(fill_color="darkgreen", back_color="white")
 
 
+
+async def retrieve_material_info(material_id: int) -> dict:
+    """Recupera informações do material pelo ID, retornando um dicionário com os dados."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        query = "SELECT * FROM materials WHERE id = ?"
+        async with db.execute(query, (material_id,)) as cur:
+            row = await cur.fetchone()
+            if row:
+                return {
+                    "id": row["id"],
+                    "material_name": row["nm_material"],
+                    "points_per_kilogram": row["nr_points_per_kilogram"]
+                }
+            else:
+                raise HTTPException(status_code=404, detail=f"Material com ID {material_id} não encontrado.")
+
+
 @router.get("/qrcode/{material_id}/{weight}")
 async def qr_code_validation(material_id: int, weight: float):
     """
     Gera um QR Code em formato JSON e o exibe diretamente na tela do navegador.
     """
     try:
+        
+        material_info = await retrieve_material_info(material_id)
+        material_name = material_info["material_name"]
+        
         # Monta os dados no formato que o POST /recycle exige
         dados_para_qr = {
             "fk_cd_material": material_id,
             "nr_weight_kilograms": weight
         }
         
+        # Adiciona os headers customizados com as informações do material e peso, devem ser exclusivamente texto, então o peso é convertido para string
+        headers_custom = {
+            "X-Material-Name": material_name,
+            "X-Material-Weight": str(weight)
+        }
+        
         # Converte o dicionário Python para um texto JSON
         texto_json = json.dumps(dados_para_qr)
-        print(texto_json)
         
         # Efetivamente Gera a imagem do QRCode
         imagem = qrcode_gen(data=texto_json)
@@ -284,7 +311,7 @@ async def qr_code_validation(material_id: int, weight: float):
         img_byte_arr.seek(0)
         
         # Retorna a imagem em bytes
-        return StreamingResponse(img_byte_arr, media_type="image/png")
+        return StreamingResponse(img_byte_arr, media_type="image/png", headers=headers_custom)
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao gerar QR Code: {e}")
