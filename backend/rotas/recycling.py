@@ -4,7 +4,7 @@ import io
 
 import aiosqlite
 from fastapi import APIRouter, HTTPException, status, Depends
-from fastapi.responses import StreamingResponse
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 import qrcode
 
@@ -283,8 +283,28 @@ async def qr_code_validation(material_id: int, weight: float):
         imagem.save(img_byte_arr, format='PNG')
         img_byte_arr.seek(0)
         
-        # Retorna a imagem em bytes
-        return StreamingResponse(img_byte_arr, media_type="image/png")
+        # Monta a estrutura HTML que o navegador vai renderizar
+        html_content = f"""
+        <html>
+            <head>
+                <title>Validação de Coleta</title>
+                <style>
+                    body {{ font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }}
+                    .card {{ border: 1px solid #ccc; padding: 20px; display: inline-block; border-radius: 8px; }}
+                </style>
+            </head>
+            <body>
+                <div class="card">
+                    <h2>Dados da Reciclagem</h2>
+                    <p><strong>ID do Material:</strong> {material_id}</p>
+                    <p><strong>Peso:</strong> {weight} kg</p>
+                    <img src="data:image/png;base64,{imagem_base64}" alt="QR Code" />
+                </div>
+            </body>
+        </html>
+        """
+        
+        return HTMLResponse(content=html_content, status_code=200)
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao gerar QR Code: {e}")
