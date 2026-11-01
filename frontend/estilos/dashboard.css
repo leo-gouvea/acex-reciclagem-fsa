@@ -401,6 +401,23 @@ body {
   font-size: 0.9rem;
 }
 
+/* botão sozinho, centralizado na seção; .btn-row centraliza um par */
+.btn[hidden] { display: none; }
+
+.btn-center {
+  display: flex;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
 /* =========================================================
    AVISO (callout)
 ========================================================= */
@@ -609,33 +626,85 @@ body {
   gap: 18px;
 }
 
+/* cores do mapa da FSA: Fafil (rosa) e Prédio Central (verde-água) */
+.stations {
+  --map-fafil: #ff5cab;
+  --map-central: #5fd9c4;
+}
+
+:root[data-theme="light"] .stations {
+  --map-fafil: #b3126b;
+  --map-central: #0b7566;
+}
+
 .map {
-  min-height: 400px;
   position: relative;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
-  overflow: hidden;
-  display: grid;
-  place-items: center;
+  padding: 20px;
 }
 
-.map img {
-  max-height: 88%;
-  max-width: 88%;
-  object-fit: contain;
+.map-title {
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+  line-height: 1.2;
+  color: var(--map-fafil);
+  margin-bottom: 10px;
+}
+
+.map-legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-bottom: 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.map-legend li::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.map-legend-fafil { color: var(--map-fafil); }
+.map-legend-central { color: var(--map-central); }
+
+.map-figure {
+  position: relative;
+}
+
+.map-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
   border-radius: var(--radius-md);
-  opacity: 0.85;
 }
 
-.map-placeholder {
-  position: absolute;
-  color: var(--muted);
-  background: color-mix(in srgb, var(--bg) 75%, transparent);
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
+.map-pins {
+  list-style: none;
 }
+
+/* ponta do pino fica exatamente em (--x, --y) */
+.map-pin {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: clamp(20px, 5.5%, 30px);
+  transform: translate(-50%, -100%);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+}
+
+.map-pin svg { display: block; width: 100%; height: auto; }
+.map-pin text { fill: #06201a; }
+:root[data-theme="light"] .map-pin text { fill: #fff; }
+.map-pin-fafil { color: var(--map-fafil); }
+.map-pin-central { color: var(--map-central); }
 
 .station-list {
   display: grid;
@@ -651,8 +720,28 @@ body {
 }
 
 .station h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 0.95rem;
 }
+
+.station-pin {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.station-pin-fafil { background: var(--map-fafil); }
+.station-pin-central { background: var(--map-central); }
+
+:root:not([data-theme="light"]) .station-pin { color: #06201a; }
 
 .station p {
   color: var(--muted);

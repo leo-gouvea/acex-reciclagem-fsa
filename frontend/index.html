@@ -145,7 +145,7 @@
         <li><strong>Postos:</strong> mapa com os pontos de coleta espalhados pelo campus.</li>
       </ul>
 
-      <button class="btn btn-primary" onclick="goToPage(2)">Registrar reciclagem</button>
+      <button class="btn btn-cta-glow btn-center" onclick="goToPage(2)">Registrar reciclagem</button>
     </div>
 
     <div class="card level-card">
@@ -233,13 +233,14 @@
       </select>
     </div>
 
-    <button id="grupoEntrar" class="btn btn-primary" type="button">
-      Entrar no grupo selecionado
-    </button>
-    <button id="grupoSair" class="btn btn-solid-green" type="button"
-      style="margin-left:8px" hidden>
-      Sair do grupo atual
-    </button>
+    <div class="btn-row">
+      <button id="grupoEntrar" class="btn btn-primary" type="button">
+        Entrar no grupo selecionado
+      </button>
+      <button id="grupoSair" class="btn btn-solid-green" type="button" hidden>
+        Sair do grupo atual
+      </button>
+    </div>
 
     <p id="grupoMensagem" role="status" style="margin-top:14px">
       Carregando informações...
@@ -268,10 +269,6 @@
   <h2 class="title">Lixão</h2>
   <p class="subtitle">Registre a entrega do material reciclável para receber pontos.</p>
 
-  <div class="callout">
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.3" stroke="var(--gold)" stroke-width="1.5"/><path d="M10 6.5v4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="13.3" r="0.9" fill="var(--gold)"/></svg>
-    Demonstração: os dados e pontuações abaixo são fictícios.
-  </div>
 
   <div class="grid recycle-grid">
 
@@ -319,7 +316,7 @@
       <input id="recycleWeight" name="weight" type="text" inputmode="decimal" autocomplete="off" placeholder="Ex.: 1,5" aria-describedby="recycleHelp" required>
       <small id="recycleHelp">Informe um valor entre 1 e 10 kg. Você pode usar vírgula ou ponto decimal.</small>
     </div>
-    <button id="recycleSubmit" class="btn btn-primary" type="submit">Registrar reciclagem</button>
+    <button id="recycleSubmit" class="btn btn-primary btn-center" type="submit">Registrar reciclagem</button>
     <p id="recycleStatus" role="status" aria-live="polite"></p>
   </form>
 
@@ -344,50 +341,71 @@
   <h2 class="title">Postos</h2>
   <p class="subtitle">Locais para coleta de recicláveis.</p>
 
-  <div class="callout callout-warm">
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2 18.5 17H1.5L10 2Z" stroke="var(--warm)" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 8v4" stroke="var(--warm)" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="14.5" r="0.9" fill="var(--warm)"/></svg>
-    Esses dados são fictícios, ainda não refletem a realidade fiel do ambiente.
-  </div>
 
   <div class="stations">
 
     <div class="map">
-      <img
-        src="assets/mapa-fsa_atualizado-931x1024.jpg"
-        alt="Mapa da Fundação Santo André"
-        onerror="this.style.display='none'">
+      <h3 class="map-title">Mapa dos pontos de coleta</h3>
+      <ul class="map-legend" aria-label="Legenda do mapa">
+        <li class="map-legend-fafil">FAFIL</li>
+        <li class="map-legend-central">Prédio Central</li>
+      </ul>
 
-      <div class="map-placeholder">Mapa dos pontos de coleta</div>
+      <div class="map-figure">
+        <img
+          src="assets/mapa-fsa_atualizado-931x1024.jpg"
+          alt="Mapa da Fundação Santo André"
+          onerror="this.style.display='none'">
+
+        <!-- posições estimadas (% da imagem); ajuste --x/--y se precisar -->
+        <ul class="map-pins">
+        <li class="map-pin map-pin-fafil" style="--x:34.6%;--y:38.6%" aria-hidden="true" title="FAFIL, lado esquerdo da saída">
+          <svg viewBox="0 0 24 32" focusable="false"><path d="M12 1C6 1 1.5 5.5 1.5 11.2 1.5 19 12 31 12 31s10.5-12 10.5-19.8C22.5 5.5 18 1 12 1Z" fill="currentColor" stroke="#fff" stroke-width="1.6"/><text x="12" y="15.2" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">A</text></svg>
+        </li>
+        <li class="map-pin map-pin-fafil" style="--x:54.8%;--y:34.2%" aria-hidden="true" title="FAFIL 1ºA, lado leste">
+          <svg viewBox="0 0 24 32" focusable="false"><path d="M12 1C6 1 1.5 5.5 1.5 11.2 1.5 19 12 31 12 31s10.5-12 10.5-19.8C22.5 5.5 18 1 12 1Z" fill="currentColor" stroke="#fff" stroke-width="1.6"/><text x="12" y="15.2" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">B</text></svg>
+        </li>
+        <li class="map-pin map-pin-fafil" style="--x:55.0%;--y:41.0%" aria-hidden="true" title="FAFIL térreo, entrada sentido FAENG">
+          <svg viewBox="0 0 24 32" focusable="false"><path d="M12 1C6 1 1.5 5.5 1.5 11.2 1.5 19 12 31 12 31s10.5-12 10.5-19.8C22.5 5.5 18 1 12 1Z" fill="currentColor" stroke="#fff" stroke-width="1.6"/><text x="12" y="15.2" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">C</text></svg>
+        </li>
+        <li class="map-pin map-pin-central" style="--x:68.7%;--y:49.3%" aria-hidden="true" title="Prédio Central, cantina">
+          <svg viewBox="0 0 24 32" focusable="false"><path d="M12 1C6 1 1.5 5.5 1.5 11.2 1.5 19 12 31 12 31s10.5-12 10.5-19.8C22.5 5.5 18 1 12 1Z" fill="currentColor" stroke="#fff" stroke-width="1.6"/><text x="12" y="15.2" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">D</text></svg>
+        </li>
+        <li class="map-pin map-pin-central" style="--x:61.8%;--y:41.5%" aria-hidden="true" title="Prédio Central, secretaria">
+          <svg viewBox="0 0 24 32" focusable="false"><path d="M12 1C6 1 1.5 5.5 1.5 11.2 1.5 19 12 31 12 31s10.5-12 10.5-19.8C22.5 5.5 18 1 12 1Z" fill="currentColor" stroke="#fff" stroke-width="1.6"/><text x="12" y="15.2" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">E</text></svg>
+        </li>
+        </ul>
+      </div>
     </div>
 
     <div class="station-list">
 
       <div class="station">
-        <h3>Fafil</h3>
+        <h3><span class="station-pin station-pin-fafil">A</span>FAFIL</h3>
         <p>Ao lado esquerdo da saída, sentido Faeco.</p>
         <div class="distance">Ponto de coleta</div>
       </div>
 
       <div class="station">
-        <h3>Fafil — 1ºA</h3>
+        <h3><span class="station-pin station-pin-fafil">B</span>FAFIL — 1ºA</h3>
         <p>Ao lado dos banheiros no 1ºA, lado leste.</p>
         <div class="distance">Ponto de coleta</div>
       </div>
 
       <div class="station">
-        <h3>Fafil — Térreo</h3>
+        <h3><span class="station-pin station-pin-fafil">C</span>FAFIL — Térreo</h3>
         <p>Perto da entrada sentido Faengs.</p>
         <div class="distance">Ponto de coleta</div>
       </div>
 
       <div class="station">
-        <h3>Prédio Central</h3>
+        <h3><span class="station-pin station-pin-central">D</span>Prédio Central</h3>
         <p>Ao lado de fora da cantina, em frente à praça.</p>
         <div class="distance">Ponto de coleta</div>
       </div>
 
       <div class="station">
-        <h3>Prédio Central</h3>
+        <h3><span class="station-pin station-pin-central">E</span>Prédio Central</h3>
         <p>Perto da secretaria, ao lado da mesa de ping pong.</p>
         <div class="distance">Ponto de coleta</div>
       </div>
