@@ -137,12 +137,12 @@
   <div class="hero">
     <div class="hero-main">
       <span class="badge">EcoHora · Fundação Santo André</span>
-      <h2>Recicle e conquiste suas horas</h2>
+      <h2>Recicle e conquiste suas <span class="hl-gold">horas</span></h2>
 
       <ul class="hero-list">
-        <li><strong>Grupo:</strong> veja quem mais pontuou na sua turma e quantos alunos participam.</li>
-        <li><strong>Lixão:</strong> registre o material que você entregou pra reciclagem.</li>
-        <li><strong>Postos:</strong> mapa com os pontos de coleta espalhados pelo campus.</li>
+        <li><strong>Grupo:</strong> veja quem mais <span class="hl">pontuou</span> na sua turma e quantos alunos participam.</li>
+        <li><strong>Lixão:</strong> registre o <span class="hl">material</span> que você entregou pra reciclagem.</li>
+        <li><strong>Postos:</strong> mapa com os <span class="hl">pontos de coleta</span> espalhados pelo campus.</li>
       </ul>
 
       <button class="btn btn-cta-glow btn-center" onclick="goToPage(2)">Registrar reciclagem</button>
@@ -151,7 +151,7 @@
     <div class="card level-card">
       <p class="level-label">Seu progresso</p>
       <h2>Nível 1</h2>
-      <p class="muted-text">Continue reciclando pra desbloquear novas recompensas.</p>
+      <p class="muted-text">Continue reciclando pra desbloquear <span class="hl">novas recompensas</span>.</p>
 
       <div class="level-row">
         <span>XP</span>
@@ -172,7 +172,7 @@
     </div>
 
     <div class="card stat">
-      <svg class="icon" width="26" height="26" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3 2 6.5 10 10 18 6.5 10 3Z" stroke="var(--green-light)" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 8.3V12c0 1.4 2 2.5 4.5 2.5s4.5-1.1 4.5-2.5V8.3" stroke="var(--green-light)" stroke-width="1.4" fill="none"/></svg>
+      <svg class="icon" width="26" height="26" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6.6 7.6h6.8l2.4 8.4H4.2l2.4-8.4Z" stroke="var(--green-light)" stroke-width="1.4" stroke-linejoin="round"/><path d="M7.9 7.6a2.1 2.1 0 1 1 4.2 0" stroke="var(--green-light)" stroke-width="1.4" stroke-linecap="round"/><path d="M8 12.2h4" stroke="var(--green-light)" stroke-width="1.4" stroke-linecap="round"/></svg>
       <small>Peso reciclado</small>
       <strong id="weightHome">0 kg</strong>
     </div>
@@ -212,9 +212,9 @@
 
 
 <section class="page"><div class="container">
-  <h2 class="title">Sua turma</h2>
+  <h2 class="title">Sua <span class="hl">turma</span></h2>
   <p class="subtitle">
-    Consulte os eventos e escolha um grupo para participar.
+    Consulte os <span class="hl">eventos</span> e escolha um <span class="hl">grupo</span> para participar.
   </p>
 
   <div class="card" style="margin-bottom:20px">
@@ -257,7 +257,7 @@
     </div>
   </div>
 
-  <h2 class="section-title">Pontuação e ranking</h2>
+  <h2 class="section-title">Pontuação e <span class="hl">ranking</span></h2>
   <p class="subtitle">
     A pontuação coletiva e o ranking serão exibidos quando houver dados
     reais disponibilizados pelo backend.
@@ -266,8 +266,8 @@
 
 
 <section class="page"><div class="container">
-  <h2 class="title">Lixão</h2>
-  <p class="subtitle">Registre a entrega do material reciclável para receber pontos.</p>
+  <h2 class="title"><span class="hl">Lixão</span></h2>
+  <p class="subtitle">Registre a entrega do material reciclável para receber <span class="hl-gold">pontos</span>.</p>
 
 
   <div class="grid recycle-grid">
@@ -304,7 +304,7 @@
 
   <form id="recycleForm" class="card recycle-form" onsubmit="return registrarReciclagemFormulario(event)">
     <h3>Registrar entrega</h3>
-    <p class="subtitle">Selecione o material e informe o peso entregue.</p>
+    <p class="subtitle">Selecione o <span class="hl">material</span> e informe o <span class="hl">peso</span> entregue.</p>
     <div class="field">
       <label for="recycleMaterial">Material reciclável</label>
       <select id="recycleMaterial" name="material" required>
@@ -316,7 +316,7 @@
       <input id="recycleWeight" name="weight" type="text" inputmode="decimal" autocomplete="off" placeholder="Ex.: 1,5" aria-describedby="recycleHelp" required>
       <small id="recycleHelp">Informe um valor entre 1 e 10 kg. Você pode usar vírgula ou ponto decimal.</small>
     </div>
-    <button id="recycleSubmit" class="btn btn-primary btn-center" type="submit">Registrar reciclagem</button>
+    <button id="recycleSubmit" class="btn btn-cta-glow btn-center" type="submit">Registrar reciclagem</button>
     <p id="recycleStatus" role="status" aria-live="polite"></p>
   </form>
 
@@ -324,8 +324,8 @@
     <h3>Como funciona?</h3>
     <p>
       Escolha o tipo de material entregue. Em uma versão real,
-      esta ação deverá ser validada por um posto de coleta antes
-      da conversão em pontos e horas complementares.
+      esta ação deverá ser validada por um <span class="hl">posto de coleta</span> antes
+      da conversão em <span class="hl-gold">pontos</span> e <span class="hl-gold">horas complementares</span>.
     </p>
   </div>
 </div></section>
@@ -338,8 +338,8 @@
 
 
 <section class="page"><div class="container">
-  <h2 class="title">Postos</h2>
-  <p class="subtitle">Locais para coleta de recicláveis.</p>
+  <h2 class="title"><span class="hl">Postos</span></h2>
+  <p class="subtitle">Locais para coleta de <span class="hl">recicláveis</span>.</p>
 
 
   <div class="stations">
@@ -423,7 +423,7 @@
             <div>
                 <span class="perfil-kicker">MINHA CONTA</span>
                 <h1>Meu perfil</h1>
-                <p>Gerencie suas informações pessoais.</p>
+                <p>Gerencie suas <span class="hl">informações pessoais</span>.</p>
             </div>
         </div>
 
@@ -574,7 +574,7 @@
             <div>
                 <strong>Sobre seus dados</strong>
                 <p>
-                    Seu RA é utilizado como identificação acadêmica
+                    Seu <span class="hl">RA</span> é utilizado como identificação acadêmica
                     e não pode ser alterado por este painel.
                 </p>
             </div>
