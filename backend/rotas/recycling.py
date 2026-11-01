@@ -1,6 +1,7 @@
 import os
 import json
 import io
+import base64
 
 import aiosqlite
 from fastapi import APIRouter, HTTPException, status, Depends
@@ -48,6 +49,11 @@ class RecyclingResponse(BaseModel):
     points_earned: float
     total_points: float
 
+
+class QrCodeResponse(BaseModel):
+    material_name: str
+    weight: float
+    qr_code_base64: str
 
 # ==========================================
 # SCHEMAS DE ENTRADA (REQUESTS)
@@ -259,12 +265,33 @@ def qrcode_gen(data: str):
     return qr.make_image(fill_color="darkgreen", back_color="white")
 
 
-@router.get("/qrcode/{material_id}/{weight}")
+async def retrieve_material_info(material_id: int) -> dict:
+    """Recupera informações do material pelo ID, retornando um dicionário com os dados."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        query = "SELECT * FROM materials WHERE id = ?"
+        async with db.execute(query, (material_id,)) as cur:
+            row = await cur.fetchone()
+            if row:
+                return {
+                    "id": row["id"],
+                    "material_name": row["nm_material"],
+                    "points_per_kilogram": row["nr_points_per_kilogram"]
+                }
+            else:
+                raise HTTPException(status_code=404, detail=f"Material com ID {material_id} não encontrado.")
+
+
+@router.get("/qrcode/{material_id}/{weight}", response_model=QrCodeResponse, response_description="Gera um QR Code em formato JSON e o exibe diretamente na tela do navegador.")
 async def qr_code_validation(material_id: int, weight: float):
     """
     Gera um QR Code em formato JSON e o exibe diretamente na tela do navegador.
     """
     try:
+        
+        material_data_for_qrcode: dict = await retrieve_material_info(material_id)
+        material_name = material_data_for_qrcode.get("material_name")  # Obtém o nome do material para incluir na resposta
+        
         # Monta os dados no formato que o POST /recycle exige
         dados_para_qr = {
             "fk_cd_material": material_id,
@@ -273,7 +300,6 @@ async def qr_code_validation(material_id: int, weight: float):
         
         # Converte o dicionário Python para um texto JSON
         texto_json = json.dumps(dados_para_qr)
-        print(texto_json)
         
         # Efetivamente Gera a imagem do QRCode
         imagem = qrcode_gen(data=texto_json)
@@ -281,10 +307,15 @@ async def qr_code_validation(material_id: int, weight: float):
         # Asism vai tratar a imagem na memória para enviar pelo navegador sem salvar em disco
         img_byte_arr = io.BytesIO()
         imagem.save(img_byte_arr, format='PNG')
-        img_byte_arr.seek(0)
         
-        # Retorna a imagem em bytes
-        return StreamingResponse(img_byte_arr, media_type="image/png")
+        # Pega o valor da imagem em bytes (img_byte_arr.getvalue()) e converte para base64 (opcional, caso queira enviar como string)
+        img_encoded_text = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
+        
+        return QrCodeResponse(
+            material_name=material_name,
+            weight=weight,
+            qr_code_base64=f"data:image/png;base64,{img_encoded_text}"
+        )
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao gerar QR Code: {e}")
