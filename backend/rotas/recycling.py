@@ -1,3 +1,4 @@
+import base64
 import os
 import json
 import io
@@ -259,12 +260,33 @@ def qrcode_gen(data: str):
     return qr.make_image(fill_color="darkgreen", back_color="white")
 
 
+async def retrieve_material_info(material_id: int) -> dict:
+    """Recupera informações do material pelo ID, retornando um dicionário com os dados."""
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+        query = "SELECT * FROM materials WHERE id = ?"
+        async with db.execute(query, (material_id,)) as cur:
+            row = await cur.fetchone()
+            if row:
+                return {
+                    "id": row["id"],
+                    "material_name": row["nm_material"],
+                    "points_per_kilogram": row["nr_points_per_kilogram"]
+                }
+            else:
+                raise HTTPException(status_code=404, detail=f"Material com ID {material_id} não encontrado.")
+
+
 @router.get("/qrcode/{material_id}/{weight}")
 async def qr_code_validation(material_id: int, weight: float):
     """
     Gera um QR Code em formato JSON e o exibe diretamente na tela do navegador.
     """
     try:
+        # Recupera as informações do material
+        material_info = await retrieve_material_info(material_id)
+        material_name = material_info["material_name"]
+
         # Monta os dados no formato que o POST /recycle exige
         dados_para_qr = {
             "fk_cd_material": material_id,
@@ -283,22 +305,24 @@ async def qr_code_validation(material_id: int, weight: float):
         imagem.save(img_byte_arr, format='PNG')
         img_byte_arr.seek(0)
         
+        img_encoded_text = base64.b64encode(img_byte_arr.getvalue()).decode('utf-8')
+        
         # Monta a estrutura HTML que o navegador vai renderizar
         html_content = f"""
-        <html>
-            <head>
-                <title>Validação de Coleta</title>
-                <style>
+        <html lang="pt-BR" id="html-qrcode-from-api">
+            <head id="head-qrcode-from-api">
+                <title id="title-qrcode-from-api">Validação de Coleta</title>
+                <style id="style-qrcode-from-api">
                     body {{ font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }}
                     .card {{ border: 1px solid #ccc; padding: 20px; display: inline-block; border-radius: 8px; }}
                 </style>
             </head>
-            <body>
-                <div class="card">
-                    <h2>Dados da Reciclagem</h2>
-                    <p><strong>ID do Material:</strong> {material_id}</p>
-                    <p><strong>Peso:</strong> {weight} kg</p>
-                    <img src="data:image/png;base64,{imagem_base64}" alt="QR Code" />
+            <body id="body-qrcode-from-api">
+                <div class="card" id="card-qrcode-from-api">
+                    <h2 id="h2-qrcode-from-api">Dados da Reciclagem</h2>
+                    <p id="p-material-qrcode-from-api"><strong>Nome do Material:</strong> {material_name}</p>
+                    <p id="p-weight-qrcode-from-api"><strong>Peso:</strong> {weight} kg</p>
+                    <img id="img-qrcode-from-api" src="data:image/png;base64,{img_encoded_text}" alt="QR Code" />
                 </div>
             </body>
         </html>
