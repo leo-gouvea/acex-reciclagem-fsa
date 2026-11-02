@@ -16,5 +16,10 @@ const AdminApi = {
     // perfil completo por RA (inclui course e user_class); administrador pode ver qualquer um
     getUser: (ra) => apiRequest(`/user/get/${encodeURIComponent(ra)}`),
 
+    createRecyclingQR: (data) => apiRequest("/recycling/qr", {
+    method: "POST",
+    body: JSON.stringify(data)
+}),
+
     logout: () => apiRequest("/user/logout", { method: "POST" })
 };
