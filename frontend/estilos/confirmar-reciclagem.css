@@ -1,0 +1,231 @@
+/* =========================================================
+   EcoHora — confirmação de entrega por QR Code
+   Usa exclusivamente os tokens compartilhados em tokens.css.
+========================================================= */
+
+.confirm-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+  background: var(--bg);
+}
+
+.confirm-header {
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+}
+
+.confirm-header-inner {
+  width: min(100% - 40px, 1120px);
+  min-height: var(--header-h);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.confirm-header-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.confirm-main {
+  width: min(100% - 32px, 620px);
+  margin: clamp(28px, 7vh, 72px) auto;
+  flex: 1;
+}
+
+.confirm-card {
+  padding: clamp(24px, 5vw, 42px);
+}
+
+.confirm-eyebrow {
+  margin-bottom: 12px;
+}
+
+.confirm-card h1 {
+  max-width: 18ch;
+  font-size: clamp(1.55rem, 5vw, 2.1rem);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.confirm-intro {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.confirm-alert {
+  margin-top: 24px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--overlay);
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.confirm-alert[data-kind="success"] {
+  border-color: var(--green);
+}
+
+.confirm-alert[data-kind="error"] {
+  border-color: var(--danger);
+}
+
+.confirm-summary,
+.confirm-success-summary {
+  display: grid;
+  gap: 0;
+  margin-top: 22px;
+  padding: 4px 18px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.confirm-summary-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.confirm-summary-row:last-child {
+  border-bottom: 0;
+}
+
+.confirm-summary-row dt {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.confirm-summary-row dd {
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.confirm-summary-points dd {
+  color: var(--green-light);
+  font-size: 1.05rem;
+}
+
+.confirm-expiration {
+  margin-top: 12px;
+  color: var(--muted-dark);
+  font-size: 0.8rem;
+}
+
+.confirm-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.confirm-actions .btn {
+  min-height: 48px;
+}
+
+.confirm-success {
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.confirm-success-mark {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  color: var(--green-light);
+}
+
+.confirm-success-mark svg {
+  width: 25px;
+  height: 25px;
+}
+
+.confirm-success h2 {
+  color: var(--text);
+  font-size: 1.35rem;
+}
+
+.confirm-success > p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.confirm-success .btn {
+  margin-top: 18px;
+}
+
+.confirm-footnote {
+  margin-top: 24px;
+  color: var(--muted-dark);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.confirm-footer {
+  padding: 22px 20px;
+  border-top: 1px solid var(--line-soft);
+  color: var(--muted-dark);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .confirm-header-inner {
+    width: min(100% - 32px, 1120px);
+    min-height: 64px;
+  }
+
+  .confirm-header-label {
+    font-size: 0.78rem;
+  }
+
+  .confirm-main {
+    width: min(100% - 24px, 620px);
+    margin: 22px auto;
+  }
+
+  .confirm-card {
+    padding: 22px 18px;
+  }
+
+  .confirm-summary,
+  .confirm-success-summary {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .confirm-summary-row {
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confirm-page *,
+  .confirm-page *::before,
+  .confirm-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
