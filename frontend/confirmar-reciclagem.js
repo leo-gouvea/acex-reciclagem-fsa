@@ -54,6 +54,9 @@
         "Para confirmar esta entrega, entre na sua conta de aluno e abra novamente o QR Code.",
         "error"
       );
+      loginLink.href = `login.html?redirect=${encodeURIComponent(
+        `confirmar-reciclagem.html?token=${token}`
+      )}`;
       loginLink.hidden = false;
       return;
     }
