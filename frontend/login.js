@@ -256,7 +256,28 @@ entrarForm.addEventListener("submit", async function (event) {
 
     // Redireciona para a página principal
     setTimeout(() => {
-      window.location.href = "index.html";
+      const requestedDestination = new URLSearchParams(window.location.search).get("redirect");
+      let destination = "index.html";
+
+      if (requestedDestination) {
+        try {
+          const target = new URL(requestedDestination, window.location.href);
+          const targetPage = target.pathname.split("/").pop();
+
+          // Só permite retornar à página de confirmação do EcoHora.
+          if (
+            target.origin === window.location.origin &&
+            targetPage === "confirmar-reciclagem.html" &&
+            target.searchParams.has("token")
+          ) {
+            destination = target.href;
+          }
+        } catch {
+          // Destino inválido: mantém o painel como destino padrão.
+        }
+      }
+
+      window.location.href = destination;
     }, 800);
   } catch (erro) {
     console.error("Erro ao fazer login:", erro);
