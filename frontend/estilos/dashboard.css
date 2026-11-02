@@ -892,6 +892,8 @@ body {
     flex-direction: column;
     padding: 0 5px;
     overflow: hidden;
+    touch-action: none; /* arrastar a gaveta não rola a página */
+    overscroll-behavior: contain;
     
     /* Altura fechada: apenas a primeira linha + puxador */
     height: 70px; 

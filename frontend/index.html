@@ -368,10 +368,10 @@
         <li class="map-pin map-pin-fafil" style="--x:55.0%;--y:41.0%" aria-hidden="true" title="FAFIL térreo, entrada sentido FAENG">
           <svg viewBox="0 0 24 32" focusable="false"><path d="M12 1C6 1 1.5 5.5 1.5 11.2 1.5 19 12 31 12 31s10.5-12 10.5-19.8C22.5 5.5 18 1 12 1Z" fill="currentColor" stroke="#fff" stroke-width="1.6"/><text x="12" y="15.2" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">C</text></svg>
         </li>
-        <li class="map-pin map-pin-central" style="--x:68.7%;--y:49.3%" aria-hidden="true" title="Prédio Central, cantina">
+        <li class="map-pin map-pin-central" style="--x:63.3%;--y:47.4%" aria-hidden="true" title="Prédio Central, cantina">
           <svg viewBox="0 0 24 32" focusable="false"><path d="M12 1C6 1 1.5 5.5 1.5 11.2 1.5 19 12 31 12 31s10.5-12 10.5-19.8C22.5 5.5 18 1 12 1Z" fill="currentColor" stroke="#fff" stroke-width="1.6"/><text x="12" y="15.2" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">D</text></svg>
         </li>
-        <li class="map-pin map-pin-central" style="--x:61.8%;--y:41.5%" aria-hidden="true" title="Prédio Central, secretaria">
+        <li class="map-pin map-pin-central" style="--x:67.7%;--y:43.2%" aria-hidden="true" title="Prédio Central, secretaria">
           <svg viewBox="0 0 24 32" focusable="false"><path d="M12 1C6 1 1.5 5.5 1.5 11.2 1.5 19 12 31 12 31s10.5-12 10.5-19.8C22.5 5.5 18 1 12 1Z" fill="currentColor" stroke="#fff" stroke-width="1.6"/><text x="12" y="15.2" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">E</text></svg>
         </li>
         </ul>
@@ -676,14 +676,16 @@ function toggleDrawer() {
 if (drawer) {
   drawer.addEventListener('touchstart', e => {
     touchStartY = e.touches[0].clientY;
-  });
+  }, { passive: true });
 
+  // passive:false + preventDefault: o gesto fica na gaveta e não arrasta a página
   drawer.addEventListener('touchmove', e => {
     const diff = touchStartY - e.touches[0].clientY;
 
     if (diff > 15) drawer.classList.add('expanded');
     else if (diff < -15) drawer.classList.remove('expanded');
-  });
+    if (e.cancelable) e.preventDefault();
+  }, { passive: false });
 }
 
 

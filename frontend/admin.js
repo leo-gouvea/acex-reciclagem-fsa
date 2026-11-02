@@ -414,7 +414,8 @@ drawer.addEventListener("touchmove", (e) => {
     const diff = touchY - e.touches[0].clientY;
     if (diff > 15) setDrawer(true);
     else if (diff < -15) setDrawer(false);
-}, { passive: true });
+    if (e.cancelable) e.preventDefault(); // o gesto fica na gaveta e não arrasta a página
+}, { passive: false });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") setDrawer(false); });
 
 buildPending();
