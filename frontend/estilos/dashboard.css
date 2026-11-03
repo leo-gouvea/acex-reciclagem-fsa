@@ -1579,7 +1579,7 @@ body {
 /* Guia de reciclagem e cards informativos de materiais */
 .recycling-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   align-items: start;
   gap: 20px;
   margin-top: 24px;
@@ -1601,7 +1601,7 @@ body {
 }
 
 .recycling-materials-note {
-  margin: 5px 0 14px;
+  margin: 5px 0 12px;
   color: var(--muted);
   font-size: 0.84rem;
 }
@@ -1609,45 +1609,119 @@ body {
 .recycling-material-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 12px;
+  gap: 8px;
 }
 
 .recycling-material-card {
   display: grid;
-  gap: 7px;
-  padding: 16px 18px;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 11px;
+  row-gap: 2px;
+  min-height: 0;
+  padding: 10px 12px;
   cursor: default;
+  border-radius: 12px;
 }
 
 .recycling-material-card:hover {
   transform: none;
 }
 
+.recycling-material-icon {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  font-size: 23px;
+  color: var(--material-color);
+}
+
+.recycling-material-copy {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-width: 0;
+}
+
 .recycling-material-card h4 {
   margin: 0;
   color: var(--material-color);
-  font-size: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.25;
 }
 
 .recycling-material-card p {
-  margin: 0;
+  margin: 3px 0 0;
   color: var(--text);
-  font-size: 0.82rem;
-  line-height: 1.5;
+  font-size: 0.75rem;
+  line-height: 1.35;
 }
 
 .recycling-material-card .points {
+  grid-column: 3;
+  grid-row: 1 / span 2;
   display: inline-block;
   width: fit-content;
-  margin-top: 2px;
-  padding: 4px 9px;
+  margin: 0;
+  padding: 4px 8px;
   border: 1px solid currentColor;
   border-radius: var(--radius-pill);
-  font-size: 0.78rem;
+  color: var(--material-color);
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Tons mais escuros no tema claro para manter contraste, especialmente no vidro. */
+:root[data-theme="light"] .recycling-material-card.papel {
+  --material-color: #1769aa;
+  --material-tint: rgba(23, 105, 170, 0.10);
+  --material-glow: rgba(23, 105, 170, 0.06);
+}
+
+:root[data-theme="light"] .recycling-material-card.plastico {
+  --material-color: #b42332;
+  --material-tint: rgba(180, 35, 50, 0.09);
+  --material-glow: rgba(180, 35, 50, 0.06);
+}
+
+:root[data-theme="light"] .recycling-material-card.metal {
+  --material-color: #806000;
+  --material-tint: rgba(128, 96, 0, 0.10);
+  --material-glow: rgba(128, 96, 0, 0.06);
+}
+
+:root[data-theme="light"] .recycling-material-card.vidro {
+  --material-color: #087a45;
+  --material-tint: rgba(8, 122, 69, 0.11);
+  --material-glow: rgba(8, 122, 69, 0.07);
 }
 
 @media (max-width: 850px) {
   .recycling-layout {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .recycling-material-card {
+    grid-template-columns: 28px minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .recycling-material-card .points {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 5px;
+  }
+
+  .recycling-material-copy {
+    grid-row: 1;
+  }
+
+  .recycling-material-icon {
+    grid-row: 1 / span 2;
   }
 }
