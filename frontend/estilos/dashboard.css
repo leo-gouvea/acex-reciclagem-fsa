@@ -1574,3 +1574,80 @@ body {
   font-weight: 700;
   line-height: 1.55;
 }
+
+
+/* Guia de reciclagem e cards informativos de materiais */
+.recycling-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+  align-items: start;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.recycling-layout .recycling-instructions {
+  max-width: none;
+  margin-top: 0;
+}
+
+.recycling-materials {
+  min-width: 0;
+}
+
+.recycling-materials > h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.1rem;
+}
+
+.recycling-materials-note {
+  margin: 5px 0 14px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.recycling-material-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.recycling-material-card {
+  display: grid;
+  gap: 7px;
+  padding: 16px 18px;
+  cursor: default;
+}
+
+.recycling-material-card:hover {
+  transform: none;
+}
+
+.recycling-material-card h4 {
+  margin: 0;
+  color: var(--material-color);
+  font-size: 1rem;
+}
+
+.recycling-material-card p {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.recycling-material-card .points {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 2px;
+  padding: 4px 9px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 850px) {
+  .recycling-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
