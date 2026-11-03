@@ -148,6 +148,7 @@
       );
 
       confirmButton.hidden = true;
+      holdHint.hidden = true;
       $("successMessage").textContent =
         result.detail || "A entrega foi confirmada e os pontos foram creditados.";
       $("earnedPoints").textContent =
