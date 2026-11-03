@@ -154,12 +154,6 @@ async function getMaterials() {
 }
 
 
-async function registerRecycling(recyclingData) {
-    return apiRequest("/recycling/recycle", {
-        method: "POST",
-        body: JSON.stringify(recyclingData)
-    });
-}
 
 
 async function deleteRecycling(recyclingId) {

@@ -19,7 +19,7 @@
 <body class="confirm-page">
   <header class="confirm-header">
     <div class="confirm-header-inner">
-      <a class="brand" href="index.html" aria-label="EcoHora, voltar ao painel">
+      <a class="brand" href="https://acex-reciclagem-kluhcio40-leogouvea.vercel.app/index.html" aria-label="EcoHora, voltar ao painel">
         <img class="brand-mark" src="assets/Ca105ad9cfc8580c765101d17bbb2323.webp" width="26" height="26" alt="">
         <span class="brand-name">Eco<span>Hora</span></span>
       </a>
@@ -32,8 +32,7 @@
       <p class="eyebrow confirm-eyebrow">Confirmação de entrega</p>
       <h1 id="confirmTitle">Confira os dados da sua entrega</h1>
       <p class="confirm-intro">
-        Verifique o material e o peso informado pelo responsável pelo recebimento.
-        Os pontos só serão adicionados à sua conta depois da confirmação.
+        Confira o material, o peso e a pontuação desta entrega antes de confirmar.
       </p>
 
       <div id="confirmAlert" class="confirm-alert" data-kind="info" role="status" aria-live="polite">
@@ -58,13 +57,15 @@
       <p id="deliveryExpiration" class="confirm-expiration" hidden></p>
 
       <div class="confirm-actions">
-        <button id="confirmButton" class="btn btn-solid-green btn-block" type="button" disabled hidden>
-          Confirmar entrega
+        <button id="confirmButton" class="btn btn-solid-green btn-block" type="button" disabled hidden aria-describedby="confirmHoldHint">
+          <span class="confirm-button-progress" aria-hidden="true"></span>
+          <span id="confirmButtonLabel" class="confirm-button-label">Segure para confirmar entrega</span>
         </button>
-        <a id="loginLink" class="btn btn-ghost btn-block" href="login.html" hidden>
+        <p id="confirmHoldHint" class="confirm-hold-hint" hidden>Mantenha pressionado por 1,2 segundo. Solte antes para cancelar.</p>
+        <a id="loginLink" class="btn btn-ghost btn-block" href="https://acex-reciclagem-kluhcio40-leogouvea.vercel.app/login.html" hidden>
           Entrar na conta de aluno
         </a>
-        <a id="panelLink" class="btn btn-ghost btn-block" href="index.html" hidden>
+        <a id="panelLink" class="btn btn-ghost btn-block" href="https://acex-reciclagem-kluhcio40-leogouvea.vercel.app/index.html" hidden>
           Ir ao painel
         </a>
       </div>
@@ -87,11 +88,11 @@
             <dd id="totalPoints">—</dd>
           </div>
         </dl>
-        <a class="btn btn-ghost btn-block" href="index.html">Voltar ao painel</a>
+        <a class="btn btn-ghost btn-block" href="https://acex-reciclagem-kluhcio40-leogouvea.vercel.app/index.html">Voltar ao painel</a>
       </section>
 
       <p class="confirm-footnote">
-        A confirmação é individual e só pode ser realizada uma vez por QR Code.
+        Cada QR Code só pode ser confirmado uma vez.
       </p>
     </section>
   </main>

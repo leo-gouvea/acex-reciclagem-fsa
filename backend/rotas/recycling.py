@@ -61,15 +61,6 @@ class PostMaterialRequest(BaseModel):
     points_per_kilogram: int
 
 
-class PostRecyclingRequest(BaseModel):
-    fk_cd_material: int
-    nr_weight_kilograms: float = Field(
-        ..., 
-        ge=1, 
-        le=10
-    )
-
-
 # ==========================================
 # ROTAS / ENDPOINTS
 # ==========================================
@@ -152,68 +143,18 @@ async def delete_material(material_id: int, user: dict = Depends(check_access)):
     return DeleteMaterialReturn(detail=f"Material {material_id} deletado com sucesso!")
 
 
-@router.post("/recycle", response_model=RecyclingResponse, status_code=status.HTTP_201_CREATED, response_description="Registra uma nova atividade de reciclagem")
-async def post_recycle(data: PostRecyclingRequest, user: dict = Depends(check_access)):
-    """Registra uma entrega de material feita por um usuário."""
+@router.post(
+    "/recycle",
+    status_code=status.HTTP_410_GONE,
+    response_description="O registro direto foi desativado; utilize a confirmação por QR Code."
+)
+async def post_recycle(user: dict = Depends(check_access)):
+    """Bloqueia o registro direto para exigir validação por QR Code."""
 
-    data_user_id: int = user.get("id")
-
-    # Verificação de peso
-    if not 1 <= data.nr_weight_kilograms <= 10:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="O peso deve estar entre 1 e 10.")
-    
-    async with aiosqlite.connect(DB_PATH) as db:
-        # Ativa suporte a chaves estrangeiras no SQLite para validar os IDs
-        await db.execute("PRAGMA foreign_keys = ON;")
-
-        # Faz uma busca dos materiais pelo id selecionado (para usar os pontos como base de calculo)
-        query_select_material_points = """ 
-        SELECT nr_points_per_kilogram
-        FROM materials
-        WHERE id = ?
-        """
-        async with db.execute(query_select_material_points, (data.fk_cd_material,)) as cur:
-            points_per_kg = await cur.fetchone()
-
-        if not points_per_kg:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Material não encontrado")
-
-        # Cálculo de pontos por kilo, indexado da tupla
-        points_earned = points_per_kg[0] * data.nr_weight_kilograms
-        points_earned_rounded = round(points_earned, 2)
-
-        query_adding_points = """
-        UPDATE users
-        SET nr_points = nr_points + ?
-        WHERE id = ?
-        """
-        await db.execute(query_adding_points, (points_earned_rounded, data_user_id))
-
-        query_recycle_adding_history = """
-        INSERT INTO recycling (fk_cd_material, nr_weight_kilograms, fk_cd_user)
-        VALUES (?, ?, ?)
-        """
-        query_recycle_adding_history_args = (
-            data.fk_cd_material,
-            data.nr_weight_kilograms,
-            data_user_id
-        )
-
-        await db.execute(query_recycle_adding_history, query_recycle_adding_history_args)
-        await db.commit()
-
-        # Obtém o total acumulado do usuário de forma isolada e limpa
-        async with db.execute("SELECT nr_points FROM users WHERE id = ?", (data_user_id,)) as user_cur:
-            total_points_row = await user_cur.fetchone()
-            total_points = round(total_points_row[0], 2) if total_points_row else 0.0
-
-        return RecyclingResponse(
-            status=201,
-            detail="Reciclagem registrada com sucesso!",
-            points_earned=points_earned_rounded,
-            total_points=total_points
-        )
-
+    raise HTTPException(
+        status_code=status.HTTP_410_GONE,
+        detail="O registro direto foi desativado. As entregas devem ser confirmadas por QR Code."
+    )
 
 @router.delete("/recycle/{recycle_id}", response_model=RecyclingResponse, status_code=status.HTTP_200_OK, response_description="Informa o status de exclusão do registro")
 async def delete_recycling(recycle_id: int, user: dict = Depends(check_access)):

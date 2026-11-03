@@ -1538,3 +1538,39 @@ body {
   border-color: var(--material-color);
   box-shadow: 0 0 20px var(--material-glow), inset 0 0 18px var(--material-glow);
 }
+
+
+/* Instruções do fluxo de reciclagem validado por QR Code */
+.recycling-instructions {
+  max-width: 760px;
+  margin-top: 24px;
+}
+
+.recycling-steps {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 0;
+  padding-left: 1.4rem;
+  color: var(--text);
+}
+
+.recycling-steps li {
+  padding-left: 4px;
+  line-height: 1.6;
+}
+
+.recycling-steps li::marker {
+  color: var(--green-light);
+  font-weight: 800;
+}
+
+.recycling-warning {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-md);
+  background: var(--overlay);
+  color: var(--danger);
+  font-weight: 700;
+  line-height: 1.55;
+}

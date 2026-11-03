@@ -43,7 +43,7 @@
       <li>
         <button data-page="2">
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 3 10 3 10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 3c3.5 0.6 6 3.6 6 7a6 6 0 0 1-2 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M13 17 10 17 10 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 17c-3.5-.6-6-3.6-6-7a6 6 0 0 1 2-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          <span class="nav-text">Lixão</span>
+          <span class="nav-text">Reciclagem</span>
         </button>
       </li>
 
@@ -141,11 +141,11 @@
 
       <ul class="hero-list">
         <li><strong>Grupo:</strong> veja quem mais <span class="hl">pontuou</span> na sua turma e quantos alunos participam.</li>
-        <li><strong>Lixão:</strong> registre o <span class="hl">material</span> que você entregou pra reciclagem.</li>
+        <li><strong>Reciclagem:</strong> confirme sua entrega pelo <span class="hl">QR Code</span> fornecido no posto de coleta.</li>
         <li><strong>Postos:</strong> mapa com os <span class="hl">pontos de coleta</span> espalhados pelo campus.</li>
       </ul>
 
-      <button class="btn btn-cta-glow btn-center" onclick="goToPage(2)">Registrar reciclagem</button>
+      <button class="btn btn-cta-glow btn-center" onclick="goToPage(2)">Como confirmar uma entrega</button>
     </div>
 
     <div class="card level-card">
@@ -195,7 +195,7 @@
   <div class="grid missions">
     <div class="card mission" onclick="goToPage(2)">
       <h3>Primeira entrega</h3>
-      <p>Registre seu primeiro material reciclável.</p>
+      <p>Faça sua primeira entrega validada por QR Code.</p>
       <div class="points">+50 XP</div>
     </div>
 
@@ -266,76 +266,20 @@
 
 
 <section class="page"><div class="container">
-  <h2 class="title"><span class="hl">Lixão</span></h2>
-  <p class="subtitle">Registre a entrega do material reciclável para receber <span class="hl-gold">pontos</span>.</p>
+  <h2 class="title"><span class="hl">Reciclagem</span></h2>
+  <p class="subtitle">A entrega é registrada com validação por QR Code, para garantir que os dados sejam conferidos pelo posto de coleta.</p>
 
-
-  <div class="grid recycle-grid">
-
-    <div class="card recycle plastico" onclick="selecionarMaterial(this.querySelector(&quot;h3&quot;).textContent)">
-      <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 3h6v2.5l1.5 2V19a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2V7.5L9 5.5V3Z" stroke="var(--green-light)" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 12h7" stroke="var(--green-light)" stroke-width="1.5"/></svg>
-      <h3>Plástico</h3>
-      <p>Garrafas, embalagens e outros recicláveis.</p>
-      <div class="points">2 pontos/kg</div>
-    </div>
-
-    <div class="card recycle papel" onclick="selecionarMaterial(this.querySelector(&quot;h3&quot;).textContent)">
-      <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3h9l3 3v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="var(--green-light)" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12h6M9 15.5h6M9 8.5h3" stroke="var(--green-light)" stroke-width="1.4" stroke-linecap="round"/></svg>
-      <h3>Papel</h3>
-      <p>Folhas, caixas e materiais de papel.</p>
-      <div class="points">2 pontos/kg</div>
-    </div>
-
-    <div class="card recycle vidro" onclick="selecionarMaterial(this.querySelector(&quot;h3&quot;).textContent)">
-      <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 2h4v3.2l2 2.3V20a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V7.5l2-2.3V2Z" stroke="var(--green-light)" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 13h8" stroke="var(--green-light)" stroke-width="1.5"/></svg>
-      <h3>Vidro</h3>
-      <p>Garrafas e recipientes de vidro.</p>
-      <div class="points">3 pontos/kg</div>
-    </div>
-
-    <div class="card recycle metal" onclick="selecionarMaterial(this.querySelector(&quot;h3&quot;).textContent)">
-      <svg class="big" width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8 6.5 20a1.5 1.5 0 0 0 1.5 1.6h8a1.5 1.5 0 0 0 1.5-1.6L17 8" stroke="var(--green-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="12" cy="8" rx="5" ry="2" stroke="var(--green-light)" stroke-width="1.5"/></svg>
-      <h3>Metal</h3>
-      <p>Latas e outros metais recicláveis.</p>
-      <div class="points">1 ponto/kg</div>
-    </div>
-
-  </div>
-
-  <form id="recycleForm" class="card recycle-form" onsubmit="return registrarReciclagemFormulario(event)">
-    <h3>Registrar entrega</h3>
-    <p class="subtitle">Selecione o <span class="hl">material</span> e informe o <span class="hl">peso</span> entregue.</p>
-    <div class="field">
-      <label for="recycleMaterial">Material reciclável</label>
-      <select id="recycleMaterial" name="material" required>
-        <option value="">Carregando materiais...</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="recycleWeight">Peso (kg)</label>
-      <input id="recycleWeight" name="weight" type="text" inputmode="decimal" autocomplete="off" placeholder="Ex.: 1,5" aria-describedby="recycleHelp" required>
-      <small id="recycleHelp">Informe um valor entre 1 e 10 kg. Você pode usar vírgula ou ponto decimal.</small>
-    </div>
-    <button id="recycleSubmit" class="btn btn-cta-glow btn-center" type="submit">Registrar reciclagem</button>
-    <p id="recycleStatus" role="status" aria-live="polite"></p>
-  </form>
-
-  <div class="card info-card">
-    <h3>Como funciona?</h3>
-    <p>
-      Escolha o tipo de material entregue. Em uma versão real,
-      esta ação deverá ser validada por um <span class="hl">posto de coleta</span> antes
-      da conversão em <span class="hl-gold">pontos</span> e <span class="hl-gold">horas complementares</span>.
-    </p>
+  <div class="card info-card recycling-instructions">
+    <h3>Como confirmar uma entrega?</h3>
+    <ol class="recycling-steps">
+      <li>Entregue o material ao responsável pelo posto de coleta.</li>
+      <li>Leia o QR Code gerado pelo responsável usando a câmera do celular.</li>
+      <li>Confira o material, o peso e os pontos apresentados na tela.</li>
+      <li>Mantenha pressionado o botão de confirmação até concluir o registro.</li>
+    </ol>
+    <p class="recycling-warning" role="note">A confirmação só pode ser feita por meio de um QR Code válido, gerado pelo responsável pelo recebimento.</p>
   </div>
 </div></section>
-
-
-
-
-
-
-
 
 <section class="page"><div class="container">
   <h2 class="title"><span class="hl">Postos</span></h2>
@@ -605,43 +549,8 @@ let current = 0;
 let points = 0;
 let deliveries = 0;
 let totalWeight = 0;
-let materiaisReciclagem = [];
 let startX = 0;
 
-
-function atualizarPontuacaoCards() {
-  document.querySelectorAll(".recycle").forEach(card => {
-    const nome = card.querySelector("h3")?.textContent.trim();
-    const exibicao = card.querySelector(".points");
-
-    const material = materiaisReciclagem.find(
-      m => m.material_name.trim().toLowerCase() === nome?.toLowerCase()
-    );
-
-    if (!exibicao) return;
-
-    exibicao.textContent =
-      material && Number.isFinite(Number(material.points_per_kilogram))
-        ? `${material.points_per_kilogram} pontos/kg`
-        : "Pontuação indisponível";
-  });
-}
-
-async function carregarMateriaisReciclagem() {
-  try {
-    materiaisReciclagem = await getMaterials();
-    console.log("Materiais carregados:", materiaisReciclagem);
-    atualizarPontuacaoCards();
-    popularSeletorMateriais();
-  } catch (erro) {
-    console.error("Erro ao carregar materiais:", erro);
-    materiaisReciclagem = [];
-  }
-}
-
-window.addEventListener('load', () => {
-  carregarMateriaisReciclagem();
-});
 
 function goToPage(n) {
   n = Math.max(0, Math.min(4, n));
@@ -766,93 +675,6 @@ function update() {
   }
 }
 
-
-function popularSeletorMateriais() {
-  const select = document.getElementById("recycleMaterial");
-  if (!select) return;
-  select.replaceChildren(new Option("Selecione um material", ""));
-  materiaisReciclagem.forEach(item => {
-    select.add(new Option(item.material_name, String(item.id)));
-  });
-  select.addEventListener("change", atualizarDestaqueMaterial);
-  atualizarDestaqueMaterial();
-}
-
-function atualizarDestaqueMaterial() {
-  const select = document.getElementById("recycleMaterial");
-  const form = document.getElementById("recycleForm");
-  if (!select || !form) return;
-  const item = materiaisReciclagem.find(m => String(m.id) === select.value);
-  const classes = ["plastico", "papel", "vidro", "metal"];
-  form.classList.remove(...classes.map(c => "material-" + c));
-  document.querySelectorAll(".recycle-grid .recycle").forEach(card => {
-    card.classList.remove("selected");
-  });
-  if (!item) return;
-  const material = item.material_name.trim().toLowerCase();
-  const nomeNormalizado = material.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  const classe = classes.find(c => c === nomeNormalizado);
-  if (!classe) return;
-  form.classList.add("material-" + classe);
-  const card = document.querySelector(".recycle-grid .recycle." + classe);
-  if (card) card.classList.add("selected");
-}
-
-function selecionarMaterial(material) {
-  const select = document.getElementById("recycleMaterial");
-  if (!select) return;
-  const item = materiaisReciclagem.find(m => m.material_name.trim().toLowerCase() === material.trim().toLowerCase());
-  if (item) select.value = String(item.id);
-  atualizarDestaqueMaterial();
-  document.getElementById("recycleWeight").focus();
-}
-
-function registrarReciclagemFormulario(event) {
-  event.preventDefault();
-  const select = document.getElementById("recycleMaterial");
-  const pesoTexto = document.getElementById("recycleWeight").value.trim();
-  const status = document.getElementById("recycleStatus");
-  const peso = Number(pesoTexto.replace(",", "."));
-  if (!select.value) {
-    status.textContent = "Selecione um material reciclável.";
-    return false;
-  }
-  if (!pesoTexto || !Number.isFinite(peso) || peso < 1 || peso > 10) {
-    status.textContent = "Informe um peso válido entre 1 e 10 kg.";
-    return false;
-  }
-  recycle(select.value, peso);
-  return false;
-}
-
-async function recycle(materialId, peso) {
-  const item = materiaisReciclagem.find(m => String(m.id) === String(materialId));
-  const status = document.getElementById("recycleStatus");
-  const submit = document.getElementById("recycleSubmit");
-  if (!item) {
-    status.textContent = "Material indisponível. Recarregue a página e tente novamente.";
-    return;
-  }
-  status.textContent = "Registrando entrega...";
-  submit.disabled = true;
-  try {
-    const resposta = await registerRecycling({ fk_cd_material: item.id, nr_weight_kilograms: peso });
-    if (!resposta || typeof resposta.total_points !== "number" || typeof resposta.points_earned !== "number") {
-      throw new Error("A API não retornou os dados de pontuação esperados. Verifique o registro antes de tentar novamente.");
-    }
-    points = resposta.total_points;
-    deliveries++;
-    totalWeight += Number(peso) || 0;
-    update();
-    status.textContent = `${item.material_name}: ${peso.toLocaleString("pt-BR")} kg registrados. +${resposta.points_earned.toLocaleString("pt-BR")} pontos.`;
-    document.getElementById("recycleWeight").value = "";
-  } catch (error) {
-    console.error("Erro ao registrar reciclagem:", error);
-    status.textContent = error.message || "Não foi possível registrar a reciclagem.";
-  } finally {
-    submit.disabled = false;
-  }
-}
 
 function buy(item) {
   showToast(`${item}: resgate demonstrativo.`);

@@ -8,6 +8,8 @@
 
   const $ = (id) => document.getElementById(id);
   const token = new URLSearchParams(window.location.search).get("token");
+  const BRANCH_FRONTEND_URL = "https://acex-reciclagem-kluhcio40-leogouvea.vercel.app";
+  const HOLD_DURATION_MS = 1200;
 
   const alertBox = $("confirmAlert");
   const details = $("deliveryDetails");
@@ -15,6 +17,9 @@
   const loginLink = $("loginLink");
   const panelLink = $("panelLink");
   const successPanel = $("successPanel");
+  const holdLabel = $("confirmButtonLabel");
+  const holdHint = $("confirmHoldHint");
+  let holdTimer = null;
 
   const numberFormat = new Intl.NumberFormat("pt-BR", {
     maximumFractionDigits: 2,
@@ -35,6 +40,7 @@
     confirmButton.hidden = true;
     loginLink.hidden = true;
     panelLink.hidden = true;
+    holdHint.hidden = true;
   }
 
   function showApiError(error) {
@@ -54,8 +60,8 @@
         "Para confirmar esta entrega, entre na sua conta de aluno e abra novamente o QR Code.",
         "error"
       );
-      loginLink.href = `login.html?redirect=${encodeURIComponent(
-        `confirmar-reciclagem.html?token=${token}`
+      loginLink.href = `${BRANCH_FRONTEND_URL}/login.html?redirect=${encodeURIComponent(
+        `${BRANCH_FRONTEND_URL}/confirmar-reciclagem.html?token=${token}`
       )}`;
       loginLink.hidden = false;
       return;
@@ -66,6 +72,7 @@
         "Esta confirmação só pode ser realizada por uma conta de aluno. Se você entrou como administrador, troque para sua conta de aluno e leia o QR Code novamente.",
         "error"
       );
+      panelLink.href = `${BRANCH_FRONTEND_URL}/index.html`;
       panelLink.hidden = false;
       return;
     }
@@ -106,10 +113,8 @@
     details.hidden = false;
     confirmButton.disabled = false;
     confirmButton.hidden = false;
-    setAlert(
-      "Confira os dados. Ao confirmar, os pontos serão adicionados à sua conta.",
-      "info"
-    );
+    setAlert("Confira os dados da entrega.", "info");
+    holdHint.hidden = false;
   }
 
   async function loadDelivery() {
@@ -133,7 +138,7 @@
     if (!token || confirmButton.disabled) return;
 
     confirmButton.disabled = true;
-    confirmButton.textContent = "Confirmando...";
+    holdLabel.textContent = "Confirmando...";
     setAlert("Registrando a confirmação da entrega...", "info");
 
     try {
@@ -153,11 +158,71 @@
       setAlert("Entrega confirmada com sucesso.", "success");
     } catch (error) {
       confirmButton.disabled = false;
-      confirmButton.textContent = "Confirmar entrega";
+      holdLabel.textContent = "Segure para confirmar entrega";
       showApiError(error);
     }
   }
 
-  confirmButton.addEventListener("click", confirmDelivery);
+  function cancelHold() {
+    if (holdTimer !== null) {
+      window.clearTimeout(holdTimer);
+      holdTimer = null;
+      confirmButton.classList.remove("is-holding");
+      if (!confirmButton.disabled) {
+        holdLabel.textContent = "Segure para confirmar entrega";
+      }
+    }
+  }
+
+  function beginHold() {
+    if (confirmButton.disabled || confirmButton.hidden || holdTimer !== null) return;
+
+    confirmButton.classList.add("is-holding");
+    holdLabel.textContent = "Continue segurando...";
+    holdTimer = window.setTimeout(() => {
+      holdTimer = null;
+      confirmButton.classList.remove("is-holding");
+      holdLabel.textContent = "Confirmando...";
+      confirmDelivery();
+    }, HOLD_DURATION_MS);
+  }
+
+  confirmButton.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    try {
+      confirmButton.setPointerCapture(event.pointerId);
+    } catch {
+      // Alguns navegadores não oferecem captura para todos os tipos de ponteiro.
+    }
+    beginHold();
+  });
+
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach((eventName) => {
+    confirmButton.addEventListener(eventName, cancelHold);
+  });
+
+  confirmButton.addEventListener("keydown", (event) => {
+    if (event.key === " " || event.key === "Enter") {
+      event.preventDefault();
+      if (!event.repeat) beginHold();
+    }
+  });
+
+  confirmButton.addEventListener("keyup", (event) => {
+    if (event.key === " " || event.key === "Enter") {
+      event.preventDefault();
+      cancelHold();
+    }
+  });
+
+  confirmButton.addEventListener("blur", cancelHold);
+
+  // Ativação por tecnologia assistiva, sem evento físico de ponteiro/tecla.
+  confirmButton.addEventListener("click", (event) => {
+    if (event.detail === 0 && holdTimer === null && !confirmButton.disabled) {
+      confirmDelivery();
+    }
+  });
+
   loadDelivery();
 })();

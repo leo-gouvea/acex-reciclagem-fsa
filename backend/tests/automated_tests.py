@@ -48,43 +48,14 @@ def usuario_falso_logado():
 app.dependency_overrides[check_access] = usuario_falso_logado
 
 
-def test_contrato_api_reciclagem():
+def test_registro_direto_desativado_exige_qr_code():
     dados_envio = {
         "fk_cd_material": 4,
-        "nr_weight_kilograms": 10.0
+        "nr_weight_kilograms": 2.0
     }
-    
+
     resposta = client.post("/recycling/recycle", json=dados_envio)
-        
-    # Verifica se deu certo
-    assert resposta.status_code == 201
-    
-    # Verifica o contrato (se devolveu o que o Front pediu)
-    json_resposta = resposta.json()
-    assert "points_earned" in json_resposta
-    assert "total_points" in json_resposta
 
-
-def test_bloqueio_peso_acima_do_limite():
-    dados_envio = {
-        "fk_cd_material": 1,
-        "nr_weight_kilograms": 15.0
-    }
-    
-    resposta = client.post("/recycling/recycle", json=dados_envio)
-    
-    # Pydantic deve bloquear e retornar 422 (Unprocessable Entity)
-    assert resposta.status_code == 422
-
-
-def test_bloqueio_peso_abaixo_do_limite():
-    dados_envio = {
-        "fk_cd_material": 1,
-        "nr_weight_kilograms": 0.5
-    }
-    
-    resposta = client.post("/recycling/recycle", json=dados_envio)
-    
-    # Pydantic deve bloquear e retornar 422
-    assert resposta.status_code == 422
+    assert resposta.status_code == 410
+    assert "QR Code" in resposta.json()["detail"]
 
