@@ -70,14 +70,21 @@ body {
   display: none;
 }
 
+/* li com display próprio ignora o atributo hidden */
+.app-nav [hidden] {
+  display: none !important;
+}
+
 .app-nav ul {
   display: flex;
   gap: 4px;
   list-style: none;
 }
 
-.app-nav button {
+.app-nav button,
+.app-nav a {
   display: flex;
+  text-decoration: none;
   align-items: center;
   gap: 7px;
   border: 0;
@@ -93,7 +100,8 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.app-nav button:hover {
+.app-nav button:hover,
+.app-nav a:hover {
   background: var(--card);
   color: var(--text);
 }
@@ -231,7 +239,18 @@ body {
 }
 
 .hero-list strong {
-  color: var(--text);
+  color: var(--green-light);
+}
+
+/* termos importantes em texto corrido e títulos (só tokens) */
+.hl {
+  color: var(--green-light);
+  font-weight: 700;
+}
+
+.hl-gold {
+  color: var(--gold);
+  font-weight: 700;
 }
 
 .level-card {
@@ -280,20 +299,34 @@ body {
   margin-top: 20px;
 }
 
+/* cartão centralizado: ícone, legenda e valor no mesmo eixo */
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .stat .icon {
+  width: 32px;
+  height: 32px;
   margin-bottom: 10px;
 }
 
 .stat small {
   display: block;
-  color: var(--muted);
+  color: var(--text);
+  font-family: inherit;
   font-weight: 700;
-  margin-bottom: 7px;
-  font-size: 0.75rem;
+  margin-bottom: 6px;
+  font-size: 1.05rem;
+  line-height: 1.25;
 }
 
 .stat strong {
-  font-size: 1.6rem;
+  font-size: 1.9rem;
+  line-height: 1.1;
 }
 
 /* =========================================================
@@ -311,7 +344,7 @@ body {
 
 .mission:hover {
   transform: translateY(-3px);
-  border-color: rgba(41, 199, 119, 0.45);
+  border-color: color-mix(in srgb, var(--green) 45%, transparent);
 }
 
 .points {
@@ -393,6 +426,23 @@ body {
   font-size: 0.9rem;
 }
 
+/* botão sozinho, centralizado na seção; .btn-row centraliza um par */
+.btn[hidden] { display: none; }
+
+.btn-center {
+  display: flex;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
 /* =========================================================
    AVISO (callout)
 ========================================================= */
@@ -401,8 +451,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 207, 92, 0.1);
-  border: 1px solid rgba(255, 207, 92, 0.3);
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
   color: var(--gold);
   padding: 12px 16px;
   border-radius: var(--radius-md);
@@ -412,8 +462,8 @@ body {
 }
 
 .callout-warm {
-  background: rgba(255, 145, 66, 0.1);
-  border-color: rgba(255, 145, 66, 0.3);
+  background: color-mix(in srgb, var(--warm) 12%, transparent);
+  border-color: color-mix(in srgb, var(--warm) 35%, transparent);
   color: var(--warm);
 }
 
@@ -572,7 +622,7 @@ body {
   display: grid;
   place-items: center;
   background: var(--danger);
-  color: #2b0a0a;
+  color: var(--on-danger);
   font-weight: 800;
   font-size: 1rem;
 }
@@ -601,33 +651,85 @@ body {
   gap: 18px;
 }
 
+/* cores do mapa da FSA: Fafil (rosa) e Prédio Central (verde-água) */
+.stations {
+  --map-fafil: #ff5cab;
+  --map-central: #5fd9c4;
+}
+
+:root[data-theme="light"] .stations {
+  --map-fafil: #b3126b;
+  --map-central: #0b7566;
+}
+
 .map {
-  min-height: 400px;
   position: relative;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
-  overflow: hidden;
-  display: grid;
-  place-items: center;
+  padding: 20px;
 }
 
-.map img {
-  max-height: 88%;
-  max-width: 88%;
-  object-fit: contain;
+.map-title {
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+  line-height: 1.2;
+  color: var(--map-fafil);
+  margin-bottom: 10px;
+}
+
+.map-legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-bottom: 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.map-legend li::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.map-legend-fafil { color: var(--map-fafil); }
+.map-legend-central { color: var(--map-central); }
+
+.map-figure {
+  position: relative;
+}
+
+.map-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
   border-radius: var(--radius-md);
-  opacity: 0.85;
 }
 
-.map-placeholder {
-  position: absolute;
-  color: var(--muted);
-  background: rgba(7, 31, 28, 0.75);
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
+.map-pins {
+  list-style: none;
 }
+
+/* ponta do pino fica exatamente em (--x, --y) */
+.map-pin {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: clamp(20px, 5.5%, 30px);
+  transform: translate(-50%, -100%);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+}
+
+.map-pin svg { display: block; width: 100%; height: auto; }
+.map-pin text { fill: #06201a; }
+:root[data-theme="light"] .map-pin text { fill: #fff; }
+.map-pin-fafil { color: var(--map-fafil); }
+.map-pin-central { color: var(--map-central); }
 
 .station-list {
   display: grid;
@@ -643,8 +745,28 @@ body {
 }
 
 .station h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 0.95rem;
 }
+
+.station-pin {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.station-pin-fafil { background: var(--map-fafil); }
+.station-pin-central { background: var(--map-central); }
+
+:root:not([data-theme="light"]) .station-pin { color: #06201a; }
 
 .station p {
   color: var(--muted);
@@ -705,7 +827,8 @@ body {
     display: none;
   }
 
-  .app-nav button {
+  .app-nav button,
+  .app-nav a {
     padding: 10px;
   }
 
@@ -732,14 +855,14 @@ body {
 }
 
 /* =========================================================
-   CELULAR
+   NAVEGAÇÃO INFERIOR (gaveta)
+   Celular e tablet de toque (iPad e similares, retrato ou paisagem):
+   o menu do topo some e entra a gaveta embaixo.
 ========================================================= */
 
-@media (max-width: 650px) {
+@media (max-width: 650px), (pointer: coarse) and (max-width: 1200px) {
   .app-header {
-    height: 64px;
-    gap: 8px;
-    justify-content: space-between; 
+    justify-content: space-between;
   }
 
   /* Tira a Nav padrão */
@@ -764,10 +887,13 @@ body {
     border-radius: 28px; /* Mais arredondado para imitar a imagem */
     backdrop-filter: blur(12px);
     width: calc(100% - 3rem);
+    max-width: 520px; /* no tablet não estica a tela toda */
     display: flex;
     flex-direction: column;
     padding: 0 5px;
     overflow: hidden;
+    touch-action: none; /* arrastar a gaveta não rola a página */
+    overscroll-behavior: contain;
     
     /* Altura fechada: apenas a primeira linha + puxador */
     height: 70px; 
@@ -811,7 +937,8 @@ body {
     justify-content: center;
   }
 
-  .app-nav.mobile button {
+  .app-nav.mobile button,
+  .app-nav.mobile a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -839,6 +966,23 @@ body {
   .toast.show {
     transform: translateY(-100px);
     opacity: 1;
+  }
+
+  /* espaço para a gaveta não cobrir o fim da página */
+  .page {
+    padding-bottom: 120px;
+  }
+}
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 650px) {
+  .app-header {
+    height: 64px;
+    gap: 8px;
+    justify-content: space-between; 
   }
 
   .viewport {
@@ -905,7 +1049,7 @@ body {
     font-weight: 800;
     letter-spacing: 1.5px;
 
-    color: #70d6a3;
+    color: var(--green-light);
 }
 
 .perfil-header h1 {
@@ -914,13 +1058,13 @@ body {
     font-size: clamp(30px, 4vw, 44px);
     line-height: 1.05;
 
-    color: #f4fff9;
+    color: var(--text);
 }
 
 .perfil-header p {
     margin: 10px 0 0;
 
-    color: #9db3aa;
+    color: var(--muted);
     font-size: 15px;
 }
 
@@ -931,11 +1075,11 @@ body {
 
     padding: 34px;
 
-    background: #102d28;
-    border: 1px solid rgba(112, 214, 163, 0.13);
+    background: var(--card);
+    border: 1px solid var(--line-soft);
     border-radius: 28px;
 
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.20);
+    box-shadow: var(--shadow-card);
 }
 
 /* Avatar */
@@ -958,8 +1102,8 @@ body {
 
     border-radius: 50%;
 
-    background: #70d6a3;
-    color: #08231e;
+    background: var(--green);
+    color: var(--on-green);
 
     font-size: 28px;
     font-weight: 800;
@@ -974,12 +1118,12 @@ body {
 }
 
 .perfil-avatar-info strong {
-    color: #f4fff9;
+    color: var(--text);
     font-size: 18px;
 }
 
 .perfil-avatar-info span {
-    color: #8fa9a0;
+    color: var(--muted);
     font-size: 14px;
 }
 
@@ -991,7 +1135,7 @@ body {
 
     margin: 30px 0;
 
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--overlay);
 }
 
 /* Grid */
@@ -1017,7 +1161,7 @@ body {
     align-items: center;
     gap: 8px;
 
-    color: #e6f5ee;
+    color: var(--text);
 
     font-size: 14px;
     font-weight: 700;
@@ -1027,9 +1171,9 @@ body {
     font-size: 10px;
     font-weight: 600;
 
-    color: #8da69d;
+    color: var(--muted);
 
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--overlay);
 
     padding: 4px 8px;
 
@@ -1045,13 +1189,13 @@ body {
 
     padding: 0 16px;
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid var(--line);
     border-radius: 14px;
 
     outline: none;
 
-    background: #0b2420;
-    color: #f2fff8;
+    background: var(--input-bg);
+    color: var(--text);
 
     font-family: inherit;
     font-size: 15px;
@@ -1067,7 +1211,7 @@ body {
 }
 
 .perfil-field input::placeholder {
-    color: #718b82;
+    color: var(--placeholder);
 }
 
 /* Campo bloqueado */
@@ -1077,22 +1221,22 @@ body {
     opacity: 0.68;
     cursor: not-allowed;
 
-    background: #0c2622;
+    background: var(--input-bg);
 }
 
 /* Campos editáveis */
 
 .perfil-field input:not(:disabled),
 .perfil-field select:not(:disabled) {
-    background: #0d2924;
+    background: var(--input-bg);
 }
 
 .perfil-field input:not(:disabled):focus,
 .perfil-field select:not(:disabled):focus {
-    border-color: #70d6a3;
+    border-color: var(--green-light);
 
     box-shadow:
-        0 0 0 3px rgba(112, 214, 163, 0.10);
+        0 0 0 3px var(--line-soft);
 }
 
 /* Mensagem */
@@ -1105,11 +1249,11 @@ body {
     font-size: 14px;
     font-weight: 700;
 
-    color: #70d6a3;
+    color: var(--green-light);
 }
 
 .perfil-message.error {
-    color: #f18b7c;
+    color: var(--danger);
 }
 
 /* Botões */
@@ -1153,21 +1297,21 @@ body {
 }
 
 .perfil-btn-primary {
-    background: #70d6a3;
-    color: #08231e;
+    background: var(--green);
+    color: var(--on-green);
 }
 
 .perfil-btn-primary:hover {
-    background: #83e0b0;
+    background: var(--green-light);
 }
 
 .perfil-btn-secondary {
-    background: rgba(255, 255, 255, 0.07);
-    color: #dcece5;
+    background: var(--overlay);
+    color: var(--text);
 }
 
 .perfil-btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.11);
+    background: var(--overlay-strong);
 }
 
 /* Card de informação */
@@ -1180,10 +1324,10 @@ body {
     margin-top: 20px;
     padding: 20px 22px;
 
-    border: 1px solid rgba(112, 214, 163, 0.10);
+    border: 1px solid var(--line-soft);
     border-radius: 20px;
 
-    background: rgba(16, 45, 40, 0.65);
+    background: var(--card);
 }
 
 .perfil-info-icon {
@@ -1198,8 +1342,8 @@ body {
 
     border-radius: 50%;
 
-    background: rgba(112, 214, 163, 0.12);
-    color: #70d6a3;
+    background: color-mix(in srgb, var(--green) 16%, transparent);
+    color: var(--green-light);
 
     font-weight: 800;
 }
@@ -1209,14 +1353,14 @@ body {
 
     margin-bottom: 4px;
 
-    color: #e8f6f0;
+    color: var(--text);
     font-size: 14px;
 }
 
 .perfil-info-card p {
     margin: 0;
 
-    color: #8fa9a0;
+    color: var(--muted);
 
     font-size: 13px;
     line-height: 1.5;
@@ -1304,7 +1448,7 @@ body {
 }
 
 #recycleSubmit {
-  justify-self: start;
+  justify-self: center;
   margin-top: 2px;
 }
 
@@ -1393,4 +1537,191 @@ body {
   transform: translateY(-3px);
   border-color: var(--material-color);
   box-shadow: 0 0 20px var(--material-glow), inset 0 0 18px var(--material-glow);
+}
+
+
+/* Instruções do fluxo de reciclagem validado por QR Code */
+.recycling-instructions {
+  max-width: 760px;
+  margin-top: 24px;
+}
+
+.recycling-steps {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 0;
+  padding-left: 1.4rem;
+  color: var(--text);
+}
+
+.recycling-steps li {
+  padding-left: 4px;
+  line-height: 1.6;
+}
+
+.recycling-steps li::marker {
+  color: var(--green-light);
+  font-weight: 800;
+}
+
+.recycling-warning {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-md);
+  background: var(--overlay);
+  color: var(--danger);
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+
+/* Guia de reciclagem e cards informativos de materiais */
+.recycling-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: start;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.recycling-layout .recycling-instructions {
+  max-width: none;
+  margin-top: 0;
+}
+
+.recycling-materials {
+  min-width: 0;
+}
+
+.recycling-materials > h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.1rem;
+}
+
+.recycling-materials-note {
+  margin: 5px 0 12px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.recycling-material-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+.recycling-material-card {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 11px;
+  row-gap: 2px;
+  min-height: 0;
+  padding: 10px 12px;
+  cursor: default;
+  border-radius: 12px;
+}
+
+.recycling-material-card:hover {
+  transform: none;
+}
+
+.recycling-material-icon {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  font-size: 23px;
+  color: var(--material-color);
+}
+
+.recycling-material-copy {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-width: 0;
+}
+
+.recycling-material-card h4 {
+  margin: 0;
+  color: var(--material-color);
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+
+.recycling-material-card p {
+  margin: 3px 0 0;
+  color: var(--text);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.recycling-material-card .points {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  display: inline-block;
+  width: fit-content;
+  margin: 0;
+  padding: 4px 8px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  color: var(--material-color);
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Tons mais escuros no tema claro para manter contraste, especialmente no vidro. */
+:root[data-theme="light"] .recycling-material-card.papel {
+  --material-color: #1769aa;
+  --material-tint: rgba(23, 105, 170, 0.10);
+  --material-glow: rgba(23, 105, 170, 0.06);
+}
+
+:root[data-theme="light"] .recycling-material-card.plastico {
+  --material-color: #b42332;
+  --material-tint: rgba(180, 35, 50, 0.09);
+  --material-glow: rgba(180, 35, 50, 0.06);
+}
+
+:root[data-theme="light"] .recycling-material-card.metal {
+  --material-color: #806000;
+  --material-tint: rgba(128, 96, 0, 0.10);
+  --material-glow: rgba(128, 96, 0, 0.06);
+}
+
+:root[data-theme="light"] .recycling-material-card.vidro {
+  --material-color: #087a45;
+  --material-tint: rgba(8, 122, 69, 0.11);
+  --material-glow: rgba(8, 122, 69, 0.07);
+}
+
+@media (max-width: 850px) {
+  .recycling-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .recycling-material-card {
+    grid-template-columns: 28px minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .recycling-material-card .points {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 5px;
+  }
+
+  .recycling-material-copy {
+    grid-row: 1;
+  }
+
+  .recycling-material-icon {
+    grid-row: 1 / span 2;
+  }
 }

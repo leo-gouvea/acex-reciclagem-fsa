@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#061815">
+  <title>Confirmar entrega · EcoHora</title>
+  <link rel="icon" href="assets/icon512_rounded.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="estilos/tokens.css">
+  <link rel="stylesheet" href="estilos/confirmar-reciclagem.css">
+  <script src="api.js" defer></script>
+  <script src="confirmar-reciclagem.js" defer></script>
+</head>
+<body class="confirm-page">
+  <header class="confirm-header">
+    <div class="confirm-header-inner">
+      <a class="brand" href="https://acex-reciclagem-kluhcio40-leogouvea.vercel.app/index.html" aria-label="EcoHora, voltar ao painel">
+        <img class="brand-mark" src="assets/Ca105ad9cfc8580c765101d17bbb2323.webp" width="26" height="26" alt="">
+        <span class="brand-name">Eco<span>Hora</span></span>
+      </a>
+      <span class="confirm-header-label">Reciclagem</span>
+    </div>
+  </header>
+
+  <main class="confirm-main" id="conteudo">
+    <section class="card confirm-card" aria-labelledby="confirmTitle">
+      <p class="eyebrow confirm-eyebrow">Confirmação de entrega</p>
+      <h1 id="confirmTitle">Confira os dados da sua entrega</h1>
+      <p class="confirm-intro">
+        Confira o material, o peso e a pontuação desta entrega antes de confirmar.
+      </p>
+
+      <div id="confirmAlert" class="confirm-alert" data-kind="info" role="status" aria-live="polite">
+        Verificando o QR Code...
+      </div>
+
+      <dl id="deliveryDetails" class="confirm-summary" hidden>
+        <div class="confirm-summary-row">
+          <dt>Material</dt>
+          <dd id="deliveryMaterial">—</dd>
+        </div>
+        <div class="confirm-summary-row">
+          <dt>Peso recebido</dt>
+          <dd id="deliveryWeight">—</dd>
+        </div>
+        <div class="confirm-summary-row confirm-summary-points">
+          <dt>Pontos desta entrega</dt>
+          <dd id="deliveryPoints">—</dd>
+        </div>
+      </dl>
+
+      <p id="deliveryExpiration" class="confirm-expiration" hidden></p>
+
+      <div class="confirm-actions">
+        <button id="confirmButton" class="btn btn-solid-green btn-block" type="button" disabled hidden aria-describedby="confirmHoldHint">
+          <span class="confirm-button-progress" aria-hidden="true"></span>
+          <span id="confirmButtonLabel" class="confirm-button-label">Segure para confirmar entrega</span>
+        </button>
+        <p id="confirmHoldHint" class="confirm-hold-hint" hidden>Mantenha pressionado por 1,2 segundo. Solte antes para cancelar.</p>
+        <a id="loginLink" class="btn btn-ghost btn-block" href="https://acex-reciclagem-kluhcio40-leogouvea.vercel.app/login.html" hidden>
+          Entrar na conta de aluno
+        </a>
+        <a id="panelLink" class="btn btn-ghost btn-block" href="https://acex-reciclagem-kluhcio40-leogouvea.vercel.app/index.html" hidden>
+          Ir ao painel
+        </a>
+      </div>
+
+      <section id="successPanel" class="confirm-success" aria-labelledby="successTitle" hidden>
+        <div class="confirm-success-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2 id="successTitle">Entrega confirmada</h2>
+        <p id="successMessage"></p>
+        <dl class="confirm-success-summary">
+          <div class="confirm-summary-row">
+            <dt>Pontos recebidos</dt>
+            <dd id="earnedPoints">—</dd>
+          </div>
+          <div class="confirm-summary-row">
+            <dt>Total de pontos</dt>
+            <dd id="totalPoints">—</dd>
+          </div>
+        </dl>
+        <a class="btn btn-ghost btn-block" href="https://acex-reciclagem-kluhcio40-leogouvea.vercel.app/index.html">Voltar ao painel</a>
+      </section>
+
+      <p class="confirm-footnote">
+        Cada QR Code só pode ser confirmado uma vez.
+      </p>
+    </section>
+  </main>
+
+  <footer class="confirm-footer">
+    <span>EcoHora · Reciclagem que se transforma em horas complementares.</span>
+  </footer>
+</body>
+</html>

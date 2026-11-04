@@ -19,28 +19,37 @@
 }
 
 :root {
-  --bg: #071f1c;
-  --bg-alt: #0b2b23;
-  --surface: #0e332a;
-  --card: #103832;
-  --input-bg: #09251f;
+  color-scheme: dark;
 
-  --green: #29c777;
-  --green-light: #7be3a8;
+  --bg: #061815;
+  --bg-alt: #0a2a22;
+  --surface: #0f3a30;
+  --card: #14433a;
+  --input-bg: #082a23;
+
+  --green: #2fd47f;
+  --green-light: #8ff0b9;
   --green-deep: #0f3a2c;
 
-  --warm: #ff9142;
-  --gold: #ffcf5c;
-  --blue: #65b9ff;
-  --danger: #ff6b6b;
+  --warm: #ff9a4d;
+  --gold: #ffd668;
+  --blue: #75c2ff;
+  --danger: #ff8080;
 
-  --text: #f4fff9;
-  --muted: #a9c4bb;
-  --muted-dark: #7f9c92;
-  --placeholder: #6d9185;
+  /* texto sobre preenchimento de acento (botão verde, dourado, etc.) */
+  --on-green: #04261a;
+  --on-gold: #2b1d02;
+  --on-danger: #2b0a0a;
 
-  --line: rgba(255, 255, 255, 0.14);
-  --line-soft: rgba(255, 255, 255, 0.1);
+  --text: #f8fffb;
+  --muted: #bfd8cf;
+  --muted-dark: #9bb9ae;
+  --placeholder: #8fb0a4;
+
+  --line: rgba(255, 255, 255, 0.2);
+  --line-soft: rgba(255, 255, 255, 0.14);
+  --overlay: rgba(255, 255, 255, 0.08);
+  --overlay-strong: rgba(255, 255, 255, 0.13);
 
   /* raio concêntrico: pill externo 999px, botão/input interno
      10 a 12px, o padding ao redor define o resto da escala */
@@ -55,6 +64,54 @@
   --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
 
+/* =========================================================
+   TEMA CLARO
+   Mesmos nomes de token, valores trocados. Os acentos ficam mais
+   escuros pra passar de 4,5:1 sobre branco, e por isso o texto
+   sobre eles vira branco (--on-*). Atenção: --green-light é o
+   verde "de texto/rótulo" e no tema claro é o MAIS escuro.
+   Áreas sobre foto (hero, painel do login) usam .ilha-escura,
+   que devolve os valores do tema escuro só pra aquele trecho.
+========================================================= */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f2f7f4;
+  --bg-alt: #e6efe9;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --input-bg: #eef4f1;
+
+  --green: #13884d;
+  --green-light: #0e6b3f;
+  --green-deep: #d5ebdf;
+
+  --warm: #b45309;
+  --gold: #8a6100;
+  --blue: #1f6fb5;
+  --danger: #c0262d;
+
+  --on-green: #ffffff;
+  --on-gold: #ffffff;
+  --on-danger: #ffffff;
+
+  --text: #0a2a22;
+  --muted: #3f5f55;
+  --muted-dark: #587267;
+  --placeholder: #5b7167;
+
+  --line: rgba(10, 42, 34, 0.24);
+  --line-soft: rgba(10, 42, 34, 0.14);
+  --overlay: rgba(10, 42, 34, 0.07);
+  --overlay-strong: rgba(10, 42, 34, 0.12);
+
+  --shadow-card: 0 12px 32px rgba(10, 42, 34, 0.12);
+
+  /* anel do CTA: dourado/laranja vivos (os de texto acima ficam turvos) */
+  --ring-gold: #f0b400;
+  --ring-warm: #f07a1f;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -67,7 +124,7 @@ html {
 
 body {
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
   font-family: "Manrope", system-ui, sans-serif;
   font-weight: 400;
   font-size: 1.05rem;
@@ -94,7 +151,7 @@ a {
   left: -999px;
   top: 0;
   background: var(--green);
-  color: var(--bg);
+  color: var(--on-green);
   padding: 12px 18px;
   border-radius: 0 0 var(--radius-sm) 0;
   font-weight: 600;
@@ -157,11 +214,12 @@ a {
 
 .btn-primary {
   background: var(--gold);
-  color: #2b1d02;
+  color: var(--on-gold);
 }
 
 .btn-primary:hover {
-  background: #ffdb85;
+  background: var(--gold);
+  filter: brightness(1.1);
 }
 
 .btn-nav {
@@ -199,7 +257,7 @@ a {
 
 .btn-solid-green {
   background: var(--green);
-  color: #04261a;
+  color: var(--on-green);
 }
 
 .btn-solid-green:hover {
@@ -252,7 +310,7 @@ a {
   position: relative;
   z-index: 0;
   background: linear-gradient(#ffffff, #ffffff) padding-box,
-    conic-gradient(from var(--cta-angle), var(--green), var(--gold), var(--warm), var(--green-light), var(--green)) border-box;
+    conic-gradient(from var(--cta-angle), var(--green), var(--ring-gold, var(--gold)), var(--ring-warm, var(--warm)), var(--green-light), var(--green)) border-box;
   color: var(--green);
   border: 3px solid transparent;
   border-radius: var(--radius-pill);
@@ -262,7 +320,7 @@ a {
 
 .btn-cta-glow:hover {
   background: linear-gradient(#f3faf6, #f3faf6) padding-box,
-    conic-gradient(from var(--cta-angle), var(--green), var(--gold), var(--warm), var(--green-light), var(--green)) border-box;
+    conic-gradient(from var(--cta-angle), var(--green), var(--ring-gold, var(--gold)), var(--ring-warm, var(--warm)), var(--green-light), var(--green)) border-box;
   color: var(--green-light);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), 0 0 22px rgba(123, 227, 168, 0.2);
 }
@@ -523,4 +581,66 @@ a {
   font-weight: 500;
   background: var(--bg);
   border-top: 1px solid var(--line);
+}
+
+/* =========================================================
+   TEMA: ilha escura + botão de alternar
+========================================================= */
+
+:root[data-theme="light"] .ilha-escura {
+  color-scheme: dark;
+  --green-deep: #0f3a2c;
+  --green: #2fd47f;
+  --green-light: #8ff0b9;
+  --warm: #ff9a4d;
+  --gold: #ffd668;
+  --blue: #75c2ff;
+  --danger: #ff8080;
+  --on-green: #04261a;
+  --on-gold: #2b1d02;
+  --text: #f8fffb;
+  --muted: #bfd8cf;
+  --muted-dark: #9bb9ae;
+  --line: rgba(255, 255, 255, 0.2);
+  --line-soft: rgba(255, 255, 255, 0.14);
+  color: var(--text);
+}
+
+.theme-toggle {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(127, 127, 127, 0.16);
+  border-color: var(--green);
+}
+
+/* mostra o ícone da ação: sol no escuro (vai clarear), lua no claro */
+.theme-toggle .ic-lua { display: none; }
+:root[data-theme="light"] .theme-toggle .ic-sol { display: none; }
+:root[data-theme="light"] .theme-toggle .ic-lua { display: block; }
+
+.theme-toggle-float {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 60;
+  margin: 0;
+  background: var(--bg-alt);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body { transition: background-color 0.2s ease, color 0.2s ease; }
 }

@@ -12,7 +12,7 @@
 .hero {
   position: relative;
   min-height: calc(100vh - var(--header-h));
-  min-height: calc(100dvh - var(--header-h));
+  min-height: calc(100svh - var(--header-h));
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -516,7 +516,7 @@
 .back-to-top:hover {
   border-color: var(--blue);
   color: var(--blue);
-  background: rgb(0, 44, 51);
+  background: var(--bg-alt);
 }
 
 /* =========================================================

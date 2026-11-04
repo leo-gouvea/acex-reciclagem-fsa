@@ -6,8 +6,10 @@
 ========================================================= */
 
 .login-shell {
+  /* svh = altura estável. vh/dvh mudam quando o seletor nativo ou a barra
+     do navegador abrem, e o layout inteiro esticava junto. */
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   font-size: 1.75rem;
@@ -141,15 +143,15 @@
   align-items: center;
   justify-content: center;
   padding: 32px;
-  background: #0B2B23;
+  background: var(--bg-alt);
 }
 
 .form-box {
   width: 100%;
   max-width: 460px;
   padding: 44px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--card);
+  border: 1px solid var(--line-soft);
   border-radius: var(--radius-lg);
 }
 
@@ -220,6 +222,20 @@
   display: none;
 }
 
+/* Checklist da senha (login.js). Cada item tem ✓/○, então não
+   depende só de cor pra ser entendido. */
+.pw-rules {
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.pw-rules li.ok { color: var(--green-light); }
+.pw-rules li.pendente { color: var(--text); }
+
 /* =========================================================
    MENSAGEM DE FEEDBACK
 ========================================================= */
@@ -258,7 +274,6 @@
   }
 
   .login-info {
-    min-height: 28vh;
     padding: 28px 24px 20px;
     align-items: flex-start;
   }
@@ -314,13 +329,13 @@
 @media (max-width: 500px) {
   .login-shell {
     min-height: 100vh;
+    min-height: 100svh;
     padding: 0;
     font-size: 1rem;
   }
 
   .login-info {
     padding: 20px 18px 16px;
-    min-height: 24vh;
   }
 
   .login-info-title {
